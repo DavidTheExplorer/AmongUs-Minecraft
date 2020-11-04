@@ -1,25 +1,36 @@
 package mazgani.amongus.lobbies;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
-import com.google.common.collect.Sets;
-
-import mazgani.amongus.enums.Role;
+import lombok.Getter;
+import mazgani.amongus.events.lobbies.LobbyFullEvent;
 import mazgani.amongus.games.AUGame;
-import mazgani.amongus.games.GamePlayer;
-import mazgani.amongus.shiptasks.list.WiresTask;
-import mazgani.amongus.utilities.RandomUtilities;
 
 public class GameLobby
 {
-	private UUID uuid;
+	private final UUID uuid;
+	
+	@Getter
 	private final Location spawnLocation;
-	private final int crewmates, impostors;
-	private final Map<UUID, GamePlayer> players = new HashMap<>();
+	
+	private final Set<Player> waitingPlayers = new HashSet<>();
+	
+	@Getter
+	private AUGame currentGame;
+	
+	//Settings
+	private int crewmates, impostors;
+	
+	private final int PLAYERS_REQUIRED;
+	
+	private final Set<LobbyStateListener> stateListeners = new HashSet<>();
 	
 	GameLobby(UUID uuid, Location spawnLocation, int crewmates, int impostors)
 	{
@@ -27,54 +38,73 @@ public class GameLobby
 		this.spawnLocation = spawnLocation;
 		this.crewmates = crewmates;
 		this.impostors = impostors;
+		
+		this.PLAYERS_REQUIRED = (impostors + crewmates);
 	}
 	public UUID getUUID() 
 	{
 		return this.uuid;
 	}
-	public Location getSpawnLocation() 
+	public Set<Player> getPlayersView() 
 	{
-		return this.spawnLocation;
+		return Collections.unmodifiableSet(this.waitingPlayers);
 	}
-	public boolean addPlayer(UUID playerUUID)
+	public void setCurrentGame(AUGame game) 
 	{
-		if(hasEnoughPlayers())
+		this.currentGame = game;
+	}
+	public int crewmatesAmount() 
+	{
+		return this.crewmates;
+	}
+	public int impostorsAmount() 
+	{
+		return this.impostors;
+	}
+	public int getPlayersRequired() 
+	{
+		return this.PLAYERS_REQUIRED;
+	}
+	public boolean isFull()
+	{
+		return this.waitingPlayers.size() == this.PLAYERS_REQUIRED;
+	}
+	public boolean addPlayer(Player player)
+	{
+		if(isFull())
 		{
 			return false;
 		}
-		this.players.put(playerUUID, new GamePlayer(playerUUID));
+		this.waitingPlayers.add(player);
+		this.stateListeners.forEach(listener -> listener.onJoin(this, player));
+		
+		if(isFull()) 
+		{
+			Bukkit.getPluginManager().callEvent(new LobbyFullEvent(this));
+		}
 		return true;
 	}
-	public boolean hasEnoughPlayers()
+	public boolean removePlayer(Player player) 
 	{
-		int playersRequired = (this.crewmates + this.impostors);
+		boolean wasInLobby = this.waitingPlayers.remove(player);
 		
-		return this.players.size() == playersRequired;
-	}
-	public boolean removePlayer(UUID playerUUID) 
-	{
-		return this.players.remove(playerUUID) != null;
-	}
-	public boolean contains(UUID playerUUID) 
-	{
-		return this.players.containsKey(playerUUID);
-	}
-	public AUGame startGame() 
-	{
-		determineRoles();
-		
-		AUGame game = new AUGame(this, new HashMap<>(this.players));
-		game.setTasks(Sets.newHashSet(new WiresTask(game)));
-		
-		return game;
-	}
-	private void determineRoles() 
-	{
-		for(int i = 1; i <= this.impostors; i++) 
+		if(wasInLobby) 
 		{
-			GamePlayer randomCrewmate = RandomUtilities.from(this.players.values()).getElementThat(player -> player.getRole() == Role.CREWMATE);
-			
-			randomCrewmate.setRole(Role.IMPOSTOR);
+			this.stateListeners.forEach(listener -> listener.onLeave(this, player));
 		}
+		return wasInLobby;
+	}
+	public boolean contains(Player player) 
+	{
+		return this.waitingPlayers.contains(player);
+	}
+	public void clear() 
+	{
+		this.waitingPlayers.clear();
+	}
+	
+	public void addStateListener(LobbyStateListener listener) 
+	{
+		this.stateListeners.add(listener);
 	}
 }

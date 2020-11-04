@@ -1,20 +1,25 @@
 package mazgani.amongus.utilities;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.RandomAccess;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class RandomUtilities
 {
 	//Container of static methods
 	private RandomUtilities(){}
-	
+
 	private static Random random = new Random();
-	
+
 	/*
 	 * Numbers Methods
 	 */
@@ -33,12 +38,13 @@ public class RandomUtilities
 	{
 		if(!includeMin) min++;
 		if(includeMax) max++;
-		
+
 		return min + random.nextInt(max-min);
 	}
-	
+
 	/**
 	 * Returns a random number in the range of {@code min} to {@code max} ({@code min} included, {@code max} excluded)
+	 * 
 	 * @param min the min number
 	 * @param max the max number
 	 * @return the random number
@@ -47,7 +53,7 @@ public class RandomUtilities
 	{
 		return randomInt(min, max, true, false);
 	}
-	
+
 	/*
 	 * Collection Methods
 	 */
@@ -61,17 +67,28 @@ public class RandomUtilities
 		{
 			return null;
 		}
-		if(collection instanceof List) 
+
+		if(collection instanceof RandomAccess) 
 		{
 			List<E> list = (List<E>) collection;
-			
-			return list.get(random.nextInt(list.size()));
+
+			return list.get(RandomUtilities.randomInt(0, list.size()));
 		}
-		return collection.stream()
-				.skip(random.nextInt(collection.size()))
-				.findFirst().get();
+		int randomSlot = RandomUtilities.randomInt(0, collection.size());
+
+		for(Iterator<E> iterator = collection.iterator(); iterator.hasNext();) 
+		{
+			E element = iterator.next();
+
+			if(randomSlot == 0)
+			{
+				return element;
+			}
+			randomSlot--;
+		}
+		return null;
 	}
-	
+
 	/*
 	 * Map Methods
 	 */
@@ -87,7 +104,7 @@ public class RandomUtilities
 	{
 		return randomElement(map.entrySet());
 	}
-	
+
 	/*
 	 * Fluent Method Chaining to handle methods on collections
 	 */
@@ -99,34 +116,38 @@ public class RandomUtilities
 	{
 		return from(Arrays.asList(array));
 	}
-	
+
 	/**
-	 * A class that holds a collection(so it's safe to reuse) and helps with actions that involves randomness.
-	 * @param <E> the type of the collection
+	 * A Helper class that holds a collection(so it's safe to reuse) and helps with actions that involve randomness.
+	 * 
+	 * @param <E> the type of the collection.
 	 */
 	public static class CollectionHelper<E>
 	{
 		private Collection<E> collection;
-		
+
 		public CollectionHelper(Collection<E> collection) 
 		{
 			this.collection = collection;
 		}
+
+		/**
+		 * Returns a random element from the collection that the {@code tester} approves.
+		 * 
+		 * @param tester the elements tester.
+		 * @return a random element.
+		 */
 		public E getElementThat(Predicate<E> tester)
 		{
 			if(this.collection.isEmpty()) 
 			{
 				return null;
 			}
-			E element;
+			Set<E> approvedElements = this.collection.stream()
+					.filter(tester)
+					.collect(toSet());
 			
-			do 
-			{
-				element = randomElement(this.collection);
-			}
-			while(!tester.test(element));
-			
-			return element;
+			return randomElement(approvedElements);
 		}
 	}
 }

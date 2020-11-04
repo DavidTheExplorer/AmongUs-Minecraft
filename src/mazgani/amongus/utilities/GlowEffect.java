@@ -12,9 +12,9 @@ public class GlowEffect
 	private GlowEffect(){}
 
 	/**
-	 * Gives {@code item} the <b>Glow Effect</b> "without enchanting it" by injecting a useless enchantment to it(depends on its material), 
-	 * combined with {@link ItemFlag.HIDE_ENCHANTS} to hide the trick;
-	 * This allows additional enchants to be added :)
+	 * Glows the {@code item} "without enchanting it" by injecting a useless enchantment to it(depends on its material), 
+	 * combined with {@link ItemFlag.HIDE_ENCHANTS} to hide the trick
+	 * (This also allows additional enchants to be added.)
 	 * <p>
 	 * <b>If you later want to enchant the item, first apply {@code GlowEffect.deleteGlow()} to it.</b>
 	 * <p>
@@ -29,7 +29,9 @@ public class GlowEffect
 	 */
 	public static void addGlow(ItemStack item) 
 	{
-		addGlow(item.getItemMeta(), item.getType());
+		ItemMeta im = item.getItemMeta();
+		addGlow(im, item.getType());
+		item.setItemMeta(im);
 	}
 	public static void addGlow(ItemMeta to, Material forMaterial) 
 	{

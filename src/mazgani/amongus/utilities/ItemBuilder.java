@@ -139,10 +139,7 @@ public class ItemBuilder
 		if(isGlowing())
 			GlowEffect.deleteGlow(this.im, this.item.getType());
 		
-		for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) 
-		{
-			enchant(entry.getKey(), entry.getValue());
-		}
+		this.item.addEnchantments(enchantments);
 		return this;
 	}
 	public ItemBuilder itemFlags(ItemFlag... flags)
@@ -156,7 +153,6 @@ public class ItemBuilder
 		return this;
 	}
 	/**
-	 * 
 	 * @param suffixMode Select a usage from the following which will be added to the item's name:
 	 * <ul>
 	 * 	<li>Left Click</li>
@@ -170,15 +166,15 @@ public class ItemBuilder
 	 */
 	public ItemBuilder addClickUsageToName(ClickableMode suffixMode, ChatColor mouseButtonsColor, ChatColor slashColor)
 	{
-		StringBuilder nameBuilder = new StringBuilder();
+		StringBuilder name = new StringBuilder();
 
 		if(this.im.hasDisplayName())
 		{
-			nameBuilder.append(this.im.getDisplayName() + ' ');
+			name.append(this.im.getDisplayName() + ' ');
 		}
-		nameBuilder.append(suffixMode.getSuffix(mouseButtonsColor, slashColor));
+		name.append(suffixMode.getSuffix(mouseButtonsColor, slashColor));
 
-		return rename(nameBuilder.toString());
+		return rename(name.toString());
 	}
 
 	/**

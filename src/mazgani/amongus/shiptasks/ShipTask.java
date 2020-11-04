@@ -4,7 +4,7 @@ import org.bukkit.event.Listener;
 
 import mazgani.amongus.games.AUGame;
 
-public interface Task extends Listener
+public interface ShipTask extends Listener
 {
 	String getName();
 	AUGame getGame();

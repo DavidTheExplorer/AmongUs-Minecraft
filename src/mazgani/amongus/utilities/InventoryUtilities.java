@@ -63,7 +63,7 @@ public class InventoryUtilities
 
 		//fill the First and Last columns EXCLUDING their corners, because those were already filled by the fillColumn() methods
 		fillRange(inv, 1, 7, window); 
-		fillRange(inv, invSize-7, invSize-2, window); 
+		fillRange(inv, invSize-8, invSize-2, window); 
 	}
 	public static int findFirstSlot(Inventory inv, Predicate<ItemStack> itemMatcher) 
 	{

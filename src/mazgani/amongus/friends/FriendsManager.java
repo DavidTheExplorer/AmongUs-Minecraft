@@ -9,30 +9,36 @@ import mazgani.amongus.players.AUPlayer;
 
 public class FriendsManager 
 {
-	private Map<AUPlayer, Set<AUPlayer>> friendRequests = new HashMap<>(), playersFriends = new HashMap<>();
-
-	public boolean sendFriendRequest(AUPlayer from, AUPlayer to)
+	private final Map<AUPlayer, Set<AUPlayer>> friendRequests = new HashMap<>(), playersFriends = new HashMap<>();
+	
+	public boolean request(AUPlayer from, AUPlayer to)
 	{
-		return this.friendRequests.computeIfAbsent(from, r -> new HashSet<>()).add(to);
+		return this.friendRequests.computeIfAbsent(from, f -> new HashSet<>()).add(to);
 	}
-	public boolean sentFriendRequest(AUPlayer from, AUPlayer to) 
+	public boolean sentRequest(AUPlayer from, AUPlayer to) 
 	{
-		Set<AUPlayer> ignoreList = this.playersFriends.get(from);
-
-		if(ignoreList == null) 
+		Set<AUPlayer> fromRequests = this.friendRequests.get(from);
+		
+		if(fromRequests == null) 
 		{
 			return false;
 		}
-		return ignoreList.contains(to);
+		return fromRequests.contains(to);
 	}
-	public void acceptFriendRequest(AUPlayer acceptor, AUPlayer sent) 
+	public void accept(AUPlayer acceptor, AUPlayer whoSent) 
 	{
-		this.friendRequests.get(sent).remove(acceptor);
-		this.playersFriends.computeIfAbsent(acceptor, l -> new HashSet<>()).add(sent);
-		this.playersFriends.computeIfAbsent(sent, l -> new HashSet<>()).add(acceptor);
+		this.friendRequests.get(whoSent).remove(acceptor);
+		this.playersFriends.computeIfAbsent(acceptor, a -> new HashSet<>()).add(whoSent);
+		this.playersFriends.computeIfAbsent(whoSent, ws -> new HashSet<>()).add(acceptor);
 	}
-	public boolean unfriend(AUPlayer ignorer, AUPlayer unignored)
+	public boolean unfriend(AUPlayer player, AUPlayer target)
 	{
-		return this.playersFriends.get(ignorer).remove(unignored);
+		Set<AUPlayer> playerFriends = this.playersFriends.get(player);
+		
+		if(!playerFriends.contains(target)) 
+		{
+			return false;
+		}
+		return playerFriends.remove(target);
 	}
 }

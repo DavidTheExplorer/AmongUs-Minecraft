@@ -9,24 +9,24 @@ import mazgani.amongus.players.AUPlayer;
 
 public class IgnoresManager 
 {
-	private Map<AUPlayer, Set<AUPlayer>> playersIgnoredLists = new HashMap<>();
+	private Map<AUPlayer, Set<AUPlayer>> playersIgnored = new HashMap<>();
 	
-	public boolean ignore(AUPlayer ignorer, AUPlayer ignored)
+	public void ignore(AUPlayer ignorer, AUPlayer ignored)
 	{
-		return this.playersIgnoredLists.computeIfAbsent(ignorer, l -> new HashSet<>()).add(ignored);
+		this.playersIgnored.computeIfAbsent(ignorer, i -> new HashSet<>()).add(ignored);
 	}
 	public boolean isIgnoring(AUPlayer ignorer, AUPlayer ignored) 
 	{
-		Set<AUPlayer> ignoreList = this.playersIgnoredLists.get(ignorer);
+		Set<AUPlayer> ignoredList = this.playersIgnored.get(ignorer);
 		
-		if(ignoreList == null) 
+		if(ignoredList == null)
 		{
 			return false;
 		}
-		return ignoreList.contains(ignored);
+		return ignoredList.contains(ignored);
 	}
 	public boolean unignore(AUPlayer ignorer, AUPlayer unignored)
 	{
-		return this.playersIgnoredLists.get(ignorer).remove(unignored);
+		return this.playersIgnored.get(ignorer).remove(unignored);
 	}
 }

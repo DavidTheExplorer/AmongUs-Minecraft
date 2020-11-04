@@ -1,8 +1,8 @@
-package mazgani.amongus.stats;
+package mazgani.amongus.players;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import mazgani.amongus.enums.Role;
 
@@ -17,24 +17,25 @@ public class PlayerStatistics
 	}
 	public void addWin(Role role)
 	{
-		Function<Object, Object> incrementor = current -> (int) current +1;
-		
-		add(role, "Wins", 0, incrementor);
+		put(role, "Wins", 0, currentWins -> (int) currentWins +1);
 	}
-	public int getWins(Role role) 
+	public int getWins(Role role)
 	{
-		return (int) get(role, "Wins", 0);
+		return (int) getOrPut(role, "Wins", 0);
 	}
-	
-	private void add(Role role, String statistic, Object defaultIfAbsent, Function<Object, Object> incrementor) 
+	private void put(Role role, String statistic, Object defaultIfAbsent, UnaryOperator<Object> incrementor) 
 	{
-		Object currentValue = get(role, statistic, defaultIfAbsent);
+		Object currentValue = getOrPut(role, statistic, defaultIfAbsent);
 		Object newValue = incrementor.apply(currentValue);
 		
 		this.statsByRole.computeIfAbsent(role, r -> new HashMap<>()).put(statistic, newValue);
 	}
-	private Object get(Role role, String statistic, Object defaultIfAbsent) 
+	private Object getOrPut(Role role, String statistic, Object defaultIfAbsent) 
 	{
+		if(!this.statsByRole.containsKey(role)) 
+		{
+			return false;
+		}
 		Map<String, Object> roleStats = this.statsByRole.computeIfAbsent(role, r -> new HashMap<>());
 		
 		return roleStats.computeIfAbsent(statistic, s -> defaultIfAbsent);

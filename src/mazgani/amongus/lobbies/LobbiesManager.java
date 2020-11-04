@@ -1,7 +1,7 @@
 package mazgani.amongus.lobbies;
 
 import static java.util.stream.Collectors.toSet;
-import static mazgani.amongus.utilities.JavaUtilities.randomElement;
+import static mazgani.amongus.utilities.RandomUtilities.randomElement;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,32 +11,49 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 
-public class LobbiesManager 
+import mazgani.amongus.AmongUs;
+import mazgani.amongus.lobbies.displayers.LobbySign;
+import mazgani.amongus.lobbies.listeners.LobbyLeaveListener;
+import mazgani.amongus.utilities.UUIDProvider;
+
+public class LobbiesManager
 {
 	private final Map<UUID, GameLobby> lobbyByUUID = new HashMap<>();
 	
-	public GameLobby createLobby(Location spawnLocation, int crewmates, int impostors)
+	public LobbiesManager() 
 	{
-		UUID untakenID;
+		Bukkit.getPluginManager().registerEvents(new LobbyLeaveListener(this), AmongUs.getInstance());
+	}
+	public GameLobby createLobby(Location spawnLocation, int crewmates, int impostors) 
+	{
+		return createLobby(spawnLocation, crewmates, impostors, null);
+	}
+	public GameLobby createLobby(Location spawnLocation, int crewmates, int impostors, Sign joinSign)
+	{
+		//create the lobby
+		UUID gameID = UUIDProvider.generateUUID(GameLobby.class);
+		GameLobby lobby = new GameLobby(gameID, spawnLocation, crewmates, impostors);
 		
-		do 
+		//register the lobby
+		this.lobbyByUUID.put(gameID, lobby);
+		
+		//setup the lobby
+		if(joinSign != null) 
 		{
-			untakenID = UUID.randomUUID();
+			lobby.addStateListener(new LobbySign(lobby, joinSign));
 		}
-		while(this.lobbyByUUID.keySet().contains(untakenID));
-		
-		GameLobby lobby = new GameLobby(untakenID, spawnLocation, crewmates, impostors);
-		this.lobbyByUUID.put(untakenID, lobby);
-		
 		return lobby;
 	}
 	public Optional<GameLobby> findRandomLobby() 
 	{
-		return Optional.ofNullable(randomElement(this.lobbyByUUID.values()));
+		return Optional.ofNullable(randomElement(getLobbies()));
 	}
-	public Optional<GameLobby> findRandomGameThat(Predicate<GameLobby> lobbyTester) //TODO: Use this for ignore lists - so people can join games without people they hate which could ruin their game
+	public Optional<GameLobby> findRandomLobbyThat(Predicate<GameLobby> lobbyTester) //TODO: Use this for ignore lists - so people can join games without people they hate which could ruin their game
 	{
 		 Set<GameLobby> matchingLobbies = getLobbies().stream()
 				 .filter(lobbyTester)
@@ -44,14 +61,13 @@ public class LobbiesManager
 		 
 		 return Optional.ofNullable(randomElement(matchingLobbies));
 	}
-	public Optional<GameLobby> findGameOf(UUID playerUUID)
+	public Optional<GameLobby> findLobbyOf(Player player)
 	{
 		return getLobbies().stream()
-				.filter(lobby -> lobby.contains(playerUUID))
+				.filter(lobby -> lobby.contains(player))
 				.findAny();
 	}
-	
-	private Collection<GameLobby> getLobbies()
+	public Collection<GameLobby> getLobbies()
 	{
 		return this.lobbyByUUID.values();
 	}

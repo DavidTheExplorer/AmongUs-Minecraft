@@ -1,34 +1,34 @@
 package mazgani.amongus.games;
 
-import java.util.UUID;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import mazgani.amongus.enums.Role;
 
+@RequiredArgsConstructor
 public class GamePlayer
 {
-	private final UUID playerUUID;
+	@Getter
+	private final Player player;
 	
-	private Role role = Role.CREWMATE;
+	@Getter
+	private final AUGame game;
+	
+	@Getter
+	@Setter
+	private Role role;
+	
+	@Getter
 	private boolean spectator = false;
 	
-	public GamePlayer(UUID playerUUID) 
+	public void setSpectator() 
 	{
-		this.playerUUID = playerUUID;
-	}
-	public UUID getPlayerUUID() 
-	{
-		return this.playerUUID;
-	}
-	public Role getRole() 
-	{
-		return this.role;
-	}
-	public boolean isSpectator() 
-	{
-		return this.spectator;
-	}
-	public void setRole(Role role) 
-	{
-		this.role = role;
+		this.spectator = true;
+		this.player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 2));
+		this.player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 2, 2));
 	}
 }
