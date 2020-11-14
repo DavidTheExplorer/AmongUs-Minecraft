@@ -1,19 +1,24 @@
-package mazgani.amongus.events.games;
+package mazgani.amongus.games.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import mazgani.amongus.enums.Role;
+import mazgani.amongus.players.Role;
 
-@RequiredArgsConstructor
 public class GameWinEvent extends Event
 {
-	@Getter
 	private final Role winningRole;
 	
 	private static final HandlerList HANDLERS = new HandlerList();
+	
+	public GameWinEvent(Role winningRole) 
+	{
+		this.winningRole = winningRole;
+	}
+	public Role getWinningRole() 
+	{
+		return this.winningRole;
+	}
 	
 	@Override
     public HandlerList getHandlers() 

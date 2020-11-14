@@ -16,16 +16,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import mazgani.amongus.AmongUs;
-import mazgani.amongus.bodies.BodyColor;
-import mazgani.amongus.bodies.DeadBody;
-import mazgani.amongus.bodies.list.BlockBody;
-import mazgani.amongus.enums.Role;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.games.GamesManager;
+import mazgani.amongus.games.maps.TestMap;
 import mazgani.amongus.lobbies.GameLobby;
 import mazgani.amongus.lobbies.LobbiesManager;
+import mazgani.amongus.players.Role;
 import mazgani.amongus.shiptasks.ShipTask;
 import mazgani.amongus.shiptasks.inventorytasks.wires.WiresTask;
 
@@ -51,26 +48,22 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			return false;
 		}
 		Player player = (Player) sender;
-		
-		DeadBody body = new BlockBody(BodyColor.RED);
-		body.spawn(player.getName(), player.getLocation().subtract(0, 1, 0));
-		
-		Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), () -> 
-		{
-			DeadBody body2 = new BlockBody(BodyColor.GREEN);
-			body2.spawn(player.getName(), player.getLocation().subtract(0, 1, 0));
-		}, 20 * 5);
 
 		if(!player.isOp())
 		{
 			player.sendMessage(ChatColor.RED + "You don't have enough permissions to execute this command.");
 			return false;
 		}
-		
+
 		switch(args.length)
 		{
 		case 1:
-			if(args[0].equalsIgnoreCase("createlobby")) 
+			if(args[0].equalsIgnoreCase("test")) 
+			{
+				//testBody(player);
+				return true;
+			}
+			else if(args[0].equalsIgnoreCase("createlobby")) 
 			{
 				if(requestedAbsentTempLobby(player)) 
 				{
@@ -84,8 +77,8 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					return false;
 				}
 				Sign sign = (Sign) block.getState();
-				
-				this.tempLobby = this.lobbiesManager.createLobby(player.getLocation(), 1, 1, sign);
+
+				this.tempLobby = this.lobbiesManager.createLobby(player.getLocation(), new TestMap(), 1, 1, sign);
 				player.sendMessage(ChatColor.GREEN + "A lobby has been created in your location.");
 
 				this.tempLobby.addPlayer(player);
@@ -99,7 +92,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					return false;
 				}
 				player.performCommand("amongus createlobby");
-				AUGame game = this.gamesManager.createGame(this.tempLobby);
+				AUGame game = this.gamesManager.createGame(this.tempLobby, new TestMap());
 				printGameData(game);
 				openWireTaskInventory(game);
 			}
@@ -112,7 +105,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					return false;
 				}
 				Player target = Bukkit.getPlayer(args[1]);
-				
+
 				if(target == null)
 				{
 					player.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -135,7 +128,9 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			}
 			break;
 		}
+		sender.sendMessage(ChatColor.RED + "/amongus test");
 		sender.sendMessage(ChatColor.RED + "/amongus createlobby");
+		sender.sendMessage(ChatColor.RED + "/amongus startLoneLobby");
 		sender.sendMessage(ChatColor.RED + "/amongus add [target]");
 		return false;
 	}
@@ -146,7 +141,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		switch(args.length)
 		{
 		case 1:
-			return Arrays.asList("createlobby", "add", "startLoneGame");
+			return Arrays.asList("test", "createlobby", "add", "startLoneGame");
 		case 2:
 			if(args[0].equalsIgnoreCase("add")) 
 			{
@@ -157,6 +152,15 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			}
 		}
 		return null;
+	}
+	private boolean requestedBeingInAGame(Player player) 
+	{
+		if(this.gamesManager.getPlayerGame(player.getUniqueId()) == null) 
+		{
+			player.sendMessage(ChatColor.RED + "You must be in a game to do this.");
+			return true;
+		}
+		return false;
 	}
 	private boolean requestedTempLobby(CommandSender sender) 
 	{
@@ -181,14 +185,11 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		Bukkit.broadcastMessage("Impostors Left: " + game.playersLeft(Role.IMPOSTOR));
 		Bukkit.broadcastMessage("Crewmates Left: " + game.playersLeft(Role.CREWMATE));
 		Bukkit.broadcastMessage("Tie? " + game.isTie());
-
-		String tasksNames = game.getTasks().stream()
+		Bukkit.broadcastMessage("Tasks Names: " + game.getTasks().stream()
 				.map(ShipTask::getName)
-				.collect(joining(", "));
-		
-		Bukkit.broadcastMessage("Tasks Names: " + tasksNames);
+				.collect(joining(", ")));
 
-		for(GamePlayer gamePlayer : game.getPlayersView()) 
+		for(GamePlayer gamePlayer : game.getGamePlayersView()) 
 		{
 			String playerName = gamePlayer.getPlayer().getName();
 			String roleName = gamePlayer.getRole().getName();
@@ -204,9 +205,9 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	{
 		WiresTask wiresTask = (WiresTask) game.getTasks().iterator().next();
 
-		for(GamePlayer gamePlayer : game.getPlayersView()) 
+		for(Player player : game.getPlayersView()) 
 		{
-			gamePlayer.getPlayer().openInventory(wiresTask.getInventoryManager().createInventory());
+			player.openInventory(wiresTask.getInventoryManager().createInventory());
 		}
 	}
 }

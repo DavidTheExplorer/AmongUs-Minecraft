@@ -20,9 +20,9 @@ import mazgani.amongus.utilities.objectholders.Pair;
 
 public class WiresTask extends ProgressionTask implements InventoryTask<WiresTask>
 {
-	private Cooldown workCooldown;
+	private final Cooldown workCooldown;
 	
-	private WiresInventoryManager wiresInvManager;
+	private final WiresInventoryManager wiresInvManager;
 	
 	public static final int WIRES_AMOUNT = 4;
 
@@ -30,7 +30,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresTas
 	{
 		super("Wires Fix", game, WIRES_AMOUNT);
 		
-		this.wiresInvManager = new WiresInventoryManager(getGame(), this);
+		this.wiresInvManager = new WiresInventoryManager(this, getGame());
 
 		this.workCooldown = new Cooldown.CooldownBuilder("Wires")
 				.rejectWithMessage(ChatColor.RED + "You are still working on the previous wires.")

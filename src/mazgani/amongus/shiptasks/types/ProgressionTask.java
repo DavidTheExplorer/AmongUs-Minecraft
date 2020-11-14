@@ -5,7 +5,7 @@ import mazgani.amongus.games.GamePlayer;
 
 public abstract class ProgressionTask extends SimpleTask
 {
-	private int maxProgression;
+	private final int maxProgression;
 	
 	public ProgressionTask(String name, AUGame game, int maxProgression) 
 	{

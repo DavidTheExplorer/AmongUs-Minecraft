@@ -19,35 +19,40 @@ public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListe
 	{
 		super(type, sign);
 	}
-	
+
 	@Override
-	public String[] generateUpdate(GameLobby lobby, boolean firstUpdate)
+	public String[] generateUpdate(boolean firstUpdate)
 	{
-		return lobby.isFull() ? getBaseLinesWith(lobby, "Restarting...") : getBaseLinesWith(lobby, "Map: Default");
+		if(!this.type.isFull()) 
+		{
+			final String mapName = this.type.getGameMap().getName();
+			
+			return getBaseLinesWith("Map: " + mapName);
+		}
+		return getBaseLinesWith("Restarting...");
 	}
-	
+
 	@Override
-	public void onJoin(GameLobby lobby, Player player) 
+	public void onJoin(GameLobby lobby, Player player)
 	{
 		updateLines();
 	}
 
 	@Override
-	public void onLeave(GameLobby lobby, Player player) 
+	public void onLeave(GameLobby lobby, Player player)
 	{
 		updateLines();
 	}
-	
-	//gets the basic sign lines(game id, players amount, etc) including the given additional lines
-	private String[] getBaseLinesWith(GameLobby lobby, String... additionalLines) 
+
+	//returns the constant lines(game id, players amount, etc) and then adds the given additional lines
+	private String[] getBaseLinesWith(String... additionalLines) 
 	{
-		ChatColor lobbyStatusColor = !lobby.isFull() ? ChatColor.GREEN : ChatColor.RED;
-		String lobbyIDLine = String.format(lobbyStatusColor + "[AmongUs #%s]", lobby.getUUID().toString().substring(0, 5));
-		String playersLine = String.format("%d/%d", lobby.getPlayersView().size(), lobby.getPlayersRequired());
-		
-		List<String> lines = Lists.newArrayList(lobbyIDLine, playersLine);
+		List<String> lines = Lists.newArrayList(
+				String.format((!this.type.isFull() ? ChatColor.GREEN : ChatColor.RED) + "[AmongUs #%s]", this.type.getUUID().toString().substring(0, 5)),
+				String.format("%d/%d", this.type.getPlayersView().size(), this.type.getPlayersRequired()));
+
 		lines.addAll(Arrays.asList(additionalLines));
-		
+
 		return lines.toArray(new String[lines.size()]);
 	}
 }

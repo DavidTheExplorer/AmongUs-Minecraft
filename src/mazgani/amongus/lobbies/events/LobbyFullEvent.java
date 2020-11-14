@@ -1,19 +1,22 @@
-package mazgani.amongus.events.lobbies;
+package mazgani.amongus.lobbies.events;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import mazgani.amongus.lobbies.GameLobby;
+import mazgani.amongus.lobbies.LobbyPlayer;
 
-@RequiredArgsConstructor
-public class LobbyFullEvent extends Event
+public class LobbyFullEvent extends LobbyEvent
 {
-	@Getter
-	private final GameLobby lobby;
-	
 	private static final HandlerList HANDLERS = new HandlerList();
+	
+	private final LobbyPlayer lastJoined;
+	
+	public LobbyFullEvent(GameLobby lobby, LobbyPlayer lastJoined) 
+	{
+		super(lobby);
+		
+		this.lastJoined = lastJoined;
+	}
 	
 	@Override
     public HandlerList getHandlers() 

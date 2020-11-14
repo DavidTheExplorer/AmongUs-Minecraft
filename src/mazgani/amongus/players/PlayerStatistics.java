@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-import mazgani.amongus.enums.Role;
-
 public class PlayerStatistics
 {
-	private Map<String, Object> generalStats = new HashMap<>();
-	private Map<Role, Map<String, Object>> statsByRole = new HashMap<>();
+	private final Map<String, Object> generalStats = new HashMap<>();
+	private final Map<Role, Map<String, Object>> statsByRole = new HashMap<>();
 	
 	public void addCurse() 
 	{

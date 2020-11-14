@@ -2,11 +2,8 @@ package mazgani.amongus;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import lombok.Getter;
-
 public class AmongUs extends JavaPlugin
 {
-	@Getter
 	private static AmongUs instance;
 	
 	@Override
@@ -14,6 +11,10 @@ public class AmongUs extends JavaPlugin
 	{
 		instance = this;
 		
-		new Bootstrapper(this);
+		new Bootstrapper(this).setup();
+	}
+	public static AmongUs getInstance() 
+	{
+		return instance;
 	}
 }

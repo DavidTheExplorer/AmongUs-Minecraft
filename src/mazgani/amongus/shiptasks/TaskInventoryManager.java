@@ -4,21 +4,27 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.utilities.InventoryUtilities;
 
-@RequiredArgsConstructor
 public abstract class TaskInventoryManager<T extends ShipTask>
 {
-	@Getter(value = AccessLevel.PACKAGE)
+	protected final T task;
 	protected final AUGame game;
 	
-	@Getter(value = AccessLevel.PACKAGE)
-	protected final T task;
-	
+	public TaskInventoryManager(T task, AUGame game) 
+	{
+		this.task = task;
+		this.game = game;
+	}
+	protected AUGame getGame() 
+	{
+		return this.game;
+	}
+	protected T getTask() 
+	{
+		return this.task;
+	}
 	protected Inventory createDefaultInventory(int lines, boolean buildWalls, String taskDescription) 
 	{
 		Inventory inv = Bukkit.createInventory(null, 9 * lines, "Task > " + taskDescription);

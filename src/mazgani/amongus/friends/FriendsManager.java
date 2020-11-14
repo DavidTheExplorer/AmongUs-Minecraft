@@ -9,15 +9,15 @@ import mazgani.amongus.players.AUPlayer;
 
 public class FriendsManager 
 {
-	private final Map<AUPlayer, Set<AUPlayer>> friendRequests = new HashMap<>(), playersFriends = new HashMap<>();
+	private final Map<AUPlayer, Set<AUPlayer>> playersRequests = new HashMap<>(), playersFriends = new HashMap<>();
 	
 	public boolean request(AUPlayer from, AUPlayer to)
 	{
-		return this.friendRequests.computeIfAbsent(from, f -> new HashSet<>()).add(to);
+		return this.playersRequests.computeIfAbsent(from, f -> new HashSet<>()).add(to);
 	}
 	public boolean sentRequest(AUPlayer from, AUPlayer to) 
 	{
-		Set<AUPlayer> fromRequests = this.friendRequests.get(from);
+		Set<AUPlayer> fromRequests = this.playersRequests.get(from);
 		
 		if(fromRequests == null) 
 		{
@@ -27,7 +27,7 @@ public class FriendsManager
 	}
 	public void accept(AUPlayer acceptor, AUPlayer whoSent) 
 	{
-		this.friendRequests.get(whoSent).remove(acceptor);
+		this.playersRequests.get(whoSent).remove(acceptor);
 		this.playersFriends.computeIfAbsent(acceptor, a -> new HashSet<>()).add(whoSent);
 		this.playersFriends.computeIfAbsent(whoSent, ws -> new HashSet<>()).add(acceptor);
 	}

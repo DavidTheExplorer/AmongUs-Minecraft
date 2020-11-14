@@ -17,8 +17,9 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import mazgani.amongus.AmongUs;
+import mazgani.amongus.games.maps.GameMap;
 import mazgani.amongus.lobbies.displayers.LobbySign;
-import mazgani.amongus.lobbies.listeners.LobbyLeaveListener;
+import mazgani.amongus.lobbies.listeners.LobbyLeaveListeners;
 import mazgani.amongus.utilities.UUIDProvider;
 
 public class LobbiesManager
@@ -27,17 +28,17 @@ public class LobbiesManager
 	
 	public LobbiesManager() 
 	{
-		Bukkit.getPluginManager().registerEvents(new LobbyLeaveListener(this), AmongUs.getInstance());
+		Bukkit.getPluginManager().registerEvents(new LobbyLeaveListeners(this), AmongUs.getInstance());
 	}
-	public GameLobby createLobby(Location spawnLocation, int crewmates, int impostors) 
+	public GameLobby createLobby(Location spawnLocation, GameMap gameMap, int crewmates, int impostors) 
 	{
-		return createLobby(spawnLocation, crewmates, impostors, null);
+		return createLobby(spawnLocation, gameMap, crewmates, impostors, null);
 	}
-	public GameLobby createLobby(Location spawnLocation, int crewmates, int impostors, Sign joinSign)
+	public GameLobby createLobby(Location spawnLocation, GameMap gameMap, int crewmates, int impostors, Sign joinSign)
 	{
 		//create the lobby
 		UUID gameID = UUIDProvider.generateUUID(GameLobby.class);
-		GameLobby lobby = new GameLobby(gameID, spawnLocation, crewmates, impostors);
+		GameLobby lobby = new GameLobby(gameID, spawnLocation, gameMap, crewmates, impostors);
 		
 		//register the lobby
 		this.lobbyByUUID.put(gameID, lobby);

@@ -9,7 +9,7 @@ import mazgani.amongus.players.AUPlayer;
 
 public class IgnoresManager 
 {
-	private Map<AUPlayer, Set<AUPlayer>> playersIgnored = new HashMap<>();
+	private final Map<AUPlayer, Set<AUPlayer>> playersIgnored = new HashMap<>();
 	
 	public void ignore(AUPlayer ignorer, AUPlayer ignored)
 	{

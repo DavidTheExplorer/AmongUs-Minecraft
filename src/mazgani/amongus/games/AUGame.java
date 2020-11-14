@@ -1,10 +1,13 @@
 package mazgani.amongus.games;
 
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,42 +15,61 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import lombok.Getter;
-import mazgani.amongus.enums.GameState;
-import mazgani.amongus.enums.Role;
+import mazgani.amongus.corpses.BasicGameCorpse;
+import mazgani.amongus.games.corpsefactory.GameCorpsesFactory;
+import mazgani.amongus.games.maps.GameMap;
 import mazgani.amongus.lobbies.GameLobby;
+import mazgani.amongus.players.Role;
 import mazgani.amongus.shiptasks.ShipTask;
 
 public class AUGame
 {
 	private final UUID uuid;
-
-	@Getter
 	private final GameLobby lobby;
-
-	@Getter
+	private final GameMap map;
 	private Set<ShipTask> tasks = new HashSet<>();
-
-	@Getter
+	private final GameCorpsesFactory corpsesFactory;
+	private final Map<UUID, GamePlayer> players;
+	
 	private GameState state = GameState.INIT;
 
-	private final Map<UUID, GamePlayer> players;
-
-	AUGame(UUID uuid, GameLobby lobby, Set<Player> players) 
+	AUGame(UUID uuid, GameLobby lobby, GameMap map, GameCorpsesFactory corpsesFactory)
 	{
 		this.uuid = uuid;
 		this.lobby = lobby;
-		this.players = players.stream().collect(toMap(Player::getUniqueId, player -> new GamePlayer(player, this)));
+		this.map = map;
+		this.corpsesFactory = corpsesFactory;
+
+		this.players = lobby.getGamePlayersView().stream().collect(toMap(
+						lobbyPlayer -> lobbyPlayer.getPlayer().getUniqueId(),
+						lobbyPlayer -> new GamePlayer(lobbyPlayer.getPlayer(), lobbyPlayer.getColor(), this)));
 	}
 	public UUID getUUID() 
 	{
 		return this.uuid;
 	}
-	public void setState(GameState state) 
+	public GameLobby getLobby() 
 	{
-		this.state = state;
+		return this.lobby;
+	}
+	public GameMap getMap() 
+	{
+		return this.map;
+	}
+	public GameState getState() 
+	{
+		return this.state;
+	}
+	public GamePlayer getPlayer(UUID playerUUID) 
+	{
+		return this.players.get(playerUUID);
+	}
+	public boolean contains(UUID playerUUID) 
+	{
+		return this.players.containsKey(playerUUID);
 	}
 	public void addTasks(ShipTask... tasks) 
 	{
@@ -55,17 +77,20 @@ public class AUGame
 
 		Arrays.stream(tasks).forEach(this.tasks::add);
 	}
+	public void setState(GameState state)
+	{
+		this.state = state;
+	}
 	public void addPlayer(GamePlayer player) 
 	{
 		this.players.put(player.getPlayer().getUniqueId(), player);
 	}
-	public boolean contains(UUID playerUUID) 
+	public void spawnCorpse(GamePlayer player, Location location) 
 	{
-		return this.players.containsKey(playerUUID);
-	}
-	public GamePlayer getPlayer(UUID playerUUID) 
-	{
-		return this.players.get(playerUUID);
+		BasicGameCorpse corpse = this.corpsesFactory.generateCorpse(player, this);
+		corpse.spawn(corpse.computeBestLocation(location));
+		
+		player.setCorpse(corpse);
 	}
 	public long playersLeft() 
 	{
@@ -93,24 +118,27 @@ public class AUGame
 				.distinct()
 				.count() == 1;
 	}
-	public Collection<GamePlayer> getPlayersView()
+	public Set<ShipTask> getTasks()
+	{
+		return Collections.unmodifiableSet(this.tasks);
+	}
+	public Collection<GamePlayer> getGamePlayersView()
 	{
 		return this.players.values();
 	}
-
-	private void verifyInInit(String errorMessage) 
+	public Set<Player> getPlayersView()
 	{
-		if(this.state != GameState.INIT)
-		{
-			throw new UnsupportedOperationException(errorMessage);
-		}
+		return this.players.values().stream()
+				.map(GamePlayer::getPlayer)
+				.collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
 	}
+
 	@Override
 	public int hashCode() 
 	{
 		return Objects.hash(this.uuid);
 	}
-	
+
 	@Override
 	public boolean equals(Object object)
 	{
@@ -126,5 +154,12 @@ public class AUGame
 		AUGame other = (AUGame) object;
 		
 		return Objects.equals(this.uuid, other.uuid);
+	}
+	private void verifyInInit(String errorMessage) 
+	{
+		if(this.state != GameState.INIT)
+		{
+			throw new UnsupportedOperationException(errorMessage);
+		}
 	}
 }

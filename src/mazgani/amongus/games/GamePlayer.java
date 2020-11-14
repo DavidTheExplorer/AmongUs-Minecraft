@@ -1,34 +1,61 @@
 package mazgani.amongus.games;
 
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import mazgani.amongus.enums.Role;
+import mazgani.amongus.corpses.BasicGameCorpse;
+import mazgani.amongus.players.PlayerColor;
+import mazgani.amongus.players.Role;
 
-@RequiredArgsConstructor
 public class GamePlayer
 {
-	@Getter
 	private final Player player;
-	
-	@Getter
+	private final PlayerColor color;
 	private final AUGame game;
 	
-	@Getter
-	@Setter
 	private Role role;
-	
-	@Getter
 	private boolean spectator = false;
+	private BasicGameCorpse corpse;
 	
+	public GamePlayer(Player player, PlayerColor color, AUGame game) 
+	{
+		this.player = player;
+		this.color = color;
+		this.game = game;
+	}
+	public Player getPlayer() 
+	{
+		return this.player;
+	}
+	public PlayerColor getColor() 
+	{
+		return this.color;
+	}
+	public AUGame getGame() 
+	{
+		return this.game;
+	}
+	public Role getRole() 
+	{
+		return this.role;
+	}
+	public boolean isSpectator() 
+	{
+		return this.spectator;
+	}
+	public void setRole(Role role) 
+	{
+		this.role = role;
+	}
 	public void setSpectator() 
 	{
 		this.spectator = true;
-		this.player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 2));
-		this.player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 2, 2));
+	}
+	public BasicGameCorpse getCorpse() 
+	{
+		return this.corpse;
+	}
+	public void setCorpse(BasicGameCorpse corpse) 
+	{
+		this.corpse = corpse;
 	}
 }

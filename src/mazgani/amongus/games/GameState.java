@@ -1,4 +1,4 @@
-package mazgani.amongus.enums;
+package mazgani.amongus.games;
 
 public enum GameState 
 {

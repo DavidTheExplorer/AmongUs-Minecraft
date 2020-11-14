@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import lombok.Getter;
 import mazgani.amongus.utilities.ItemBuilder;
 
 public class WiresConnectionTask extends BukkitRunnable
@@ -17,8 +16,6 @@ public class WiresConnectionTask extends BukkitRunnable
 	private final Inventory wiresInv;
 	private final int startIndex, endIndex;
 	private final Queue<Material> progressionMaterials;
-	
-	@Getter
 	private Material currentConnectorMaterial;
 	
 	public WiresConnectionTask(Inventory wiresInv, int startIndex, int endIndex, Material... progressionMaterials) 
@@ -40,6 +37,10 @@ public class WiresConnectionTask extends BukkitRunnable
 		this.currentConnectorMaterial = this.progressionMaterials.poll();
 		
 		updateConnectorsColor();
+	}
+	public Material getCurrentConnectorMaterial() 
+	{
+		return this.currentConnectorMaterial;
 	}
 	private void updateConnectorsColor() 
 	{

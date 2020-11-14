@@ -11,7 +11,7 @@ import org.bukkit.entity.Entity;
 
 import mazgani.amongus.sabotage.EntitySabotage;
 
-public class CreepersTrap extends DoorSabotage implements EntitySabotage
+public class CreepersTrap extends DoorsSabotage implements EntitySabotage
 {
 	private final int creepersAmount;
 	private final Location creepersLocation;

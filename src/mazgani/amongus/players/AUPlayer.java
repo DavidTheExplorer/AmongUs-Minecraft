@@ -3,22 +3,25 @@ package mazgani.amongus.players;
 import java.util.Objects;
 import java.util.UUID;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class AUPlayer 
 {
-	@Getter
 	private final UUID playerUUID; 
 	
 	private PlayerStatistics stats;
 	
+	public AUPlayer(UUID playerUUID) 
+	{
+		this.playerUUID = playerUUID;
+	}
+	public UUID getPlayerUUID() 
+	{
+		return this.playerUUID;
+	}
 	public PlayerStatistics getStats()
 	{
 		if(this.stats == null)
 			this.stats = new PlayerStatistics();
-
+		
 		return this.stats;
 	}
 

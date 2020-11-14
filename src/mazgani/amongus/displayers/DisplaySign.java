@@ -28,7 +28,7 @@ public abstract class DisplaySign<T>
 	}
 	private void updateLines(boolean firstUpdate) 
 	{
-		String[] newLines = generateUpdate(this.type, firstUpdate);
+		String[] newLines = generateUpdate(firstUpdate);
 		
 		for(int i = 0; i < newLines.length; i++) 
 		{
@@ -36,5 +36,5 @@ public abstract class DisplaySign<T>
 		}
 		this.sign.update(true);
 	}
-	public abstract String[] generateUpdate(T type, boolean firstUpdate);
+	public abstract String[] generateUpdate(boolean firstUpdate);
 }

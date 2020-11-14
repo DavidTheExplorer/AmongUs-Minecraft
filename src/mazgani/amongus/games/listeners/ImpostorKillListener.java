@@ -4,58 +4,53 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import mazgani.amongus.enums.Role;
-import mazgani.amongus.events.games.GameWinEvent;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
-import mazgani.amongus.games.GamesManager;
+import mazgani.amongus.games.events.GameWinEvent;
+import mazgani.amongus.games.events.ImpostorKillEvent;
+import mazgani.amongus.players.Role;
 
-public class ImpostorKillListener extends GameListener
+public class ImpostorKillListener implements Listener
 {
-	public ImpostorKillListener(GamesManager gamesManager)
-	{
-		super(gamesManager);
-	}
-	
 	@EventHandler
-	public void onImpostorKill(EntityDamageByEntityEvent event) 
+	public void onImpostorKill(ImpostorKillEvent event) 
 	{
-		if(!(event.getDamager() instanceof Player))
-		{
-			return;
-		}
-		if(!(event.getEntity() instanceof Player))
-		{
-			return;
-		}
-		Player damager = (Player) event.getDamager();
-		Player damaged = (Player) event.getEntity();
-		
-		if(!this.gamesManager.onSameGame(damager, damaged)) 
-		{
-			return;
-		}
-		AUGame mutualGame = this.gamesManager.getPlayerGame(damager.getUniqueId()).get();
-		
-		//verify the damager is an impostor and the damaged must be crewmate
-		Role damagerRole = mutualGame.getPlayer(damager.getUniqueId()).getRole();
-		Role damagedRole = mutualGame.getPlayer(damaged.getUniqueId()).getRole();
-		
-		if(damagerRole != Role.IMPOSTOR || damagedRole != Role.CREWMATE) 
-		{
-			return;
-		}
-		GamePlayer damagedGamePlayer = mutualGame.getPlayer(damaged.getUniqueId());
-		damagedGamePlayer.setSpectator();
-		
-		damager.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + "You killed " + ChatColor.GOLD + damaged.getName());
-		damager.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + mutualGame.playersLeft(Role.CREWMATE) + ChatColor.GRAY + "/" + ChatColor.GREEN + mutualGame.playersLeft());
-		
-		if(mutualGame.isWin())
+		AUGame game = event.getGame();
+
+		GamePlayer impostor = event.getImpostor();
+		GamePlayer crewmate = event.getDeadCrewmate();
+
+		Player impostorPlayer = impostor.getPlayer();
+		Player crewmatePlayer = crewmate.getPlayer();
+
+		sendKillMessages(impostorPlayer, crewmatePlayer, game);
+		setSpectator(crewmate);
+
+		if(game.isWin()) 
 		{
 			Bukkit.getPluginManager().callEvent(new GameWinEvent(Role.IMPOSTOR));
+			return;
 		}
+		game.spawnCorpse(crewmate, event.getDeathLocation());
+	}
+	private void setSpectator(GamePlayer gamePlayer) 
+	{
+		gamePlayer.setSpectator();
+
+		Player player = gamePlayer.getPlayer();
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 2));
+		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 2, 2));
+	}
+	private void sendKillMessages(Player impostor, Player crewmate, AUGame game) 
+	{
+		impostor.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + "You killed " + ChatColor.GOLD + crewmate.getName());
+		impostor.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + game.playersLeft(Role.CREWMATE) + ChatColor.GRAY + "/" + ChatColor.GREEN + game.playersLeft());
+
+		crewmate.sendMessage(ChatColor.RED + "You were killed by " + impostor.getName() + "!");
+		crewmate.sendMessage(ChatColor.RED + "You are now a Ghost. You can only communicate with other ghosts, not with players.");
 	}
 }

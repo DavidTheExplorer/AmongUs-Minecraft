@@ -1,17 +1,12 @@
 package mazgani.amongus.games.listeners;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
-import mazgani.amongus.events.games.GameWinEvent;
-import mazgani.amongus.games.GamesManager;
+import mazgani.amongus.games.events.GameWinEvent;
 
-public class GameWinListeners extends GameListener
+public class GameWinListeners implements Listener
 {
-	public GameWinListeners(GamesManager gamesManager) 
-	{
-		super(gamesManager);
-	}
-	
 	@EventHandler
 	public void onGameWin(GameWinEvent event) 
 	{

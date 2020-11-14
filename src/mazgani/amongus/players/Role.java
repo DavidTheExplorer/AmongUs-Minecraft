@@ -1,22 +1,23 @@
-package mazgani.amongus.enums;
+package mazgani.amongus.players;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang.WordUtils;
 
-import lombok.Getter;
-
 public enum Role 
 {
 	CREWMATE,
 	IMPOSTOR;
-
-	@Getter
+	
 	private final String name;
 
 	Role()
 	{
 		this.name = WordUtils.capitalizeFully(name().toLowerCase());
+	}
+	public String getName() 
+	{
+		return this.name;
 	}
 	public static Role getRandomRole() 
 	{
