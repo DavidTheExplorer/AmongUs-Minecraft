@@ -4,12 +4,12 @@ import org.bukkit.block.Sign;
 
 public abstract class DisplaySign<T>
 {
-	protected final T type;
+	protected final T displayed;
 	protected final Sign sign;
 	
-	protected DisplaySign(T type, Sign sign) 
+	protected DisplaySign(T displayed, Sign sign) 
 	{
-		this.type = type;
+		this.displayed = displayed;
 		this.sign = sign;
 		
 		updateLines(true);
@@ -18,9 +18,9 @@ public abstract class DisplaySign<T>
 	{
 		return this.sign;
 	}
-	public T getDisplayedType() 
+	public T getDisplayed()
 	{
-		return this.type;
+		return this.displayed;
 	}
 	public void updateLines()
 	{

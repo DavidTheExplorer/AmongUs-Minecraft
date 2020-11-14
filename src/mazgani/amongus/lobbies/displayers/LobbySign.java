@@ -23,9 +23,9 @@ public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListe
 	@Override
 	public String[] generateUpdate(boolean firstUpdate)
 	{
-		if(!this.type.isFull()) 
+		if(!this.displayed.isFull()) 
 		{
-			final String mapName = this.type.getGameMap().getName();
+			final String mapName = this.displayed.getGameMap().getName();
 			
 			return getBaseLinesWith("Map: " + mapName);
 		}
@@ -47,9 +47,11 @@ public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListe
 	//returns the constant lines(game id, players amount, etc) and then adds the given additional lines
 	private String[] getBaseLinesWith(String... additionalLines) 
 	{
+		ChatColor statusColor = !this.displayed.isFull() ? ChatColor.GREEN : ChatColor.RED;
+		
 		List<String> lines = Lists.newArrayList(
-				String.format((!this.type.isFull() ? ChatColor.GREEN : ChatColor.RED) + "[AmongUs #%s]", this.type.getUUID().toString().substring(0, 5)),
-				String.format("%d/%d", this.type.getPlayersView().size(), this.type.getPlayersRequired()));
+				String.format(statusColor + "[AmongUs #%s]", this.displayed.getUUID().toString().substring(0, 5)),
+				String.format("%d/%d", this.displayed.getPlayersView().size(), this.displayed.getPlayersRequired()));
 
 		lines.addAll(Arrays.asList(additionalLines));
 
