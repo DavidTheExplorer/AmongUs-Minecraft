@@ -6,5 +6,5 @@ import org.bukkit.entity.Entity;
 
 public interface EntitySabotage extends Sabotage
 {
-	public Set<Entity> getCurrentEntities();
+	Set<Entity> getCurrentEntities();
 }

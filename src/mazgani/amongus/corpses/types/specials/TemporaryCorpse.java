@@ -37,6 +37,12 @@ public class TemporaryCorpse implements AbstractGameCorpse
 	}
 	
 	@Override
+	public void report(GamePlayer reporter) 
+	{
+		this.corpse.report(reporter);
+	}
+	
+	@Override
 	public void despawn()
 	{
 		this.corpse.despawn();

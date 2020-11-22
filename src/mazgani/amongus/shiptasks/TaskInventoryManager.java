@@ -2,9 +2,11 @@ package mazgani.amongus.shiptasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 
 import mazgani.amongus.games.AUGame;
+import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.utilities.InventoryUtilities;
 
 public abstract class TaskInventoryManager<T extends ShipTask>
@@ -12,18 +14,10 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 	protected final T task;
 	protected final AUGame game;
 	
-	public TaskInventoryManager(T task, AUGame game) 
+	protected TaskInventoryManager(T task, AUGame game) 
 	{
 		this.task = task;
 		this.game = game;
-	}
-	protected AUGame getGame() 
-	{
-		return this.game;
-	}
-	protected T getTask() 
-	{
-		return this.task;
 	}
 	protected Inventory createDefaultInventory(int lines, boolean buildWalls, String taskDescription) 
 	{
@@ -35,5 +29,6 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 		}
 		return inv;
 	}
-	public abstract Inventory createInventory();
+	public abstract Inventory createInventory(GamePlayer opener);
+	public abstract boolean wasInvolvedAt(InventoryEvent event);
 }

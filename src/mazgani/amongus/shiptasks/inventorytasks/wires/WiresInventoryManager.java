@@ -6,12 +6,14 @@ import java.util.Set;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Sets;
 
 import mazgani.amongus.games.AUGame;
+import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.shiptasks.TaskInventoryManager;
 import mazgani.amongus.utilities.ItemBuilder;
 import mazgani.amongus.utilities.RandomUtilities;
@@ -32,7 +34,7 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 	}
 	
 	@Override
-	public Inventory createInventory() 
+	public Inventory createInventory(GamePlayer opener) 
 	{
 		Inventory inv = createDefaultInventory(6, true, "Fix the Wires");
 		
@@ -59,6 +61,12 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 			remainingWires.remove(wireMaterial);
 		}
 		return inv;
+	}
+	
+	@Override
+	public boolean wasInvolvedAt(InventoryEvent event)
+	{
+		return event.getView().getTitle().equals("Task > Fix The Wires");
 	}
 	public boolean isWireMaterial(Material material)
 	{

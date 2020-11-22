@@ -4,5 +4,5 @@ import org.bukkit.Location;
 
 public interface Trackable 
 {
-	public Location getLocation();
+	Location getCurrentLocation();
 }

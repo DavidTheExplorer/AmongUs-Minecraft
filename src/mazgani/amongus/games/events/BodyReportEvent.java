@@ -10,24 +10,24 @@ import mazgani.amongus.games.GamePlayer;
 public class BodyReportEvent extends Event
 {
 	private final GamePlayer reporter;
-	private final AbstractGameCorpse corpse;
+	private final AbstractGameCorpse corpseFound;
 	private final AUGame game;
 	
 	private static final HandlerList HANDLERS = new HandlerList();
 	
-	public BodyReportEvent(GamePlayer reporter, AbstractGameCorpse corpse, AUGame game) 
+	public BodyReportEvent(GamePlayer reporter, AbstractGameCorpse corpseFound, AUGame game) 
 	{
 		this.reporter = reporter;
-		this.corpse = corpse;
+		this.corpseFound = corpseFound;
 		this.game = game;
 	}
 	public GamePlayer getReporter() 
 	{
 		return this.reporter;
 	}
-	public AbstractGameCorpse getCorpse() 
+	public AbstractGameCorpse getCorpseFound() 
 	{
-		return this.corpse;
+		return this.corpseFound;
 	}
 	public AUGame getGame() 
 	{

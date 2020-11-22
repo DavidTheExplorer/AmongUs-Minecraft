@@ -7,9 +7,9 @@ public abstract class ProgressionTask extends SimpleTask
 {
 	private final int maxProgression;
 	
-	public ProgressionTask(String name, AUGame game, int maxProgression) 
+	public ProgressionTask(String name, String description, AUGame game, int maxProgression) 
 	{
-		super(name, game);
+		super(name, description, game);
 		
 		this.maxProgression = maxProgression;
 	}

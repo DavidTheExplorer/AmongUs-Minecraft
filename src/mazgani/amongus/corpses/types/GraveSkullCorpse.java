@@ -6,17 +6,18 @@ import mazgani.amongus.games.GamePlayer;
 
 public class GraveSkullCorpse extends CompositeCorpse //implements ISkullCorpse, IGraveCorpse
 {
-	private final SkullCorpse skullCorpse;
 	private final GraveCorpse graveCorpse;
+	private final SkullCorpse skullCorpse;
 	
 	public GraveSkullCorpse(GamePlayer whoDied, AUGame game)
 	{
 		super(whoDied, game);
 		
-		this.skullCorpse = new SkullCorpse(whoDied, game);
 		this.graveCorpse = new GraveCorpse(whoDied, game);
+		this.skullCorpse = new SkullCorpse(whoDied, game);
 		
-		setSpawnOrder(this.skullCorpse, this.graveCorpse);
+		addCorpse(this.graveCorpse);
+		addCorpse(this.skullCorpse);
 	}
 	
 	/*@Override

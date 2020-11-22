@@ -1,31 +1,27 @@
 package mazgani.amongus.corpses.components.blocks;
 
-import java.util.Arrays;
+import static mazgani.amongus.utilities.SignUtilities.LINES_AMOUNT;
 
+import java.util.function.Function;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
-public class SignComponent extends BlockComponent
+import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.utilities.SignUtilities;
+
+public class SignComponent extends BlockChangeComponent
 {
-	protected final Sign sign;
-	private final String[] oldLines, newLines;
+	private final String[] newLines;
+	
+	private Sign spawnedSign;
 
-	private static final int LINES_AMOUNT = 4;
-
-	public SignComponent(Sign sign, String... newLines)
+	public SignComponent(AbstractGameCorpse corpse, Block block, Material signMaterial, String... newLines)
 	{
-		super(sign.getBlock());
-
-		this.sign = sign;
-		this.oldLines = sign.getLines().clone();
-		this.newLines = (newLines.length == LINES_AMOUNT) ? newLines : Arrays.copyOf(newLines, 4);
-	}
-	public Sign getSign()
-	{
-		return this.sign;
-	}
-	public String[] getOldLines() 
-	{
-		return this.oldLines;
+		super(corpse, block, signMaterial);
+		
+		this.newLines = SignUtilities.fixLinesIfNeeded(newLines);
 	}
 	public String[] getNewLines() 
 	{
@@ -35,20 +31,19 @@ public class SignComponent extends BlockComponent
 	@Override
 	public void spawn() 
 	{
-		for(int i = 0; i < LINES_AMOUNT; i++) 
-		{
-			this.sign.setLine(i, this.newLines[i]);
-		}
-		this.sign.update(true);
+		super.spawn();
+		
+		this.spawnedSign = (Sign) getBlock().getState();
+		
+		replaceLineByIndex(i -> this.newLines[i]);
 	}
 
-	@Override
-	public void despawn()
+	protected void replaceLineByIndex(Function<Integer, String> lineMapper) 
 	{
-		for(int i = 0; i < LINES_AMOUNT; i++)
+		for(int i = 0; i < LINES_AMOUNT; i++) 
 		{
-			this.sign.setLine(i, this.oldLines[i]);
+			this.spawnedSign.setLine(i, lineMapper.apply(i));
 		}
-		this.sign.update(true);
+		this.spawnedSign.update(true);
 	}
 }

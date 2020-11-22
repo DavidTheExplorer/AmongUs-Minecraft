@@ -11,15 +11,15 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import mazgani.amongus.AmongUs;
-import mazgani.amongus.games.maps.GameMap;
 import mazgani.amongus.lobbies.displayers.LobbySign;
 import mazgani.amongus.lobbies.listeners.LobbyLeaveListeners;
+import mazgani.amongus.maps.GameMap;
+import mazgani.amongus.utilities.PluginUtilities;
 import mazgani.amongus.utilities.UUIDProvider;
 
 public class LobbiesManager
@@ -28,26 +28,14 @@ public class LobbiesManager
 	
 	public LobbiesManager() 
 	{
-		Bukkit.getPluginManager().registerEvents(new LobbyLeaveListeners(this), AmongUs.getInstance());
+		PluginUtilities.registerListeners(AmongUs.getInstance(), new LobbyLeaveListeners(this));
 	}
-	public GameLobby createLobby(Location spawnLocation, GameMap gameMap, int crewmates, int impostors) 
+	public GameLobby registerLobby(GameLobbyBuilder lobbyBuilder)
 	{
-		return createLobby(spawnLocation, gameMap, crewmates, impostors, null);
-	}
-	public GameLobby createLobby(Location spawnLocation, GameMap gameMap, int crewmates, int impostors, Sign joinSign)
-	{
-		//create the lobby
-		UUID gameID = UUIDProvider.generateUUID(GameLobby.class);
-		GameLobby lobby = new GameLobby(gameID, spawnLocation, gameMap, crewmates, impostors);
+		GameLobby lobby = lobbyBuilder.build();
 		
-		//register the lobby
-		this.lobbyByUUID.put(gameID, lobby);
+		this.lobbyByUUID.put(lobby.getUUID(), lobby);
 		
-		//setup the lobby
-		if(joinSign != null) 
-		{
-			lobby.addStateListener(new LobbySign(lobby, joinSign));
-		}
 		return lobby;
 	}
 	public Optional<GameLobby> findRandomLobby() 
@@ -71,5 +59,46 @@ public class LobbiesManager
 	public Collection<GameLobby> getLobbies()
 	{
 		return this.lobbyByUUID.values();
+	}
+	
+	public class GameLobbyBuilder 
+	{
+		private Location spawnLocation;
+		private GameMap gameMap;
+		private int crewmates;
+		private int impostors;
+		private Sign joinSign;
+		
+		public GameLobbyBuilder(Location spawnLocation, GameMap gameMap, int crewmates, int impostors)
+		{
+			this.spawnLocation = spawnLocation;
+			this.gameMap = gameMap;
+			this.crewmates = crewmates;
+			this.impostors = impostors;
+		}
+		public GameLobbyBuilder withJoinSign(Sign sign) 
+		{
+			this.joinSign = sign;
+			return this;
+		}
+		public GameLobby build() 
+		{
+			//create the game settings holder
+			GameSettings gameSettings = new GameSettings(this.crewmates, this.impostors);
+			
+			//create a new game lobby, and register settings holder in it
+			UUID lobbyID = generateLobbyID();
+			GameLobby lobby = new GameLobby(lobbyID, this.spawnLocation, this.gameMap, gameSettings);
+			
+			if(this.joinSign != null) 
+			{
+				lobby.addStateListener(new LobbySign(lobby, this.joinSign));
+			}
+			return lobby;
+		}
+	}
+	private UUID generateLobbyID() 
+	{
+		return UUIDProvider.generateUUID(GameLobby.class);
 	}
 }

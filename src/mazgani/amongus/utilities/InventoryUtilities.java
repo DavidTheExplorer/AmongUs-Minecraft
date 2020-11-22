@@ -26,7 +26,6 @@ public class InventoryUtilities
 	}
 	public static void fillRow(Inventory inv, int row, ItemStack with) 
 	{
-		verifyInvExists(inv);
 		verifyValidRow(inv, row);
 
 		final int startIndex = ((row-1) * 9);
@@ -38,7 +37,7 @@ public class InventoryUtilities
 	{
 		verifyInvExists(inv);
 		Validate.inclusiveBetween(1, 9, column, "Illegal Column(Min: 1, Max: 9)");
-
+		
 		final int startIndex = (column-1);
 
 		for(int i = startIndex; i < inv.getSize(); i += 9)
@@ -60,8 +59,8 @@ public class InventoryUtilities
 		}
 		fillColumn(inv, 1, window); //first column
 		fillColumn(inv, 9, window); //last column
-
-		//fill the First and Last columns EXCLUDING their corners, because those were already filled by the fillColumn() methods
+		
+		//fill the First & Last columns EXCLUDING their corners, because those were already filled by the fillColumn()s
 		fillRange(inv, 1, 7, window); 
 		fillRange(inv, invSize-8, invSize-2, window); 
 	}
@@ -81,7 +80,7 @@ public class InventoryUtilities
 	public static int findLastSlot(Inventory inv, Predicate<ItemStack> itemMatcher) 
 	{
 		verifyInvExists(inv);
-
+		
 		for(int i = inv.getSize()-1; i >= 0; i--)
 		{
 			if(itemMatcher.test(inv.getItem(i))) 
@@ -91,10 +90,10 @@ public class InventoryUtilities
 		}
 		return -1;
 	}
-	public static int[] allSlotsThat(Inventory inv, Predicate<ItemStack> itemInSlotTest) 
+	public static int[] getSlotsThat(Inventory inv, Predicate<ItemStack> slotItemTester) 
 	{
 		return IntStream.range(0, inv.getSize())
-				.filter(slot -> itemInSlotTest.test(inv.getItem(slot)))
+				.filter(slot -> slotItemTester.test(inv.getItem(slot)))
 				.toArray();
 	}
 	public static Stream<ItemStack> itemsStream(Inventory inv)
@@ -145,6 +144,8 @@ public class InventoryUtilities
 	}
 	private static void verifyValidRow(Inventory inv, int row) 
 	{
+		verifyInvExists(inv);
+		
 		final int invRows = (inv.getSize()/9);
 		final String errorMessage = String.format("Row %d is out of range(Min: 1, Max: %d)", row, invRows);
 

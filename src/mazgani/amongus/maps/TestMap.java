@@ -1,4 +1,4 @@
-package mazgani.amongus.games.maps;
+package mazgani.amongus.maps;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,28 +1,29 @@
 package mazgani.amongus.corpses.components.blocks;
 
-import java.util.Objects;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import mazgani.amongus.corpses.components.GameCorpseComponent;
+import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.components.CorpseComponentBase;
 
-public abstract class BlockComponent implements GameCorpseComponent
+public abstract class BlockComponent extends CorpseComponentBase
 {
 	protected final Location blockLocation;
 
 	/**
-	 * Creates a component that gets a block and does certain actions on it.
+	 * Creates a component that stores a block and delegates the <i>spawn / despawn</i> actions to its subclasses.
 	 * 
-	 * @param The subject block.
+	 * @param The block this class holds.
 	 */
-	public BlockComponent(Block block) 
+	public BlockComponent(AbstractGameCorpse corpse, Block block) 
 	{
+		super(corpse);
+		
 		this.blockLocation = block.getLocation();
 	}
-
+	
 	@Override
-	public Location getLocation() 
+	public Location getCurrentLocation() 
 	{
 		return this.blockLocation;
 	}
@@ -34,23 +35,6 @@ public abstract class BlockComponent implements GameCorpseComponent
 	@Override
 	public int hashCode() 
 	{
-		return Objects.hash(this.blockLocation);
-	}
-
-	@Override
-	public boolean equals(Object object) 
-	{
-		if(this == object)
-			return true;
-
-		if(object == null)
-			return false;
-
-		if(getClass() != object.getClass())
-			return false;
-
-		BlockComponent other = (BlockComponent) object;
-
-		return Objects.equals(this.blockLocation, other.blockLocation);
+		return this.blockLocation.hashCode();
 	}
 }

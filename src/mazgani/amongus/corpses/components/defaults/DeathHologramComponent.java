@@ -16,9 +16,9 @@ public class DeathHologramComponent extends HologramComponent
 	private final GamePlayer whoDied;
 	private final AUGame game;
 	
-	public DeathHologramComponent(EquallbleHologram base, BasicGameCorpse corpse, GamePlayer whoDied, AUGame game) 
+	public DeathHologramComponent(BasicGameCorpse corpse, EquallbleHologram base, GamePlayer whoDied, AUGame game) 
 	{
-		super(base);
+		super(corpse, base);
 		
 		this.corpse = corpse;
 		this.whoDied = whoDied;

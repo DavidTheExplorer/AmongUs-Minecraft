@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mazgani.amongus.utilities.ItemBuilder;
@@ -16,6 +17,7 @@ public class WiresConnectionTask extends BukkitRunnable
 	private final Inventory wiresInv;
 	private final int startIndex, endIndex;
 	private final Queue<Material> progressionMaterials;
+	
 	private Material currentConnectorMaterial;
 	
 	public WiresConnectionTask(Inventory wiresInv, int startIndex, int endIndex, Material... progressionMaterials) 
@@ -44,9 +46,11 @@ public class WiresConnectionTask extends BukkitRunnable
 	}
 	private void updateConnectorsColor() 
 	{
+		ItemStack connector = new ItemBuilder(this.currentConnectorMaterial, ChatColor.WHITE + "Connecting...").createCopy();
+		
 		for(int i = this.startIndex; i <= this.endIndex; i++) 
 		{
-			this.wiresInv.setItem(i, new ItemBuilder(this.currentConnectorMaterial, ChatColor.WHITE + "Connecting...").createCopy());
+			this.wiresInv.setItem(i, connector);
 		}
 	}
 }

@@ -32,4 +32,11 @@ public interface AbstractGameCorpse
 	
 	/** Despawns this corpse - so it shouldn't be able to be found nor interacted with. */
 	void despawn();
+	
+	/**
+	 * Makes the provided {@code player} to report this body, should open a new discussion.
+	 * 
+	 * @param reporter The player who found the body.
+	 */
+	void report(GamePlayer reporter);
 }

@@ -19,9 +19,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import mazgani.amongus.corpses.BasicGameCorpse;
-import mazgani.amongus.games.corpsefactory.GameCorpsesFactory;
-import mazgani.amongus.games.maps.GameMap;
+import mazgani.amongus.games.corpsesfactory.GameCorpsesFactory;
 import mazgani.amongus.lobbies.GameLobby;
+import mazgani.amongus.maps.GameMap;
 import mazgani.amongus.players.Role;
 import mazgani.amongus.shiptasks.ShipTask;
 
@@ -111,7 +111,7 @@ public class AUGame
 		Map<Role, List<GamePlayer>> rolesPlayersLeft = this.players.values().stream()
 				.filter(player -> !player.isSpectator())
 				.collect(groupingBy(GamePlayer::getRole));
-
+		
 		//make sure the distinct amounts of players is 1 - so all the teams have the same amount of players
 		return rolesPlayersLeft.values().stream()
 				.mapToInt(List::size)

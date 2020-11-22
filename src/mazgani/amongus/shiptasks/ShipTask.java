@@ -7,5 +7,6 @@ import mazgani.amongus.games.AUGame;
 public interface ShipTask extends Listener
 {
 	String getName();
+	String getDescription();
 	AUGame getGame();
 }

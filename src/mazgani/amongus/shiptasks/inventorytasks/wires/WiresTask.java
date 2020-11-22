@@ -28,9 +28,9 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresTas
 
 	public WiresTask(AUGame game)
 	{
-		super("Wires Fix", game, WIRES_AMOUNT);
+		super("Wires Fix", "Connect all 4 wires.", game, WIRES_AMOUNT);
 		
-		this.wiresInvManager = new WiresInventoryManager(this, getGame());
+		this.wiresInvManager = new WiresInventoryManager(this, this.game);
 
 		this.workCooldown = new Cooldown.CooldownBuilder("Wires")
 				.rejectWithMessage(ChatColor.RED + "You are still working on the previous wires.")
@@ -53,7 +53,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresTas
 	@EventHandler
 	public void onWiresClick(InventoryClickEvent event) 
 	{
-		if(!event.getView().getTitle().equals("Task > Fix The Wires")) 
+		if(!this.wiresInvManager.wasInvolvedAt(event)) 
 		{
 			return;
 		}
@@ -69,7 +69,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresTas
 			return;
 		}
 		Player player = (Player) event.getWhoClicked();
-		GamePlayer gamePlayer = getGame().getPlayer(player.getUniqueId());
+		GamePlayer gamePlayer = this.game.getPlayer(player.getUniqueId());
 
 		Pair<Integer, ItemStack> startData = (Pair<Integer, ItemStack>) getData(gamePlayer, "Start");
 

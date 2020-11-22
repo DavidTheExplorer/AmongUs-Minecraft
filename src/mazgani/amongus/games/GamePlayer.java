@@ -44,6 +44,10 @@ public class GamePlayer
 	}
 	public void setRole(Role role) 
 	{
+		if(this.game.getState() != GameState.INIT)
+		{
+			throw new UnsupportedOperationException("The players' roles can only be determined at the init of the game.");
+		}
 		this.role = role;
 	}
 	public void setSpectator() 

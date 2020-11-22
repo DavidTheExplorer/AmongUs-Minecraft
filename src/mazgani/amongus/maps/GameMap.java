@@ -1,8 +1,8 @@
-package mazgani.amongus.games.maps;
+package mazgani.amongus.maps;
 
 import org.bukkit.Location;
 
-public class GameMap 
+public class GameMap
 {
 	private final String name;
 	private final Location[] spawnLocations;

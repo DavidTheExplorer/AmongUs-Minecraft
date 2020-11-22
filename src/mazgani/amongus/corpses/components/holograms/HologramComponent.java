@@ -1,25 +1,25 @@
 package mazgani.amongus.corpses.components.holograms;
 
-import java.util.Objects;
-
 import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 
-import mazgani.amongus.corpses.components.GameCorpseComponent;
+import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.components.CorpseComponentBase;
 import mazgani.amongus.holograms.EquallbleHologram;
 
-public class HologramComponent implements GameCorpseComponent
+public class HologramComponent extends CorpseComponentBase
 {
 	protected final EquallbleHologram hologram;
 	
-	public HologramComponent(EquallbleHologram hologram)
+	public HologramComponent(AbstractGameCorpse corpse, EquallbleHologram hologram)
 	{
+		super(corpse);
 		this.hologram = hologram;
 	}
 	
 	@Override
-	public Location getLocation() 
+	public Location getCurrentLocation() 
 	{
 		return this.hologram.getLocation();
 	}
@@ -43,21 +43,22 @@ public class HologramComponent implements GameCorpseComponent
 	@Override
 	public int hashCode() 
 	{
-		return Objects.hash(this.hologram);
+		return this.hologram.hashCode();
 	}
-
+	
 	@Override
-	public boolean equals(Object object)
+	public boolean equals(Object object) 
 	{
-		if(this == object)
-			return true;
-		
-		if(object == null)
+		if(!super.equals(object)) 
+		{
 			return false;
-		
-		if(getClass() != object.getClass())
+		}
+		if(!(object instanceof HologramComponent)) 
+		{
 			return false;
+		}
+		HologramComponent component = (HologramComponent) object;
 		
-		return this.hologram.equals(object);
+		return this.hologram.equals(component.hologram);
 	}
 }

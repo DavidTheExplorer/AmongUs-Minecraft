@@ -1,4 +1,4 @@
-package mazgani.amongus.games.corpsefactory;
+package mazgani.amongus.games.corpsesfactory;
 
 import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.corpses.types.GraveSkullCorpse;

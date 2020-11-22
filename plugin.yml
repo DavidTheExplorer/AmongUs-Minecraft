@@ -2,6 +2,6 @@ name: AmongUS
 main: mazgani.amongus.AmongUs
 version: 1.0
 api-version: 1.13
-description: The famous Among US game in Minecraft.
+description: The simple Among US game, just beautifully extended in Minecraft.
 commands:
     amongus:

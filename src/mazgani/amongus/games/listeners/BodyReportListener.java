@@ -13,7 +13,7 @@ public class BodyReportListener implements Listener
 	@EventHandler
 	public void onBodyReported(BodyReportEvent event) 
 	{
-		AbstractGameCorpse corpse = event.getCorpse();
+		AbstractGameCorpse corpse = event.getCorpseFound();
 		corpse.despawn();
 		
 		for(Player player : event.getGame().getPlayersView())

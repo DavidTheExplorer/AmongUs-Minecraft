@@ -26,12 +26,12 @@ public class GraveCorpse extends BasicGameCorpse
 	}
 
 	@Override
-	public void initComponents(Location location) 
+	public void initComponents(Location bestLocation) 
 	{
-		Block block = location.getBlock();
+		Block block = bestLocation.getBlock();
 		
 		//register the middle block to change to the body's color
-		addComponent(new BlockChangeComponent(block, getBodyMaterial()));
+		addComponent(new BlockChangeComponent(this, block, getBodyMaterial()));
 		
 		//register the grave blocks
 		getGraveAround(block).forEach(this::addComponent);
@@ -57,10 +57,10 @@ public class GraveCorpse extends BasicGameCorpse
 	}
 	private List<BlockComponent> getGraveAround(Block bodyBlock)
 	{
-		Block[] graveBlocks = BlockUtilities.getSurroundingBlocks(bodyBlock);
+		Block[] graveBlocks = BlockUtilities.getSideBlocks(bodyBlock, BlockUtilities.SURROUNDING_FACES).stream().toArray(Block[]::new);
 		
 		return IntStream.range(0, graveBlocks.length)
-				.mapToObj(i -> new BlockChangeComponent(graveBlocks[i], getGraveBlockMaterial(i)))
+				.mapToObj(i -> new BlockChangeComponent(this, graveBlocks[i], getGraveBlockMaterial(i)))
 				.collect(toList());
 	}
 	private Material getGraveBlockMaterial(int blockIndex) 

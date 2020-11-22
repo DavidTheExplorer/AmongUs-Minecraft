@@ -1,32 +1,46 @@
 package mazgani.amongus.utilities;
 
+import static java.util.stream.Collectors.toList;
+import static org.bukkit.block.BlockFace.EAST;
+import static org.bukkit.block.BlockFace.NORTH;
+import static org.bukkit.block.BlockFace.NORTH_EAST;
+import static org.bukkit.block.BlockFace.NORTH_WEST;
+import static org.bukkit.block.BlockFace.SOUTH;
+import static org.bukkit.block.BlockFace.SOUTH_EAST;
+import static org.bukkit.block.BlockFace.SOUTH_WEST;
+import static org.bukkit.block.BlockFace.WEST;
+
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import mazgani.amongus.utilities.objectholders.Pair;
+
 public class BlockUtilities 
 {
 	//Container of static methods
 	private BlockUtilities(){}
-	
-	public static final BlockFace[] SURROUNDING_SIDES = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
-	
-	public static Block[] getSurroundingBlocks(Block centerBlock) 
+
+	public static final BlockFace[] 
+			SURROUNDING_FACES = {NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST},
+			ATTACHED_FACES = {NORTH, EAST, SOUTH, WEST};
+
+	public static List<Block> getSideBlocks(Block centerBlock, BlockFace... faces) 
 	{
-		return Arrays.stream(SURROUNDING_SIDES)
+		return Arrays.stream(faces)
 				.map(centerBlock::getRelative)
-				.toArray(Block[]::new);
-		
-		/*Block[] blocks = new Block[SURROUNDING_SIDES.length];
-		
-		for(int i = 0; i < blocks.length; i++)
-		{
-			blocks[i] = centerBlock.getRelative(SURROUNDING_SIDES[i]);
-		}
-		return blocks;*/
+				.collect(toList());
+	}
+	public static List<Block> getRelativeBlocks(Block centerBlock, Collection<Pair<BlockFace, Integer>> facesAndDistances) 
+	{
+		return facesAndDistances.stream()
+				.map(pair -> centerBlock.getRelative(pair.getFirst(), pair.getSecond()))
+				.collect(toList());
 	}
 	public static Block computeLowestBlock(Location location) 
 	{

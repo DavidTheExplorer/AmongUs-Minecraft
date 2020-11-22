@@ -11,11 +11,11 @@ import mazgani.amongus.players.AUPlayersManager;
 
 public class AUPlayerRegistrationListeners implements Listener
 {
-	private final AUPlayersManager auPlayersManager;
+	private final AUPlayersManager playersManager;
 	
-	public AUPlayerRegistrationListeners(AUPlayersManager auPlayersManager) 
+	public AUPlayerRegistrationListeners(AUPlayersManager playersManager) 
 	{
-		this.auPlayersManager = auPlayersManager;
+		this.playersManager = playersManager;
 	}
 	
 	@EventHandler
@@ -23,7 +23,7 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.auPlayersManager.register(playerUUID);
+		this.playersManager.register(playerUUID);
 	}
 	
 	@EventHandler
@@ -31,6 +31,6 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.auPlayersManager.unregister(playerUUID);
+		this.playersManager.unregister(playerUUID);
 	}
 }

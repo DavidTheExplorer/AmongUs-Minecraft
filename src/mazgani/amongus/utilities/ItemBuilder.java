@@ -27,7 +27,7 @@ public class ItemBuilder
 	public ItemBuilder(Material material)
 	{
 		Preconditions.checkArgument(material != null, "The Material to create an instance of ItemBuilder for cannot be null!");
-
+		
 		this.item = new ItemStack(material);
 		this.im = Bukkit.getItemFactory().getItemMeta(material);
 	}

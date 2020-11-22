@@ -8,6 +8,7 @@ import org.bukkit.Location;
 
 import mazgani.amongus.commands.AmongUSCommand;
 import mazgani.amongus.games.GamesManager;
+import mazgani.amongus.games.corpsesfactory.SimpleCorpsesFactory;
 import mazgani.amongus.listeners.ImpostorKillRetrieverListener;
 import mazgani.amongus.lobbies.LobbiesManager;
 import mazgani.amongus.utilities.cooldown.Cooldown.CooldownBuilder;
@@ -35,7 +36,7 @@ public class Bootstrapper
 	private void setupManagers() 
 	{
 		this.lobbiesManager = new LobbiesManager();
-		this.gamesManager = new GamesManager();
+		this.gamesManager = new GamesManager(new SimpleCorpsesFactory());
 
 		this.cooldownsManager = new CooldownsManager();
 		CooldownBuilder.setCooldownsManager(this.cooldownsManager);
@@ -58,13 +59,5 @@ public class Bootstrapper
 		.map(Bukkit::getPlayer)
 		.filter(Objects::nonNull)
 		.forEach(helper -> helper.teleport(afkPoolLocation));
-	}
-	public static class lol
-	{
-		@Override
-		protected void finalize() throws Throwable 
-		{
-			System.out.println("sys");
-		}
 	}
 }

@@ -15,17 +15,21 @@ import mazgani.amongus.lobbies.LobbyStateListener;
 
 public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListener
 {
+	private GameLobby lobby;
+	
 	public LobbySign(GameLobby type, Sign sign)
 	{
 		super(type, sign);
+		
+		this.lobby = this.displayed;
 	}
 
 	@Override
 	public String[] generateUpdate(boolean firstUpdate)
 	{
-		if(!this.displayed.isFull()) 
+		if(!this.lobby.isFull()) 
 		{
-			final String mapName = this.displayed.getGameMap().getName();
+			String mapName = this.lobby.getGameMap().getName();
 			
 			return getBaseLinesWith("Map: " + mapName);
 		}
@@ -33,13 +37,13 @@ public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListe
 	}
 
 	@Override
-	public void onJoin(GameLobby lobby, Player player)
+	public void onLobbyJoin(GameLobby lobby, Player player)
 	{
 		updateLines();
 	}
 
 	@Override
-	public void onLeave(GameLobby lobby, Player player)
+	public void onLobbyLeave(GameLobby lobby, Player player)
 	{
 		updateLines();
 	}
@@ -47,11 +51,11 @@ public class LobbySign extends DisplaySign<GameLobby> implements LobbyStateListe
 	//returns the constant lines(game id, players amount, etc) and then adds the given additional lines
 	private String[] getBaseLinesWith(String... additionalLines) 
 	{
-		ChatColor statusColor = !this.displayed.isFull() ? ChatColor.GREEN : ChatColor.RED;
+		ChatColor statusColor = !this.lobby.isFull() ? ChatColor.GREEN : ChatColor.RED;
 		
 		List<String> lines = Lists.newArrayList(
-				String.format(statusColor + "[AmongUs #%s]", this.displayed.getUUID().toString().substring(0, 5)),
-				String.format("%d/%d", this.displayed.getPlayersView().size(), this.displayed.getPlayersRequired()));
+				String.format(statusColor + "[AmongUs #%s]", this.lobby.getUUID().toString().substring(0, 5)),
+				String.format("%d/%d", this.lobby.getPlayersView().size(), this.lobby.getSettings().getPlayersRequired()));
 
 		lines.addAll(Arrays.asList(additionalLines));
 

@@ -3,32 +3,39 @@ package mazgani.amongus.shiptasks.types;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import mazgani.amongus.AmongUs;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.shiptasks.ShipTask;
+import mazgani.amongus.utilities.PluginUtilities;
 
 public abstract class SimpleTask implements ShipTask, Listener
 {
-	private final String name;
-	private final AUGame game;
+	private final String name, description;
+	protected final AUGame game;
 	private final Map<GamePlayer, Map<String, Object>> playersDatas = new HashMap<>();
 	
-	public SimpleTask(String name, AUGame game) 
+	public SimpleTask(String name, String description, AUGame game) 
 	{
 		this.name = name;
+		this.description = description;
 		this.game = game;
 		
-		Bukkit.getPluginManager().registerEvents(this, AmongUs.getInstance()); //find a way to fuck this outta here
+		PluginUtilities.registerListeners(AmongUs.getInstance(), this); //fuck this outta here
 	}
 	
 	@Override
 	public String getName() 
 	{
 		return this.name;
+	}
+	
+	@Override
+	public String getDescription() 
+	{
+		return this.description;
 	}
 	
 	@Override
@@ -73,6 +80,6 @@ public abstract class SimpleTask implements ShipTask, Listener
 	@Override
 	public String toString() 
 	{
-		return this.name;
+		return this.description;
 	}
 }

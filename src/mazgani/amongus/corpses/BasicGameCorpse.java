@@ -1,7 +1,10 @@
 package mazgani.amongus.corpses;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,12 +14,13 @@ import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.games.events.BodyReportEvent;
 import mazgani.amongus.utilities.BlockUtilities;
+import mazgani.amongus.utilities.immutables.ImmutableQueue;
 
 public abstract class BasicGameCorpse implements AbstractGameCorpse
 {
 	private final GamePlayer whoDied;
 	private final AUGame game;
-	private final List<GameCorpseComponent> components = new ArrayList<>();
+	private final Queue<GameCorpseComponent> components = new LinkedList<>();
 	
 	public BasicGameCorpse(GamePlayer whoDied, AUGame game)
 	{
@@ -35,11 +39,7 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	{
 		return this.game;
 	}
-	public List<GameCorpseComponent> getComponents()
-	{
-		return this.components;
-	}
-	public void addComponent(GameCorpseComponent component) 
+	protected void addComponent(GameCorpseComponent component) 
 	{
 		this.components.add(component);
 	}
@@ -49,7 +49,7 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	}
 	
 	/**
-	 * Returns the closest appropriate location to summon this body at, <b>depending</b> on the implementation of <i>BasicGameCorpse</i>.
+	 * Returns the closest appropriate location to spawn this body at, <b>depending</b> on the implementation of <i>BasicGameCorpse</i>.
 	 * The default implementation covers the case when the corpse would spawn mid-air, but again it wouldn't necessarily happen.
 	 * 
 	 * @param deathLocation The original death location, might be returned.
@@ -82,9 +82,24 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	@Override
 	public void spawn(Location deathLocation) 
 	{
-		initComponents(computeBestLocation(deathLocation));
+		initComponents(computeBestLocation(deathLocation.clone()));
 		
 		this.components.forEach(GameCorpseComponent::spawn);
 	}
-	public abstract void initComponents(Location location);
+	
+	public Queue<GameCorpseComponent> getComponentsView()
+	{
+		return ImmutableQueue.of(this.components);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends GameCorpseComponent> List<T> getComponents(Class<T> componentClass)
+	{
+		List<GameCorpseComponent> classComponents = this.components.stream()
+				.filter(component -> componentClass.isAssignableFrom(component.getClass()))
+				.collect(toList());
+		
+		return (List<T>) classComponents;
+	}
+	public abstract void initComponents(Location bestLocation);
 }
