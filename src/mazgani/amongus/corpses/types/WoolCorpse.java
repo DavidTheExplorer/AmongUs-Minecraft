@@ -30,9 +30,9 @@ public class WoolCorpse extends BasicGameCorpse
 		List<Block> blocks = BlockUtilities.getSideBlocks(location.getBlock(), BlockUtilities.SURROUNDING_FACES);
 		Collections.shuffle(blocks);
 		
-		List<Block> halfBlocks = blocks.subList(0, blocks.size()/2);
+		List<Block> half = blocks.subList(0, blocks.size()/2);
 		
-		for(Block block : halfBlocks)
+		for(Block block : half)
 		{
 			addComponent(new BlockChangeComponent(this, block, this.woolColor));
 		}

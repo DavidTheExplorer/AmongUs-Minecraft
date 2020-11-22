@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.games.events.BodyReportEvent;
 
 public class BodyReportListener implements Listener
@@ -16,9 +17,15 @@ public class BodyReportListener implements Listener
 		AbstractGameCorpse corpse = event.getCorpseFound();
 		corpse.despawn();
 		
-		for(Player player : event.getGame().getPlayersView())
+		notifyDeath(event.getCorpseFound().getWhoDied());
+	}
+	private void notifyDeath(GamePlayer dead) 
+	{
+		String coloredDeadName = dead.getColor().getColoredName();
+		
+		for(Player player : dead.getGame().getPlayersView())
 		{
-			player.sendMessage(ChatColor.WHITE + corpse.getWhoDied().getColor().getColoredName() + ChatColor.WHITE + "'s corpse was found!");
+			player.sendMessage(ChatColor.WHITE + coloredDeadName + ChatColor.WHITE + "'s corpse was found!");
 		}
 	}
 }

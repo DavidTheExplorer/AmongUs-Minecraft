@@ -2,9 +2,9 @@ package mazgani.amongus.corpses;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,13 +14,15 @@ import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.games.events.BodyReportEvent;
 import mazgani.amongus.utilities.BlockUtilities;
-import mazgani.amongus.utilities.immutables.ImmutableQueue;
 
 public abstract class BasicGameCorpse implements AbstractGameCorpse
 {
+	//a corpse is a bunch of components(blocks, holograms, etc)
+	private final List<GameCorpseComponent> components = new ArrayList<>();
+	
+	//the corpse's data
 	private final GamePlayer whoDied;
 	private final AUGame game;
-	private final Queue<GameCorpseComponent> components = new LinkedList<>();
 	
 	public BasicGameCorpse(GamePlayer whoDied, AUGame game)
 	{
@@ -45,7 +47,7 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	}
 	public void report(GamePlayer reporter) 
 	{
-		Bukkit.getPluginManager().callEvent(new BodyReportEvent(reporter, this, getGame()));
+		Bukkit.getPluginManager().callEvent(new BodyReportEvent(this, reporter));
 	}
 	
 	/**
@@ -59,7 +61,7 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	{
 		Location bestLocation;
 		
-		//if the player died mid-air, avoid spawning the corpse mid-air
+		//avoid spawning the corpse mid-air
 		bestLocation = BlockUtilities.computeLowestBlock(deathLocation).getLocation();
 		
 		return bestLocation;
@@ -82,14 +84,15 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	@Override
 	public void spawn(Location deathLocation) 
 	{
-		initComponents(computeBestLocation(deathLocation.clone()));
+		Location bestLocation = computeBestLocation(deathLocation.clone());
+		initComponents(bestLocation);
 		
 		this.components.forEach(GameCorpseComponent::spawn);
 	}
 	
-	public Queue<GameCorpseComponent> getComponentsView()
+	public List<GameCorpseComponent> getComponentsView()
 	{
-		return ImmutableQueue.of(this.components);
+		return Collections.unmodifiableList(this.components);
 	}
 	
 	@SuppressWarnings("unchecked")

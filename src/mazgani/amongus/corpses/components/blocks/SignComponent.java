@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.utilities.SignUtilities;
 
 public class SignComponent extends BlockChangeComponent
@@ -17,7 +17,7 @@ public class SignComponent extends BlockChangeComponent
 	
 	private Sign spawnedSign;
 
-	public SignComponent(AbstractGameCorpse corpse, Block block, Material signMaterial, String... newLines)
+	public SignComponent(BasicGameCorpse corpse, Block block, Material signMaterial, String... newLines)
 	{
 		super(corpse, block, signMaterial);
 		

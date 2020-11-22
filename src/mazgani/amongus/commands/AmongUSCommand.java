@@ -21,7 +21,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import mazgani.amongus.AmongUs;
-import mazgani.amongus.corpses.types.WoolCorpse;
 import mazgani.amongus.corpses.types.WoolsCompositeCorpse;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
@@ -85,10 +84,6 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				GamePlayer gamePlayer = new GamePlayer(player, PlayerColor.RED, null);
 				
 				WoolsCompositeCorpse corpse = new WoolsCompositeCorpse(gamePlayer, null);
-				
-				corpse.addCorpse(new WoolCorpse(Material.RED_WOOL, gamePlayer, null));
-				corpse.addCorpse(new WoolCorpse(Material.WHITE_WOOL, gamePlayer, null));
-				
 				corpse.spawn(player.getLocation());
 				
 				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), corpse::despawn, 20 * 5);

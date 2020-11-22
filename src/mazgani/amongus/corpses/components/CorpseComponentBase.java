@@ -1,12 +1,13 @@
 package mazgani.amongus.corpses.components;
 
 import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 
 public abstract class CorpseComponentBase implements GameCorpseComponent
 {
-	protected final AbstractGameCorpse corpse;
+	protected final BasicGameCorpse corpse;
 	
-	protected CorpseComponentBase(AbstractGameCorpse corpse) 
+	protected CorpseComponentBase(BasicGameCorpse corpse) 
 	{
 		this.corpse = corpse;
 	}
@@ -18,7 +19,7 @@ public abstract class CorpseComponentBase implements GameCorpseComponent
 	@Override
 	public int hashCode()
 	{
-		return getCurrentLocation().hashCode();
+		return getLocation().hashCode();
 	}
 	
 	@Override
@@ -35,6 +36,6 @@ public abstract class CorpseComponentBase implements GameCorpseComponent
 		
 		CorpseComponentBase otherComponent = (CorpseComponentBase) object;
 		
-		return getCurrentLocation().equals(otherComponent.getCurrentLocation());
+		return getLocation().equals(otherComponent.getLocation());
 	}
 }

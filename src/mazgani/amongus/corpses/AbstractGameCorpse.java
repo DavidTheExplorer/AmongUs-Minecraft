@@ -8,7 +8,7 @@ import mazgani.amongus.games.GamePlayer;
 public interface AbstractGameCorpse
 {
 	/**
-	 * Gets the player that this corpse belongs to, aka the player who died.
+	 * Gets the player that this corpse belongs to(the player who died).
 	 * 
 	 * @return The player who died.
 	 */
@@ -22,11 +22,10 @@ public interface AbstractGameCorpse
 	AUGame getGame();
 	
 	/**
-	 * Spawns this corpse at the provided {@code location}.
-	 * <p>
-	 * <b>* Note</b> that some corpses might spawn the in nearby locations instead of the provided one, if it's bad to spawn it there.
+	 * Attempts to spawns this corpse at the provided {@code death location}.
+	 * Some corpses might spawn in nearby locations if the provided location is inappropriate for them.
 	 * 
-	 * @param location The death location.
+	 * @param deathLocation The death location.
 	 */
 	void spawn(Location deathLocation);
 	
@@ -34,9 +33,9 @@ public interface AbstractGameCorpse
 	void despawn();
 	
 	/**
-	 * Makes the provided {@code player} to report this body, should open a new discussion.
+	 * Makes the provided {@code player} to report this corpse, should open a new discussion.
 	 * 
-	 * @param reporter The player who found the body.
+	 * @param reporter The player who found the corpse.
 	 */
 	void report(GamePlayer reporter);
 }

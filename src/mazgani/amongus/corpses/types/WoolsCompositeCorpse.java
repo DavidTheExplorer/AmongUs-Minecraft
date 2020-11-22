@@ -13,22 +13,23 @@ import mazgani.amongus.corpses.components.blocks.BlockComponent;
 import mazgani.amongus.corpses.types.specials.CompositeCorpse;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
-import mazgani.amongus.utilities.CollectionUtilities;
 
 public class WoolsCompositeCorpse extends CompositeCorpse
 {
 	public WoolsCompositeCorpse(GamePlayer whoDied, AUGame game)
 	{
 		super(whoDied, game);
+
+		addCorpse(new WoolCorpse(Material.RED_WOOL, whoDied, game));
+		addCorpse(new WoolCorpse(Material.WHITE_WOOL, whoDied, game));
 	}
-	
+
 	@Override
-	public Set<GameCorpseComponent> handleDuplicatedComponents() 
+	public Set<GameCorpseComponent> computeUniqueComponents() 
 	{
-		List<GameCorpseComponent> duplicates = CollectionUtilities.findAllDuplicates(getComponentsView());
-		
-		return duplicates.stream()
-				.filter(component -> component instanceof BlockComponent)
+		List<GameCorpseComponent> woolsComponents = computeDuplicatedComponents().get(BlockComponent.class);
+
+		return woolsComponents.stream()
 				.map(component -> (BlockComponent) component)
 				.map(blockComponent -> new BlockChangeComponent(this, blockComponent.getBlock(), Material.OBSIDIAN))
 				.collect(toSet());

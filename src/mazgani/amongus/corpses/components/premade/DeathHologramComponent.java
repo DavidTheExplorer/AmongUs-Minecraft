@@ -1,6 +1,7 @@
-package mazgani.amongus.corpses.components.defaults;
+package mazgani.amongus.corpses.components.premade;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 
@@ -28,11 +29,11 @@ public class DeathHologramComponent extends HologramComponent
 	@Override
 	public void spawn()
 	{
-		super.spawn();
+		Location spawnLocation = this.spawnedHologram.getLocation().add(0, 2, 0);
+		this.spawnedHologram.teleport(spawnLocation);
 		
-		this.hologram.teleport(this.hologram.getLocation().add(0, 2, 0));
-		this.hologram.appendTextLine(this.whoDied.getColor().getColor() + this.whoDied.getPlayer().getName() + ChatColor.WHITE + " died here.");
-		this.hologram.appendTextLine(ChatColor.WHITE + ">> " + ChatColor.GOLD + "Click to REPORT" + ChatColor.WHITE + " <<").setTouchHandler(getReportTouchHandler());
+		this.spawnedHologram.appendTextLine(this.whoDied.getColor().getColor() + this.whoDied.getPlayer().getName() + ChatColor.WHITE + " died here.");
+		this.spawnedHologram.appendTextLine(ChatColor.WHITE + ">> " + ChatColor.GOLD + "Click to REPORT" + ChatColor.WHITE + " <<").setTouchHandler(getReportTouchHandler());
 	}
 	private TouchHandler getReportTouchHandler() 
 	{

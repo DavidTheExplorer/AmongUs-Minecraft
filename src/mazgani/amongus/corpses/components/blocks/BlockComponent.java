@@ -3,7 +3,7 @@ package mazgani.amongus.corpses.components.blocks;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.corpses.components.CorpseComponentBase;
 
 public abstract class BlockComponent extends CorpseComponentBase
@@ -15,7 +15,7 @@ public abstract class BlockComponent extends CorpseComponentBase
 	 * 
 	 * @param The block this class holds.
 	 */
-	public BlockComponent(AbstractGameCorpse corpse, Block block) 
+	public BlockComponent(BasicGameCorpse corpse, Block block) 
 	{
 		super(corpse);
 		
@@ -23,7 +23,7 @@ public abstract class BlockComponent extends CorpseComponentBase
 	}
 	
 	@Override
-	public Location getCurrentLocation() 
+	public Location getLocation() 
 	{
 		return this.blockLocation;
 	}

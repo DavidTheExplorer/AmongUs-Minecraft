@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 
 public class BlockChangeComponent extends BlockComponent
 {
@@ -14,7 +14,7 @@ public class BlockChangeComponent extends BlockComponent
 	protected Material capturedMaterial;
 	protected BlockState capturedState;
 
-	public BlockChangeComponent(AbstractGameCorpse corpse, Block block, Material newMaterial)
+	public BlockChangeComponent(BasicGameCorpse corpse, Block block, Material newMaterial)
 	{
 		super(corpse, block);
 		

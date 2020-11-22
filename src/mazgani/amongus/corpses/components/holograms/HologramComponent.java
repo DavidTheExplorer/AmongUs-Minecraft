@@ -4,28 +4,29 @@ import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.corpses.components.CorpseComponentBase;
 import mazgani.amongus.holograms.EquallbleHologram;
 
 public class HologramComponent extends CorpseComponentBase
 {
-	protected final EquallbleHologram hologram;
+	protected final EquallbleHologram spawnedHologram;
 	
-	public HologramComponent(AbstractGameCorpse corpse, EquallbleHologram hologram)
+	public HologramComponent(BasicGameCorpse corpse, EquallbleHologram spawnedHologram)
 	{
 		super(corpse);
-		this.hologram = hologram;
+		
+		this.spawnedHologram = spawnedHologram;
 	}
 	
 	@Override
-	public Location getCurrentLocation() 
+	public Location getLocation() 
 	{
-		return this.hologram.getLocation();
+		return this.spawnedHologram.getLocation();
 	}
 	public Hologram getHologram() 
 	{
-		return this.hologram;
+		return this.spawnedHologram;
 	}
 	
 	@Override
@@ -37,13 +38,13 @@ public class HologramComponent extends CorpseComponentBase
 	@Override
 	public void despawn() 
 	{
-		this.hologram.delete();
+		this.spawnedHologram.delete();
 	}
 	
 	@Override
 	public int hashCode() 
 	{
-		return this.hologram.hashCode();
+		return this.spawnedHologram.hashCode();
 	}
 	
 	@Override
@@ -59,6 +60,6 @@ public class HologramComponent extends CorpseComponentBase
 		}
 		HologramComponent component = (HologramComponent) object;
 		
-		return this.hologram.equals(component.hologram);
+		return this.spawnedHologram.equals(component.spawnedHologram);
 	}
 }
