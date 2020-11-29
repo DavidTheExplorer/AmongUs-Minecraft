@@ -30,13 +30,13 @@ public class BlockUtilities
 			SURROUNDING_FACES = {NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST},
 			ATTACHED_FACES = {NORTH, EAST, SOUTH, WEST};
 
-	public static List<Block> getSideBlocks(Block centerBlock, BlockFace... faces) 
+	public static List<Block> getFacedBlocks(Block centerBlock, BlockFace... faces) 
 	{
 		return Arrays.stream(faces)
 				.map(centerBlock::getRelative)
 				.collect(toList());
 	}
-	public static List<Block> getRelativeBlocks(Block centerBlock, Collection<Pair<BlockFace, Integer>> facesAndDistances) 
+	public static List<Block> getFacedBlocks(Block centerBlock, Collection<Pair<BlockFace, Integer>> facesAndDistances) 
 	{
 		return facesAndDistances.stream()
 				.map(pair -> centerBlock.getRelative(pair.getFirst(), pair.getSecond()))

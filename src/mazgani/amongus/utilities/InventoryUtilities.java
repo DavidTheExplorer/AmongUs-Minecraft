@@ -18,119 +18,188 @@ public class InventoryUtilities
 	//Container of static methods
 	private InventoryUtilities(){}
 
-	public static void fillWith(Inventory inv, Material material)
+	/*
+	 * General Methods
+	 */
+	public static boolean isEmpty(Inventory inv) 
 	{
-		verifyInvExists(inv);
+		verifyNotNull(inv, "inventory");
+		
+		return itemsStream(inv).count() == 0;
+	}
 
-		fillRange(inv, 0, inv.getSize()-1, new ItemStack(material));
+	/*
+	 * Fill Methods
+	 */
+	public static void fillWith(Inventory inv, ItemStack item)
+	{
+		verifyNotNull(inv, "inventory");
+		verifyNotNull(inv, "item");
+
+		fillRange(inv, 0, inv.getSize()-1, item);
+	}
+	public static void fillWith(Inventory inv, Material material) 
+	{
+		fillWith(inv, new ItemStack(material));
 	}
 	public static void fillRow(Inventory inv, int row, ItemStack with) 
 	{
 		verifyValidRow(inv, row);
 
-		final int startIndex = ((row-1) * 9);
-		final int endIndex = (startIndex + 8);
-		
+		int startIndex = (row * 9);
+		int endIndex = (startIndex + 8);
+
 		fillRange(inv, startIndex, endIndex, with);
+	}
+	public static void fillRow(Inventory inv, int row, Material material) 
+	{
+		fillRow(inv, row, new ItemStack(material));
 	}
 	public static void fillColumn(Inventory inv, int column, ItemStack with) 
 	{
-		verifyInvExists(inv);
-		Validate.inclusiveBetween(1, 9, column, "Illegal Column(Min: 1, Max: 9)");
+		verifyNotNull(inv, "inventory");
+		Validate.inclusiveBetween(0, 8, column, "Illegal Column(Min: 0, Max: 8)");
 		
-		final int startIndex = (column-1);
-
-		for(int i = startIndex; i < inv.getSize(); i += 9)
-		{
-			inv.setItem(i, with);
-		}
+		fillRange(inv, column, inv.getSize()-1, 9, with);
 	}
-	public static void buildWalls(Inventory inv, Material material)
+	public static void fillColumn(Inventory inv, int column, Material material) 
 	{
-		verifyInvExists(inv);
+		fillColumn(inv, column, new ItemStack(material));
+	}
+	public static void buildWalls(Inventory inv, ItemStack item)
+	{
+		verifyNotNull(inv, "inventory");
 
-		final ItemStack window = new ItemStack(material);
 		final int invSize = inv.getSize();
 
+		//if there is only one line, fill it and that's it
 		if(invSize == 9)
 		{
-			fillRow(inv, 1, window);
+			fillRow(inv, 0, item);
 			return;
 		}
-		fillColumn(inv, 1, window); //first column
-		fillColumn(inv, 9, window); //last column
-		
+		fillColumn(inv, 0, item); //first column
+		fillColumn(inv, 8, item); //last column
+
 		//fill the First & Last columns EXCLUDING their corners, because those were already filled by the fillColumn()s
-		fillRange(inv, 1, 7, window); 
-		fillRange(inv, invSize-8, invSize-2, window); 
+		fillRange(inv, 1, 7, item); 
+		fillRange(inv, invSize-8, invSize-2, item); 
 	}
-	public static int findFirstSlot(Inventory inv, Predicate<ItemStack> itemMatcher) 
+	public static void buildWalls(Inventory inv, Material material) 
 	{
-		verifyInvExists(inv);
+		buildWalls(inv, new ItemStack(material));
+	}
+	public static void fillEmptySlots(Inventory inv, ItemStack with)
+	{
+		verifyNotNull(inv, "inventory");
+
+		emptySlotsStream(inv).forEach(slot -> inv.setItem(slot, with));
+	}
+
+	/*
+	 * Slot Searching Methods
+	 */
+	public static int firstSlotThat(Inventory inv, Predicate<Integer> indexMatcher)
+	{
+		verifyNotNull(inv, "inventory");
+		verifyNotNull(inv, "index matcher");
 
 		for(int i = 0; i < inv.getSize(); i++)
 		{
-			if(itemMatcher.test(inv.getItem(i))) 
+			if(indexMatcher.test(i))
 			{
 				return i;
 			}
 		}
 		return -1;
 	}
-	public static int findLastSlot(Inventory inv, Predicate<ItemStack> itemMatcher) 
+	public static int firstSlotWhoseItem(Inventory inv, Predicate<ItemStack> slotItemMatcher) 
 	{
-		verifyInvExists(inv);
+		verifyNotNull(slotItemMatcher, "items matcher");
 		
+		return firstSlotThat(inv, slot -> 
+		{
+			ItemStack item = inv.getItem(slot);
+			
+			return item == null ? false : slotItemMatcher.test(item);
+		});
+	}
+	public static int findLastSlot(Inventory inv, Predicate<Integer> indexMatcher) 
+	{
+		verifyNotNull(inv, "inventory");
+		verifyNotNull(inv, "index matcher");
+
 		for(int i = inv.getSize()-1; i >= 0; i--)
 		{
-			if(itemMatcher.test(inv.getItem(i))) 
+			if(indexMatcher.test(i))
 			{
 				return i;
 			}
 		}
 		return -1;
 	}
-	public static int[] getSlotsThat(Inventory inv, Predicate<ItemStack> slotItemTester) 
+	public static int lastSlotWhoseItem(Inventory inv, Predicate<ItemStack> slotItemMatcher) 
 	{
-		return IntStream.range(0, inv.getSize())
-				.filter(slot -> slotItemTester.test(inv.getItem(slot)))
-				.toArray();
+		verifyNotNull(slotItemMatcher, "items matcher");
+		
+		return findLastSlot(inv, slot -> 
+		{
+			ItemStack item = inv.getItem(slot);
+			
+			return item == null ? false : slotItemMatcher.test(item);
+		});
+	}
+
+	/*
+	 * Items/Slots Streams Methods
+	 */
+	public static IntStream slotsStream(Inventory inv) 
+	{
+		return IntStream.range(0, inv.getSize());
 	}
 	public static Stream<ItemStack> itemsStream(Inventory inv)
 	{
-		verifyInvExists(inv);
-		
+		verifyNotNull(inv, "inventory");
+
 		return Arrays.stream(inv.getContents())
 				.filter(Objects::nonNull);
 	}
 	public static Stream<Pair<Integer, ItemStack>> takenSlotsStream(Inventory inv)
 	{
-		verifyInvExists(inv);
-		
+		verifyNotNull(inv, "inventory");
+
 		return IntStream.range(0, inv.getSize())
 				.filter(slot -> inv.getItem(slot) != null)
 				.mapToObj(takenSlot -> Pair.of(takenSlot, inv.getItem(takenSlot)));
 	}
 	public static IntStream emptySlotsStream(Inventory inv)
 	{
-		verifyInvExists(inv);
-		
-		return IntStream.range(0, inv.getSize())
+		verifyNotNull(inv, "inventory");
+
+		return slotsStream(inv)
 				.filter(slot -> inv.getItem(slot) == null);
 	}
-	public static boolean isEmpty(Inventory inv) 
+	public static IntStream allSlotsThat(Inventory inv, Predicate<ItemStack> slotItemTester) 
 	{
-		verifyInvExists(inv);
+		return slotsStream(inv)
+				.filter(slot -> slotItemTester.test(inv.getItem(slot)));
+	}
 
-		return itemsStream(inv).count() == 0;
-	}
-	public static void fillEmptySlots(Inventory inv, ItemStack with)
+	/*
+	 * Private Methods
+	 */
+	private static void verifyNotNull(Object object, String name) 
 	{
-		verifyInvExists(inv);
-		
-		emptySlotsStream(inv).forEach(slot -> inv.setItem(slot, with));
+		Validate.notNull(object, String.format("The provided %s cannot be null.", name));
 	}
-	
+	private static void verifyValidRow(Inventory inv, int row) 
+	{
+		verifyNotNull(inv, "inventory");
+
+		int invRows = (inv.getSize()/9);
+
+		Validate.inclusiveBetween(0, invRows, row, String.format("Row %d is out of range(Min: 1, Max: %d)", row, invRows));
+	}
 	private static void fillRange(Inventory inv, int startInclusive, int endInclusive, ItemStack with)
 	{
 		for(int i = startInclusive; i <= endInclusive; i++)
@@ -138,17 +207,11 @@ public class InventoryUtilities
 			inv.setItem(i, with);
 		}
 	}
-	private static void verifyInvExists(Inventory inv) 
+	private static void fillRange(Inventory inv, int startInclusive, int endInclusive, int jumpDistance, ItemStack with)
 	{
-		Validate.notNull(inv, "The inventory cannot be null.");
-	}
-	private static void verifyValidRow(Inventory inv, int row) 
-	{
-		verifyInvExists(inv);
-		
-		final int invRows = (inv.getSize()/9);
-		final String errorMessage = String.format("Row %d is out of range(Min: 1, Max: %d)", row, invRows);
-
-		Validate.inclusiveBetween(1, invRows, row, errorMessage);
+		for(int i = startInclusive; i <= endInclusive; i += jumpDistance)
+		{
+			inv.setItem(i, with);
+		}
 	}
 }

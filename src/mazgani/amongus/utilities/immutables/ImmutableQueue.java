@@ -17,7 +17,7 @@ public class ImmutableQueue<E> implements Queue<E>
 	{
 		return new ImmutableQueue<>(queue);
 	}
-
+	
 	@Override
 	public int size() 
 	{

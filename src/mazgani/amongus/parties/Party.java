@@ -1,13 +1,15 @@
 package mazgani.amongus.parties;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 public class Party 
 {
 	private UUID leaderUUID;
-	private final Set<UUID> membersUUIDs = new HashSet<>();
+	private final Map<UUID, PartyRole> membersRoles = new HashMap<>();
 	
 	public Party(UUID leaderUUID) 
 	{
@@ -17,8 +19,30 @@ public class Party
 	{
 		return this.leaderUUID;
 	}
-	public Set<UUID> getMembersUUIDs()
+	public boolean promote(UUID playerUUID) 
 	{
-		return this.membersUUIDs;
+		PartyRole nextRole = this.membersRoles.get(playerUUID).getNextRole();
+		
+		if(nextRole == null) 
+		{
+			return false;
+		}
+		this.membersRoles.put(playerUUID, nextRole);
+		return true;
+	}
+	public boolean demote(UUID playerUUID) 
+	{
+		PartyRole previousRank = this.membersRoles.get(playerUUID).getPreviousRole();
+		
+		if(previousRank == null) 
+		{
+			return false;
+		}
+		this.membersRoles.put(playerUUID, previousRank);
+		return true;
+	}
+	public Set<UUID> getUnmodifiableMembersUUIDs()
+	{
+		return Collections.unmodifiableSet(this.membersRoles.keySet());
 	}
 }

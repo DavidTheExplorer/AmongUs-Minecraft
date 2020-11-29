@@ -11,6 +11,7 @@ import mazgani.amongus.games.GamesManager;
 import mazgani.amongus.games.corpsesfactory.SimpleCorpsesFactory;
 import mazgani.amongus.listeners.ImpostorKillRetrieverListener;
 import mazgani.amongus.lobbies.LobbiesManager;
+import mazgani.amongus.players.AUPlayersManager;
 import mazgani.amongus.utilities.cooldown.Cooldown.CooldownBuilder;
 import mazgani.amongus.utilities.cooldown.CooldownsManager;
 
@@ -21,12 +22,13 @@ public class Bootstrapper
 	private LobbiesManager lobbiesManager;
 	private GamesManager gamesManager;
 	private CooldownsManager cooldownsManager;
+	private AUPlayersManager auPlayersManager;
 	
 	public Bootstrapper(AmongUs amongUs)
 	{
 		this.amongUs = amongUs;
 	}
-	public void setup() 
+	public void bootstrap() 
 	{
 		setupManagers();
 		registerCommands();
@@ -35,19 +37,21 @@ public class Bootstrapper
 	}
 	private void setupManagers() 
 	{
+		this.auPlayersManager = new AUPlayersManager();
 		this.lobbiesManager = new LobbiesManager();
 		this.gamesManager = new GamesManager(new SimpleCorpsesFactory());
-
+		
+		//Cooldown
 		this.cooldownsManager = new CooldownsManager();
 		CooldownBuilder.setCooldownsManager(this.cooldownsManager);
 	}
 	private void registerCommands() 
 	{
-		AmongUSCommand amongUsCommand = new AmongUSCommand(this.lobbiesManager, this.gamesManager);
+		AmongUSCommand amongUsCommand = new AmongUSCommand(this.lobbiesManager, this.gamesManager, this.auPlayersManager);
 		this.amongUs.getCommand("amongus").setExecutor(amongUsCommand);
 		this.amongUs.getCommand("amongus").setTabCompleter(amongUsCommand);
 	}
-	private void registerListeners() 
+	private void registerListeners()
 	{
 		Bukkit.getPluginManager().registerEvents(new ImpostorKillRetrieverListener(this.gamesManager), this.amongUs);
 	}

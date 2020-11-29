@@ -28,14 +28,14 @@ public class SignUtilities
 	}
 	public static String[] fixLinesIfNeeded(String[] lines) 
 	{
+		//if the lines amount is exactly the needed, just return the array
+		if(lines.length == LINES_AMOUNT) 
+			return lines;
+		
 		String[] cloned = lines.clone();
-
-		//if there are exactly the lines needed, return the array
-		if(cloned.length == LINES_AMOUNT) 
-			return cloned;
-
+		
 		//if there are too many lines
-		else if(cloned.length > 4) 
+		if(cloned.length > 4) 
 			return Arrays.copyOf(cloned, 4);
 
 		//if there are less than 4 lines

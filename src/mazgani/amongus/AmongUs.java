@@ -11,7 +11,7 @@ public class AmongUs extends JavaPlugin
 	{
 		instance = this;
 		
-		new Bootstrapper(this).setup();
+		new Bootstrapper(this).bootstrap();
 	}
 	public static AmongUs getInstance() 
 	{
