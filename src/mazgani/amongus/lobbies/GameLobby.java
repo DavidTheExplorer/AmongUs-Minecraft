@@ -1,8 +1,5 @@
 package mazgani.amongus.lobbies;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toSet;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,8 +18,8 @@ import com.google.common.collect.Lists;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.lobbies.events.LobbyFullEvent;
 import mazgani.amongus.maps.GameMap;
-import mazgani.amongus.players.PlayerColor;
-import mazgani.amongus.utilities.RandomUtilities;
+import mazgani.amongus.players.AUPlayer;
+import mazgani.amongus.players.visual.PlayerColor;
 
 public class GameLobby
 {
@@ -30,7 +27,7 @@ public class GameLobby
 	private final Location spawnLocation;
 	private final GameSettings settings;
 	private final GameMap gameMap;
-	private final Map<UUID, LobbyPlayer> waitingPlayers = new HashMap<>();
+	private final Map<UUID, AUPlayer> waitingPlayers = new HashMap<>();
 	private final Set<LobbyStateListener> stateListeners = new HashSet<>();
 	private final List<PlayerColor> availableColors = Lists.newArrayList(PlayerColor.VALUES);
 	
@@ -65,13 +62,7 @@ public class GameLobby
 	{
 		return this.settings;
 	}
-	public Set<Player> getPlayersView()
-	{
-		return this.waitingPlayers.values().stream()
-				.map(LobbyPlayer::getPlayer)
-				.collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
-	}
-	public Collection<LobbyPlayer> getGamePlayersView() 
+	public Collection<AUPlayer> getPlayersView()
 	{
 		return Collections.unmodifiableCollection(this.waitingPlayers.values());
 	}
@@ -83,23 +74,23 @@ public class GameLobby
 	{
 		return this.waitingPlayers.size() == this.settings.getPlayersRequired();
 	}
-	public boolean addPlayer(Player player)
+	public boolean addPlayer(AUPlayer auPlayer)
 	{
 		if(isFull())
 		{
 			return false;
 		}
+		Player player = auPlayer.getPlayer();
 		
 		//register the player
-		LobbyPlayer lobbyPlayer = createLobbyPlayer(player);
-		this.waitingPlayers.put(player.getUniqueId(), lobbyPlayer);
+		this.waitingPlayers.put(player.getUniqueId(), auPlayer);
 		
 		//update the state listeners
 		this.stateListeners.forEach(listener -> listener.onLobbyJoin(this, player));
 		
 		if(isFull())
 		{
-			Bukkit.getPluginManager().callEvent(new LobbyFullEvent(this, lobbyPlayer));
+			Bukkit.getPluginManager().callEvent(new LobbyFullEvent(this, player));
 		}
 		return true;
 	}
@@ -147,12 +138,5 @@ public class GameLobby
 	public int hashCode() 
 	{
 		return this.uuid.hashCode();
-	}
-	
-	private LobbyPlayer createLobbyPlayer(Player player) 
-	{
-		PlayerColor randomColor = RandomUtilities.randomElement(this.availableColors);
-		
-		return new LobbyPlayer(player, randomColor);
 	}
 }

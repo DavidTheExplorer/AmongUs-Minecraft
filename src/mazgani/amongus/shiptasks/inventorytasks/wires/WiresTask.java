@@ -14,8 +14,8 @@ import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.shiptasks.TaskInventoryManager;
 import mazgani.amongus.shiptasks.inventorytasks.InventoryTask;
 import mazgani.amongus.shiptasks.types.ProgressionTask;
-import mazgani.amongus.utilities.GlowEffect;
 import mazgani.amongus.utilities.cooldown.Cooldown;
+import mazgani.amongus.utilities.items.GlowEffect;
 import mazgani.amongus.utilities.objectholders.Pair;
 
 public class WiresTask extends ProgressionTask implements InventoryTask<WiresTask>

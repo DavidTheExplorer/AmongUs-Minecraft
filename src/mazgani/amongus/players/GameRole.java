@@ -4,14 +4,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang.WordUtils;
 
-public enum Role 
+public enum GameRole 
 {
 	CREWMATE,
 	IMPOSTOR;
 	
 	private final String name;
 
-	Role()
+	GameRole()
 	{
 		this.name = WordUtils.capitalizeFully(name().toLowerCase());
 	}
@@ -19,7 +19,7 @@ public enum Role
 	{
 		return this.name;
 	}
-	public static Role getRandomRole() 
+	public static GameRole getRandomRole() 
 	{
 		return ThreadLocalRandom.current().nextBoolean() ? CREWMATE : IMPOSTOR;
 	}

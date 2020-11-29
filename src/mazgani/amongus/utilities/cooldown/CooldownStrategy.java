@@ -10,5 +10,5 @@ public interface CooldownStrategy
 	 * @param player the cooldown'ed player
 	 * @param cooldown the player's cooldown
 	 */
-	public void run(Player player, Cooldown cooldown);
+	void run(Player player, Cooldown cooldown);
 }

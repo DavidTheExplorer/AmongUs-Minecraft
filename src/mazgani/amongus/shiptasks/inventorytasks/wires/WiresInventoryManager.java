@@ -15,8 +15,8 @@ import com.google.common.collect.Sets;
 import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.shiptasks.TaskInventoryManager;
-import mazgani.amongus.utilities.ItemBuilder;
 import mazgani.amongus.utilities.RandomUtilities;
+import mazgani.amongus.utilities.items.ItemBuilder;
 
 public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 {

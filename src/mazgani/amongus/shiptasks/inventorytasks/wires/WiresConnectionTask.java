@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import mazgani.amongus.utilities.ItemBuilder;
+import mazgani.amongus.utilities.items.ItemBuilder;
 
 public class WiresConnectionTask extends BukkitRunnable
 {

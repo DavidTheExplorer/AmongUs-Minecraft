@@ -1,4 +1,4 @@
-package mazgani.amongus.players;
+package mazgani.amongus.players.visual;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -8,22 +8,22 @@ public enum PlayerColor
 	RED,
 	GREEN;
 	
-	private final ChatColor chatColor;
+	private final ChatColor color;
 	private final String name = WordUtils.capitalizeFully(name().toLowerCase());
 	
 	public static final PlayerColor[] VALUES = values();
 	
 	PlayerColor()
 	{
-		this.chatColor = ChatColor.valueOf(name());
+		this.color = ChatColor.valueOf(name());
 	}
 	PlayerColor(ChatColor color)
 	{
-		this.chatColor = color;
+		this.color = color;
 	}
 	public ChatColor getColor() 
 	{
-		return this.chatColor;
+		return this.color;
 	}
 	public String getName() 
 	{
@@ -31,6 +31,6 @@ public enum PlayerColor
 	}
 	public String getColoredName() 
 	{
-		return this.chatColor + this.name;
+		return this.color + this.name;
 	}
 }

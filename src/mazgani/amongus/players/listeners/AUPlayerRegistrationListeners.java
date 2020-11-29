@@ -19,7 +19,7 @@ public class AUPlayerRegistrationListeners implements Listener
 	}
 	
 	@EventHandler
-	public void registerPlayerOnJoin(PlayerJoinEvent event) 
+	public void registerOnJoin(PlayerJoinEvent event) 
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
@@ -27,7 +27,7 @@ public class AUPlayerRegistrationListeners implements Listener
 	}
 	
 	@EventHandler
-	public void deregisterPlayerOnQuit(PlayerQuitEvent event) 
+	public void deregisternQuit(PlayerQuitEvent event) 
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		

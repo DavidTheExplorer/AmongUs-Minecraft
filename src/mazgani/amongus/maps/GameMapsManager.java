@@ -37,7 +37,7 @@ public class GameMapsManager
 		}
 
 		@Override
-		public String identifyableBy() 
+		public String identifyableBy()
 		{
 			return getName();
 		}

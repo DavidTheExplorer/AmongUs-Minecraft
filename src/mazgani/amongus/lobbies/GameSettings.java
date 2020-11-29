@@ -1,24 +1,39 @@
 package mazgani.amongus.lobbies;
 
+import mazgani.amongus.games.corpsesfactory.GameCorpsesFactory;
+import mazgani.amongus.games.corpsesfactory.SimpleCorpsesFactory;
+
 public class GameSettings 
 {
-	private int crewmates, impostors;
+	private int crewmatesAmount, impostorsAmount;
+	private GameCorpsesFactory corpsesFactory;
 	
-	public GameSettings(int crewmates, int impostors) 
+	private static final GameCorpsesFactory DEFAULT_CORPSES_FACTORY = new SimpleCorpsesFactory();
+	
+	public GameSettings(int crewmatesAmount, int impostorsAmount) 
 	{
-		this.crewmates = crewmates;
-		this.impostors = impostors;
+		this(crewmatesAmount, impostorsAmount, DEFAULT_CORPSES_FACTORY);
+	}
+	public GameSettings(int crewmatesAmount, int impostorsAmount, GameCorpsesFactory corpsesFactory) 
+	{
+		this.crewmatesAmount = crewmatesAmount;
+		this.impostorsAmount = impostorsAmount;
+		this.corpsesFactory = corpsesFactory;
 	}
 	public int crewmatesAmount() 
 	{
-		return this.crewmates;
+		return this.crewmatesAmount;
 	}
-	public int impostorsAmount() 
+	public int impostorsAmount()
 	{
-		return this.impostors;
+		return this.impostorsAmount;
+	}
+	public GameCorpsesFactory getCorpsesFactory() 
+	{
+		return this.corpsesFactory;
 	}
 	public int getPlayersRequired()
 	{
-		return this.impostors + this.crewmates;
+		return this.impostorsAmount + this.crewmatesAmount;
 	}
 }

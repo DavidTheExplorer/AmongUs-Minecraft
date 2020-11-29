@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CooldownsManager
 {
-	private Map<String, Cooldown> cooldownByName = new HashMap<>();
+	private final Map<String, Cooldown> cooldownByName = new HashMap<>();
 	
 	public Cooldown getCooldown(String cooldownName)
 	{

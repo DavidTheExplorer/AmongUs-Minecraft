@@ -60,6 +60,10 @@ public class LobbiesManager
 	{
 		return this.lobbyByUUID.values();
 	}
+	private UUID generateLobbyID()
+	{
+		return UUIDProvider.generateUUID(GameLobby.class);
+	}
 	
 	public class GameLobbyBuilder 
 	{
@@ -76,7 +80,7 @@ public class LobbiesManager
 			this.crewmates = crewmates;
 			this.impostors = impostors;
 		}
-		public GameLobbyBuilder withJoinSign(Sign sign) 
+		public GameLobbyBuilder joinableBy(Sign sign) 
 		{
 			this.joinSign = sign;
 			return this;
@@ -96,9 +100,5 @@ public class LobbiesManager
 			}
 			return lobby;
 		}
-	}
-	private UUID generateLobbyID() 
-	{
-		return UUIDProvider.generateUUID(GameLobby.class);
 	}
 }

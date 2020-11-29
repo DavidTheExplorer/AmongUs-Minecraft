@@ -13,7 +13,7 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 {
 	protected final T task;
 	protected final AUGame game;
-	
+
 	protected TaskInventoryManager(T task, AUGame game) 
 	{
 		this.task = task;
@@ -24,9 +24,8 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 		Inventory inv = Bukkit.createInventory(null, 9 * lines, "Task > " + taskDescription);
 
 		if(buildWalls) 
-		{
 			InventoryUtilities.buildWalls(inv, Material.BLACK_STAINED_GLASS_PANE);
-		}
+
 		return inv;
 	}
 	public abstract Inventory createInventory(GamePlayer opener);
