@@ -7,41 +7,38 @@ import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 
 import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.corpses.components.holograms.HologramComponent;
-import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
-import mazgani.amongus.holograms.EquallbleHologram;
+import mazgani.amongus.holograms.equallable.EquallableHologram;
 
 public class DeathHologramComponent extends HologramComponent
 {
-	private final BasicGameCorpse corpse;
-	private final GamePlayer whoDied;
-	private final AUGame game;
+	private final int height;
 	
-	public DeathHologramComponent(BasicGameCorpse corpse, EquallbleHologram base, GamePlayer whoDied, AUGame game) 
+	public DeathHologramComponent(BasicGameCorpse corpse, EquallableHologram hiddenBase, int height) 
 	{
-		super(corpse, base);
+		super(corpse, hiddenBase);
 		
-		this.corpse = corpse;
-		this.whoDied = whoDied;
-		this.game = game;
+		this.height = height;
 	}
 	
 	@Override
 	public void spawn()
 	{
-		Location spawnLocation = this.spawnedHologram.getLocation().add(0, 2, 0);
-		this.spawnedHologram.teleport(spawnLocation);
+		super.spawn();
 		
-		this.spawnedHologram.appendTextLine(this.whoDied.getColor().getColor() + this.whoDied.getPlayer().getName() + ChatColor.WHITE + " died here.");
-		this.spawnedHologram.appendTextLine(ChatColor.WHITE + ">> " + ChatColor.GOLD + "Click to REPORT" + ChatColor.WHITE + " <<").setTouchHandler(getReportTouchHandler());
+		Location spawnLocation = this.hologram.getLocation().add(0, this.height, 0);
+		this.hologram.teleport(spawnLocation);
+		
+		this.hologram.appendTextLine(getColoredPlayerName() + ChatColor.WHITE + " died here.");
+		this.hologram.appendTextLine(ChatColor.WHITE + ">> " + ChatColor.GOLD + "Click to REPORT" + ChatColor.WHITE + " <<").setTouchHandler(getReportTouchHandler());
 	}
 	private TouchHandler getReportTouchHandler() 
 	{
 		return reporter -> 
 		{
-			GamePlayer reporterGP = this.game.getPlayer(reporter.getUniqueId());
+			GamePlayer reporterGP = this.parentCorpse.getGame().getPlayer(reporter.getUniqueId());
 			
-			this.corpse.report(reporterGP);
+			this.parentCorpse.report(reporterGP);
 		};
 	}
 }

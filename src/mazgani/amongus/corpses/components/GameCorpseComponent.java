@@ -1,11 +1,11 @@
 package mazgani.amongus.corpses.components;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.interfaces.Trackable;
 
 public interface GameCorpseComponent extends Trackable
 {
-	AbstractGameCorpse getCorpse();
+	BasicGameCorpse getParentCorpse();
 	void spawn();
 	void despawn();
 	

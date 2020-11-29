@@ -1,19 +1,30 @@
 package mazgani.amongus.corpses.components;
 
-import mazgani.amongus.corpses.AbstractGameCorpse;
+import org.bukkit.ChatColor;
+
 import mazgani.amongus.corpses.BasicGameCorpse;
+import mazgani.amongus.games.GamePlayer;
 
 public abstract class CorpseComponentBase implements GameCorpseComponent
 {
-	protected final BasicGameCorpse corpse;
+	protected final BasicGameCorpse parentCorpse;
 	
-	protected CorpseComponentBase(BasicGameCorpse corpse) 
+	protected CorpseComponentBase(BasicGameCorpse parentCorpse) 
 	{
-		this.corpse = corpse;
+		this.parentCorpse = parentCorpse;
 	}
-	public AbstractGameCorpse getCorpse() 
+	public BasicGameCorpse getParentCorpse() 
 	{
-		return this.corpse;
+		return this.parentCorpse;
+	}
+	protected String getColoredPlayerName() 
+	{
+		GamePlayer whoDied = this.parentCorpse.getWhoDied();
+		
+		ChatColor diedColor = whoDied.getAUPlayer().getVisibilityManager().getCurrentColor().getColor();
+		String diedPlayerName = whoDied.getAUPlayer().getPlayer().getPlayer().getName();
+		
+		return diedColor + diedPlayerName;
 	}
 	
 	@Override

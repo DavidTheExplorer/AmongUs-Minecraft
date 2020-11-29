@@ -12,7 +12,7 @@ import mazgani.amongus.games.AUGame;
 import mazgani.amongus.games.GamePlayer;
 import mazgani.amongus.games.events.GameWinEvent;
 import mazgani.amongus.games.events.ImpostorKillEvent;
-import mazgani.amongus.players.Role;
+import mazgani.amongus.players.GameRole;
 
 public class ImpostorKillListener implements Listener
 {
@@ -20,19 +20,15 @@ public class ImpostorKillListener implements Listener
 	public void onImpostorKill(ImpostorKillEvent event) 
 	{
 		AUGame game = event.getGame();
-
 		GamePlayer impostor = event.getImpostor();
 		GamePlayer crewmate = event.getDeadCrewmate();
-
-		Player impostorPlayer = impostor.getPlayer();
-		Player crewmatePlayer = crewmate.getPlayer();
-
-		sendKillMessages(impostorPlayer, crewmatePlayer, game);
+		
+		sendKillMessages(impostor, crewmate, game);
 		setSpectator(crewmate);
-
+		
 		if(game.isWin()) 
 		{
-			Bukkit.getPluginManager().callEvent(new GameWinEvent(Role.IMPOSTOR));
+			Bukkit.getPluginManager().callEvent(new GameWinEvent(GameRole.IMPOSTOR));
 			return;
 		}
 		game.spawnCorpse(crewmate, event.getDeathLocation());
@@ -41,16 +37,24 @@ public class ImpostorKillListener implements Listener
 	{
 		gamePlayer.setSpectator();
 
-		Player player = gamePlayer.getPlayer();
+		Player player = gamePlayer.getAUPlayer().getPlayer();
 		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 2));
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 2, 2));
+		
+		if(gamePlayer.getRole() == GameRole.IMPOSTOR) 
+		{
+			//add the sabotage map
+		}
 	}
-	private void sendKillMessages(Player impostor, Player crewmate, AUGame game) 
+	private void sendKillMessages(GamePlayer impostor, GamePlayer crewmate, AUGame game) 
 	{
-		impostor.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + "You killed " + ChatColor.GOLD + crewmate.getName());
-		impostor.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + game.playersLeft(Role.CREWMATE) + ChatColor.GRAY + "/" + ChatColor.GREEN + game.playersLeft());
+		Player impostorPlayer = impostor.getAUPlayer().getPlayer();
+		Player crewmatePlayer = crewmate.getAUPlayer().getPlayer();
+		
+		impostorPlayer.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + "You killed " + ChatColor.GOLD + crewmatePlayer.getName());
+		impostorPlayer.sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + game.playersLeft(GameRole.CREWMATE) + ChatColor.GRAY + "/" + ChatColor.GREEN + game.playersLeft());
 
-		crewmate.sendMessage(ChatColor.RED + "You were killed by " + impostor.getName() + "!");
-		crewmate.sendMessage(ChatColor.RED + "You are now a Ghost. You can only communicate with other ghosts, not with players.");
+		crewmatePlayer.sendMessage(ChatColor.RED + "You were killed by " + impostorPlayer.getName() + "!");
+		crewmatePlayer.sendMessage(ChatColor.RED + "You are now a Ghost. You can only communicate with other ghosts, not with players.");
 	}
 }

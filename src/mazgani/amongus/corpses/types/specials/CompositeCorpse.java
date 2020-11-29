@@ -1,5 +1,6 @@
 package mazgani.amongus.corpses.types.specials;
 
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 
@@ -58,7 +58,7 @@ public abstract class CompositeCorpse extends BasicGameCorpse
 	public void spawn(Location location) 
 	{
 		computeUniqueComponents().forEach(GameCorpseComponent::spawn);
-		
+
 		//forEachCorpse(corpse -> corpse.spawn(location));
 	}
 
@@ -71,7 +71,7 @@ public abstract class CompositeCorpse extends BasicGameCorpse
 	{
 		return Collections.unmodifiableList(this.corpses);
 	}
-	
+
 	@Override
 	public <T extends GameCorpseComponent> List<T> getComponents(Class<T> componentClass) 
 	{
@@ -79,22 +79,22 @@ public abstract class CompositeCorpse extends BasicGameCorpse
 				.flatMap(corpse -> corpse.getComponents(componentClass).stream())
 				.collect(toList());
 	}
-	
+
 	@Override
 	public List<GameCorpseComponent> getComponentsView() 
 	{
 		return this.corpses.stream()
 				.flatMap(corpse -> corpse.getComponentsView().stream())
-				.collect(Collectors.collectingAndThen(toList(), Collections::unmodifiableList));
+				.collect(collectingAndThen(toList(), Collections::unmodifiableList));
 	}
 
-	protected Set<GameCorpseComponent> computeUniqueComponents()
+	public Set<GameCorpseComponent> computeUniqueComponents()
 	{
-		return computeDuplicatedComponents().values().stream()
+		return computeDuplicateComponents().values().stream()
 				.flatMap(List::stream)
 				.collect(toSet());
 	}
-	protected Map<Class<? extends GameCorpseComponent>, List<GameCorpseComponent>> computeDuplicatedComponents() 
+	public Map<Class<? extends GameCorpseComponent>, List<GameCorpseComponent>> computeDuplicateComponents() 
 	{
 		List<GameCorpseComponent> components = this.corpses.stream()
 				.flatMap(corpse -> corpse.getComponentsView().stream())

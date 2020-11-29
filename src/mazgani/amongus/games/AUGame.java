@@ -22,7 +22,8 @@ import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.games.corpsesfactory.GameCorpsesFactory;
 import mazgani.amongus.lobbies.GameLobby;
 import mazgani.amongus.maps.GameMap;
-import mazgani.amongus.players.Role;
+import mazgani.amongus.players.AUPlayer;
+import mazgani.amongus.players.GameRole;
 import mazgani.amongus.shiptasks.ShipTask;
 
 public class AUGame
@@ -32,8 +33,8 @@ public class AUGame
 	private final GameMap map;
 	private Set<ShipTask> tasks = new HashSet<>();
 	private final GameCorpsesFactory corpsesFactory;
-	private final Map<UUID, GamePlayer> players;
-	
+	final Map<UUID, GamePlayer> players;
+
 	private GameState state = GameState.INIT;
 
 	AUGame(UUID uuid, GameLobby lobby, GameMap map, GameCorpsesFactory corpsesFactory)
@@ -42,10 +43,7 @@ public class AUGame
 		this.lobby = lobby;
 		this.map = map;
 		this.corpsesFactory = corpsesFactory;
-
-		this.players = lobby.getGamePlayersView().stream().collect(toMap(
-						lobbyPlayer -> lobbyPlayer.getPlayer().getUniqueId(),
-						lobbyPlayer -> new GamePlayer(lobbyPlayer.getPlayer(), lobbyPlayer.getColor(), this)));
+		this.players = lobby.getPlayersView().stream().collect(toMap(AUPlayer::getPlayerUUID, auPlayer -> new GamePlayer(auPlayer, this)));
 	}
 	public UUID getUUID() 
 	{
@@ -83,35 +81,37 @@ public class AUGame
 	}
 	public void addPlayer(GamePlayer player) 
 	{
-		this.players.put(player.getPlayer().getUniqueId(), player);
-	}
-	public void spawnCorpse(GamePlayer player, Location location) 
-	{
-		BasicGameCorpse corpse = this.corpsesFactory.generateCorpse(player, this);
-		corpse.spawn(corpse.computeBestLocation(location));
+		UUID playerUUID = player.getAUPlayer().getPlayer().getUniqueId();
 		
-		player.setCorpse(corpse);
+		this.players.put(playerUUID, player);
+	}
+	public void spawnCorpse(GamePlayer whoDied, Location deathLocation) 
+	{
+		BasicGameCorpse corpse = this.corpsesFactory.generateCorpse(whoDied, this);
+		whoDied.setCorpse(corpse);
+
+		corpse.spawn(corpse.computeBestLocation(deathLocation));
 	}
 	public long playersLeft() 
 	{
 		return this.players.size();
 	}
-	public long playersLeft(Role role)
+	public long playersLeft(GameRole role)
 	{
 		return this.players.values().stream()
 				.filter(player -> player.getRole() == role)
 				.count();
 	}
-	public boolean isWin() 
+	public boolean isWin()
 	{
 		return isTie();
 	}
 	public boolean isTie() 
 	{
-		Map<Role, List<GamePlayer>> rolesPlayersLeft = this.players.values().stream()
+		Map<GameRole, List<GamePlayer>> rolesPlayersLeft = this.players.values().stream()
 				.filter(player -> !player.isSpectator())
 				.collect(groupingBy(GamePlayer::getRole));
-		
+
 		//make sure the distinct amounts of players is 1 - so all the teams have the same amount of players
 		return rolesPlayersLeft.values().stream()
 				.mapToInt(List::size)
@@ -129,7 +129,7 @@ public class AUGame
 	public Set<Player> getPlayersView()
 	{
 		return this.players.values().stream()
-				.map(GamePlayer::getPlayer)
+				.map(gamePlayer -> gamePlayer.getAUPlayer().getPlayer())
 				.collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
 	}
 
@@ -144,15 +144,15 @@ public class AUGame
 	{
 		if(this == object)
 			return true;
-		
+
 		if(object == null)
 			return false;
-		
+
 		if(getClass() != object.getClass())
 			return false;
-		
+
 		AUGame other = (AUGame) object;
-		
+
 		return Objects.equals(this.uuid, other.uuid);
 	}
 	private void verifyInInit(String errorMessage) 

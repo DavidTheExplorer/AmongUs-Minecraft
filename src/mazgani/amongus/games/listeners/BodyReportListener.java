@@ -19,11 +19,11 @@ public class BodyReportListener implements Listener
 		
 		notifyDeath(event.getCorpseFound().getWhoDied());
 	}
-	private void notifyDeath(GamePlayer dead) 
+	private void notifyDeath(GamePlayer whoDied) 
 	{
-		String coloredDeadName = dead.getColor().getColoredName();
+		String coloredDeadName = whoDied.getAUPlayer().getVisibilityManager().getCurrentColor().getColor() + whoDied.getAUPlayer().getPlayer().getName();
 		
-		for(Player player : dead.getGame().getPlayersView())
+		for(Player player : whoDied.getGame().getPlayersView())
 		{
 			player.sendMessage(ChatColor.WHITE + coloredDeadName + ChatColor.WHITE + "'s corpse was found!");
 		}

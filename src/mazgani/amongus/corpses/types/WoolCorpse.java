@@ -27,7 +27,7 @@ public class WoolCorpse extends BasicGameCorpse
 	@Override
 	public void initComponents(Location location) 
 	{
-		List<Block> blocks = BlockUtilities.getSideBlocks(location.getBlock(), BlockUtilities.SURROUNDING_FACES);
+		List<Block> blocks = BlockUtilities.getFacedBlocks(location.getBlock(), BlockUtilities.SURROUNDING_FACES);
 		Collections.shuffle(blocks);
 		
 		List<Block> half = blocks.subList(0, blocks.size()/2);

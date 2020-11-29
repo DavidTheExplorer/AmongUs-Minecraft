@@ -27,7 +27,7 @@ public class WoolsCompositeCorpse extends CompositeCorpse
 	@Override
 	public Set<GameCorpseComponent> computeUniqueComponents() 
 	{
-		List<GameCorpseComponent> woolsComponents = computeDuplicatedComponents().get(BlockComponent.class);
+		List<GameCorpseComponent> woolsComponents = computeDuplicateComponents().get(BlockComponent.class);
 
 		return woolsComponents.stream()
 				.map(component -> (BlockComponent) component)

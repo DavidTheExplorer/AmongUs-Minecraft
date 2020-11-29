@@ -51,13 +51,13 @@ public class GraveCorpse extends BasicGameCorpse
 	}
 	private Material getBodyMaterial() 
 	{
-		String deadColorName = getWhoDied().getColor().name();
+		String deadColorName = getWhoDied().getAUPlayer().getVisibilityManager().getCurrentColor().name();
 		
 		return Material.valueOf(deadColorName + "_WOOL");
 	}
 	private List<BlockComponent> getGraveAround(Block bodyBlock)
 	{
-		Block[] graveBlocks = BlockUtilities.getSideBlocks(bodyBlock, BlockUtilities.SURROUNDING_FACES).stream().toArray(Block[]::new);
+		Block[] graveBlocks = BlockUtilities.getFacedBlocks(bodyBlock, BlockUtilities.SURROUNDING_FACES).stream().toArray(Block[]::new);
 		
 		return IntStream.range(0, graveBlocks.length)
 				.mapToObj(i -> new BlockChangeComponent(this, graveBlocks[i], getGraveBlockMaterial(i)))

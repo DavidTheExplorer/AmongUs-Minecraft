@@ -19,7 +19,7 @@ public class ImpostorKillEvent extends Event
 	{
 		this.impostor = impostor;
 		this.deadCrewmate = deadCrewmate;
-		this.deathLocation = deadCrewmate.getPlayer().getLocation();
+		this.deathLocation = deadCrewmate.getAUPlayer().getPlayer().getLocation();
 		this.game = game;
 	}
 	public GamePlayer getImpostor() 

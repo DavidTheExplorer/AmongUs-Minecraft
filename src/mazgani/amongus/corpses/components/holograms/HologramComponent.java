@@ -6,47 +6,53 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 
 import mazgani.amongus.corpses.BasicGameCorpse;
 import mazgani.amongus.corpses.components.CorpseComponentBase;
-import mazgani.amongus.holograms.EquallbleHologram;
+import mazgani.amongus.utilities.HologramUtilities;
 
 public class HologramComponent extends CorpseComponentBase
 {
-	protected final EquallbleHologram spawnedHologram;
-	
-	public HologramComponent(BasicGameCorpse corpse, EquallbleHologram spawnedHologram)
+	protected Hologram hologram;
+
+	public HologramComponent(BasicGameCorpse corpse, Hologram hiddenHologram)
 	{
 		super(corpse);
 		
-		this.spawnedHologram = spawnedHologram;
+		this.hologram = hiddenHologram;
 	}
-	
+	public static HologramComponent of(BasicGameCorpse corpse, Hologram hologram) 
+	{
+		HologramUtilities.setVisibility(hologram, false);
+		
+		return new HologramComponent(corpse, hologram);
+	}
+
 	@Override
 	public Location getLocation() 
 	{
-		return this.spawnedHologram.getLocation();
+		return this.hologram.getLocation();
 	}
-	public Hologram getHologram() 
+	public Hologram getSpawnedHologram() 
 	{
-		return this.spawnedHologram;
+		return this.hologram;
 	}
-	
+
 	@Override
 	public void spawn()
 	{
-		//Since holograms are created & spawned at the same time, it's already spawned
+		HologramUtilities.setVisibility(this.hologram, true);
 	}
-	
+
 	@Override
 	public void despawn() 
 	{
-		this.spawnedHologram.delete();
+		this.hologram.delete();
 	}
-	
+
 	@Override
 	public int hashCode() 
 	{
-		return this.spawnedHologram.hashCode();
+		return this.hologram.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object object) 
 	{
@@ -60,6 +66,6 @@ public class HologramComponent extends CorpseComponentBase
 		}
 		HologramComponent component = (HologramComponent) object;
 		
-		return this.spawnedHologram.equals(component.spawnedHologram);
+		return this.hologram.equals(component.hologram);
 	}
 }

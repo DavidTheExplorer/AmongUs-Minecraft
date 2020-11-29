@@ -19,23 +19,23 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 {
 	//a corpse is a bunch of components(blocks, holograms, etc)
 	private final List<GameCorpseComponent> components = new ArrayList<>();
-	
+
 	//the corpse's data
 	private final GamePlayer whoDied;
 	private final AUGame game;
-	
+
 	public BasicGameCorpse(GamePlayer whoDied, AUGame game)
 	{
 		this.whoDied = whoDied;
 		this.game = game;
 	}
-	
+
 	@Override
 	public GamePlayer getWhoDied()
 	{
 		return this.whoDied;
 	}
-	
+
 	@Override
 	public AUGame getGame() 
 	{
@@ -49,7 +49,7 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	{
 		Bukkit.getPluginManager().callEvent(new BodyReportEvent(this, reporter));
 	}
-	
+
 	/**
 	 * Returns the closest appropriate location to spawn this body at, <b>depending</b> on the implementation of <i>BasicGameCorpse</i>.
 	 * The default implementation covers the case when the corpse would spawn mid-air, but again it wouldn't necessarily happen.
@@ -60,20 +60,20 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	public Location computeBestLocation(Location deathLocation) 
 	{
 		Location bestLocation;
-		
+
 		//avoid spawning the corpse mid-air
 		bestLocation = BlockUtilities.computeLowestBlock(deathLocation).getLocation();
-		
+
 		return bestLocation;
 	}
-	
+
 	/** Despawns all the components this corpse consists of. */
 	@Override
 	public void despawn()
 	{
 		this.components.forEach(GameCorpseComponent::despawn);
 	}
-	
+
 	/**
 	 * Spawns this corpse at the closest appropriate location to the provided {@code location}.
 	 * <p>
@@ -86,23 +86,22 @@ public abstract class BasicGameCorpse implements AbstractGameCorpse
 	{
 		Location bestLocation = computeBestLocation(deathLocation.clone());
 		initComponents(bestLocation);
-		
+
 		this.components.forEach(GameCorpseComponent::spawn);
 	}
-	
+
 	public List<GameCorpseComponent> getComponentsView()
 	{
 		return Collections.unmodifiableList(this.components);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <T extends GameCorpseComponent> List<T> getComponents(Class<T> componentClass)
 	{
-		List<GameCorpseComponent> classComponents = this.components.stream()
+		return this.components.stream()
 				.filter(component -> componentClass.isAssignableFrom(component.getClass()))
+				.map(component -> (T) component)
 				.collect(toList());
-		
-		return (List<T>) classComponents;
 	}
 	public abstract void initComponents(Location bestLocation);
 }

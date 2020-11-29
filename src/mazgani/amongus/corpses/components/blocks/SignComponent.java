@@ -29,7 +29,7 @@ public class SignComponent extends BlockChangeComponent
 	}
 
 	@Override
-	public void spawn() 
+	public void spawn()
 	{
 		super.spawn();
 		

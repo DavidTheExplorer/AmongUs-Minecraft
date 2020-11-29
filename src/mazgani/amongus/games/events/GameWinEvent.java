@@ -3,19 +3,19 @@ package mazgani.amongus.games.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import mazgani.amongus.players.Role;
+import mazgani.amongus.players.GameRole;
 
 public class GameWinEvent extends Event
 {
-	private final Role winningRole;
+	private final GameRole winningRole;
 	
 	private static final HandlerList HANDLERS = new HandlerList();
 	
-	public GameWinEvent(Role winningRole) 
+	public GameWinEvent(GameRole winningRole) 
 	{
 		this.winningRole = winningRole;
 	}
-	public Role getWinningRole() 
+	public GameRole getWinningRole() 
 	{
 		return this.winningRole;
 	}

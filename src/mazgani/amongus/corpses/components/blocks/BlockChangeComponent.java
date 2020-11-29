@@ -10,7 +10,7 @@ public class BlockChangeComponent extends BlockComponent
 {
 	private final Material newMaterial;
 	
-	//the data of the block before it's changed to the new data
+	//the original data of the block
 	protected Material capturedMaterial;
 	protected BlockState capturedState;
 
@@ -41,9 +41,7 @@ public class BlockChangeComponent extends BlockComponent
 	@Override
 	public void despawn() 
 	{
-		Block block = getBlock();
-		
-		block.setType(this.capturedMaterial);
+		getBlock().setType(this.capturedMaterial);
 		this.capturedState.update(true);
 	}
 }
