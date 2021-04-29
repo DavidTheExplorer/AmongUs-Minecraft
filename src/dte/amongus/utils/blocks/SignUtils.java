@@ -8,6 +8,9 @@ import org.bukkit.block.Sign;
 
 public class SignUtils 
 {
+	//Container of static methods
+	private SignUtils(){}
+	
 	public static final int LINES_AMOUNT = 4;
 
 	//returns the old lines of the sign
@@ -28,10 +31,10 @@ public class SignUtils
 	{
 		if(lines.length == LINES_AMOUNT)
 			return lines; //the lines amount is exactly 4 - so no fix needed
-
+		
 		else if(lines.length > 4)
 			return Arrays.copyOf(lines, 4); //there are too many lines
-
+		
 		else
 			return insertEmptyLines(lines); //there are less than 4 lines
 	}
@@ -42,9 +45,9 @@ public class SignUtils
 	private static String[] insertEmptyLines(String[] lines)
 	{
 		String[] fixedLines = new String[LINES_AMOUNT];
-
+		
 		Arrays.setAll(fixedLines, i -> (i < lines.length ? lines[i] : ""));
-
+		
 		return fixedLines;
 	}
 }
