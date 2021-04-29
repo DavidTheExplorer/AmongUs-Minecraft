@@ -1,8 +1,8 @@
 name: AmongUS
-main: mazgani.amongus.AmongUs
+main: dte.amongus.AmongUs
 version: 1.0
 api-version: 1.13
 description: The simple Among US game, just beautifully extended in Minecraft.
-softdepend: [HolographicDisplays]
+softdepend: [HolographicDisplays, WorldGuard]
 commands:
     amongus:

@@ -1,0 +1,31 @@
+package dte.amongus.player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import dte.amongus.games.players.AUGamePlayer;
+
+public class AUPlayersManager
+{
+	private final Map<UUID, AUPlayer> playerByUUID = new HashMap<>();
+	
+	public AUPlayer getAUPlayer(UUID playerUUID)
+	{
+		return this.playerByUUID.get(playerUUID);
+	}
+	public AUPlayer getAUPlayer(AUGamePlayer gamePlayer)
+	{
+		UUID playerUUID = gamePlayer.getPlayer().getUniqueId();
+		
+		return getAUPlayer(playerUUID);
+	}
+	public void register(UUID playerUUID)
+	{
+		this.playerByUUID.put(playerUUID, new AUPlayer(playerUUID));
+	}
+	public void unregister(UUID playerUUID)
+	{
+		this.playerByUUID.remove(playerUUID);
+	}
+}
