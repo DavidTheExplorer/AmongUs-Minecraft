@@ -14,12 +14,11 @@ public abstract class ProgressionTask extends SimpleShipTask
 		this.maxProgression = maxProgression;
 	}
 	
-	//returns if after the progression was added, the player finished the task
+	//returns whether the player finished the task after the progression was added
 	public boolean addProgression(AUGamePlayer gamePlayer, int amount)
 	{
 		int newProgression = getProgression(gamePlayer) + amount;
 		
-		//if the new progression is enough to finish the task, mark the player as a finisher
 		if(newProgression > this.maxProgression) 
 		{
 			setFinished(gamePlayer);

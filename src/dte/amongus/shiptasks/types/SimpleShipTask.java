@@ -2,6 +2,8 @@ package dte.amongus.shiptasks.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
@@ -12,7 +14,7 @@ public abstract class SimpleShipTask implements ShipTask
 	private final String name, description;
 	private final AUGame game;
 	private final Map<AUGamePlayer, Map<String, Object>> playersData = new HashMap<>();
-	
+
 	public SimpleShipTask(String name, String description, AUGame game) 
 	{
 		this.name = name;
@@ -25,53 +27,64 @@ public abstract class SimpleShipTask implements ShipTask
 	{
 		return this.name;
 	}
-	
+
 	@Override
 	public String getDescription() 
 	{
 		return this.description;
 	}
-	
+
 	@Override
 	public AUGame getGame() 
 	{
 		return this.game;
 	}
-	
+
 	@Override
 	public void setFinished(AUGamePlayer gamePlayer) 
 	{
 		setData(gamePlayer, "Finished", true);
 	}
-	
+
 	@Override
 	public boolean hasFinished(AUGamePlayer gamePlayer) 
 	{
-		return (boolean) getData(gamePlayer, "Finished");
+		return getData(gamePlayer, "Finished")
+				.map(Boolean.class::cast)
+				.orElse(false);
 	}
-	
-	public void setData(AUGamePlayer gamePlayer, String data, Object value) 
+
+	public void setData(AUGamePlayer gamePlayer, String data, Object value)
 	{
 		this.playersData.computeIfAbsent(gamePlayer, d -> new HashMap<>()).put(data, value);
 	}
-	public void removeData(AUGamePlayer gamePlayer, String data) 
+	public void removeData(AUGamePlayer gamePlayer, String data)
 	{
 		Map<String, Object> playerData = this.playersData.get(gamePlayer);
-		
+
 		if(playerData != null)
 			playerData.remove(data);
 	}
-	public Object getData(AUGamePlayer gamePlayer, String data) 
+	public Optional<Object> getData(AUGamePlayer gamePlayer, String data) 
 	{
-		return this.playersData.getOrDefault(gamePlayer, new HashMap<>()).get(data);
+		Map<String, Object> playerData = this.playersData.get(gamePlayer);
+
+		if(playerData == null)
+			return null;
+
+		return Optional.ofNullable(playerData.get(data));
 	}
 	public Object getOrPut(AUGamePlayer gamePlayer, String data, Object defaultIfAbsent) 
 	{
-		Map<String, Object> playerData = this.playersData.computeIfAbsent(gamePlayer, v -> new HashMap<>());
-		
-		return playerData.computeIfAbsent(data, v -> defaultIfAbsent);
+		return getOrPut(gamePlayer, data, () -> defaultIfAbsent);
 	}
-	
+	public Object getOrPut(AUGamePlayer gamePlayer, String data, Supplier<Object> defaultSupplier) 
+	{
+		Map<String, Object> playerData = this.playersData.computeIfAbsent(gamePlayer, v -> new HashMap<>());
+
+		return playerData.computeIfAbsent(data, v -> defaultSupplier.get());
+	}
+
 	@Override
 	public String toString() 
 	{

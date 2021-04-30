@@ -1,31 +1,35 @@
 package dte.amongus.shiptasks.types.inventory;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ObjectUtils;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
-import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.ShipTask;
 import dte.amongus.utils.InventoryUtils;
+import dte.amongus.utils.items.ItemBuilder;
 
 public abstract class TaskInventoryManager<T extends ShipTask>
 {
 	protected final T task;
-	protected final AUGame game;
-
-	public TaskInventoryManager(T task, AUGame game) 
+	
+	public TaskInventoryManager(T task) 
 	{
 		this.task = task;
-		this.game = game;
 	}
-	protected InventoryBuilder newInventoryBuilder(int lines) 
+	public InventoryBuilder newInventoryBuilder(int lines) 
 	{
 		return new InventoryBuilder(lines);
 	}
+	
 	public abstract Inventory createInventory(AUGamePlayer opener);
 	public abstract boolean wasInvolvedAt(InventoryEvent event);
+	public abstract void onInventoryClick(InventoryClickEvent event); //change to return a boolean that indicates whether the player finished the task
 	
 	public class InventoryBuilder
 	{
@@ -34,21 +38,21 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 		
 		//walls data
 		private boolean buildWalls;
-		private Material wallsMaterial;
+		private ItemStack wallsItem;
 		
 		public InventoryBuilder(int lines) 
 		{
 			this.lines = lines;
 		}
-		public InventoryBuilder withWalls(Material material) 
+		public InventoryBuilder withWalls(ItemStack wallsItem) 
 		{
 			this.buildWalls = true;
-			this.wallsMaterial = material;
+			this.wallsItem = wallsItem;
 			return this;
 		}
 		public InventoryBuilder withWalls() 
 		{
-			return withWalls(Material.BLACK_STAINED_GLASS_PANE);
+			return withWalls(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).named(ChatColor.BLACK + "-").createCopy());
 		}
 		public InventoryBuilder named(String customName) 
 		{
@@ -57,16 +61,17 @@ public abstract class TaskInventoryManager<T extends ShipTask>
 		}
 		public Inventory build()
 		{
-			Inventory inv = Bukkit.createInventory(null, 9 * this.lines, getName());
+			Inventory inv = Bukkit.createInventory(null, 9 * this.lines, createTitle());
 
 			if(this.buildWalls) 
-				InventoryUtils.buildWalls(inv, this.wallsMaterial);
+				InventoryUtils.buildWalls(inv, this.wallsItem);
 
 			return inv;
 		}
-		private String getName() 
+		
+		private String createTitle() 
 		{
-			String description = this.customName != null ? this.customName : TaskInventoryManager.this.task.getDescription();
+			String description = ObjectUtils.defaultIfNull(this.customName, TaskInventoryManager.this.task.getDescription());
 			
 			return String.format("Task > %s", description);
 		}

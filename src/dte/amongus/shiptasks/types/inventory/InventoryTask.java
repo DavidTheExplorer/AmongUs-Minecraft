@@ -1,9 +1,8 @@
 package dte.amongus.shiptasks.types.inventory;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
+import dte.amongus.shiptasks.ShipTask;
 
-public interface InventoryTask<IM extends TaskInventoryManager<?>>
+public interface InventoryTask<IM extends TaskInventoryManager<?>> extends ShipTask
 {
 	IM getInventoryManager();
-	void onInventoryClick(InventoryClickEvent event);
 }
