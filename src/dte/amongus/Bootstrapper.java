@@ -12,22 +12,28 @@ import dte.amongus.listeners.games.BodyReportListener;
 import dte.amongus.listeners.games.GameWinListener;
 import dte.amongus.listeners.games.ImpostorKillListener;
 import dte.amongus.listeners.games.StartGameListener;
+import dte.amongus.listeners.general.AUPlayerRegistrationListeners;
 import dte.amongus.listeners.lobbies.LobbyLeaveListeners;
 import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
+import dte.amongus.listeners.tasks.InventoryTasksListener;
 import dte.amongus.lobby.LobbiesManager;
 import dte.amongus.player.AUPlayersManager;
+import dte.amongus.shiptasks.ShipTaskService;
 
 class Bootstrapper
 {
 	private AUPlayersManager auPlayersManager;
 	private LobbiesManager lobbiesManager;
 	private GamesManager gamesManager;
+	private ShipTaskService shipTaskService;
 	
 	private HolographicDisplaysHook hdHook;
 	
+	private static final AmongUs AMONG_US = AmongUs.getInstance();
+	
 	public void bootstrap()
 	{
-		AmongUs.getInstance().saveDefaultConfig();
+		AMONG_US.saveDefaultConfig();
 		
 		setupHooks();
 		setupManagers();
@@ -39,6 +45,7 @@ class Bootstrapper
 		this.auPlayersManager = new AUPlayersManager();
 		this.lobbiesManager = new LobbiesManager();
 		this.gamesManager = new GamesManager();
+		this.shipTaskService = new ShipTaskService();
 		
 		GamePlayerUtils.setup(this.auPlayersManager);
 		CooldownBuilder.setCooldownsManager(new CooldownsManager());
@@ -47,13 +54,16 @@ class Bootstrapper
 	}
 	private void registerCommands() 
 	{
-		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gamesManager, this.auPlayersManager, this.lobbiesManager);
-		AmongUs.getInstance().getCommand("amongus").setExecutor(amongUsCommand);
-		AmongUs.getInstance().getCommand("amongus").setTabCompleter(amongUsCommand);
+		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gamesManager, this.auPlayersManager, this.lobbiesManager, this.shipTaskService);
+		AMONG_US.getCommand("amongus").setExecutor(amongUsCommand);
+		AMONG_US.getCommand("amongus").setTabCompleter(amongUsCommand);
 	}
 	private void registerListeners()
 	{
-		AmongUs.getInstance().registerListeners(
+		AMONG_US.registerListeners(
+				
+				//General
+				new AUPlayerRegistrationListeners(this.auPlayersManager),
 				
 				//Retrieving
 				new ImpostorKillRetrieverListener(this.gamesManager),
@@ -65,7 +75,8 @@ class Bootstrapper
 				new StartGameListener(this.gamesManager),
 				new ImpostorKillListener(), 
 				new GameWinListener(),
-				new BodyReportListener()
+				new BodyReportListener(),
+				new InventoryTasksListener(this.shipTaskService, this.gamesManager)
 				);
 	}
 	private void setupHooks() 
