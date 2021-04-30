@@ -23,7 +23,7 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.playersManager.register(playerUUID);
+		this.playersManager.load(playerUUID);
 	}
 	
 	@EventHandler
@@ -31,6 +31,6 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.playersManager.unregister(playerUUID);
+		this.playersManager.unload(playerUUID);
 	}
 }

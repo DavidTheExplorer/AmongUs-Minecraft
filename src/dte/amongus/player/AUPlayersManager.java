@@ -20,11 +20,11 @@ public class AUPlayersManager
 		
 		return getAUPlayer(playerUUID);
 	}
-	public void register(UUID playerUUID)
+	public void load(UUID playerUUID)
 	{
 		this.playerByUUID.put(playerUUID, new AUPlayer(playerUUID));
 	}
-	public void unregister(UUID playerUUID)
+	public void unload(UUID playerUUID)
 	{
 		this.playerByUUID.remove(playerUUID);
 	}
