@@ -16,12 +16,13 @@ public class LobbySign extends DisplaySign implements LobbyStateListener
 	{
 		super(sign);
 
-		this.lobby = lobby;
+		this.lobby = lobby;	
 		
-		setBaseLines(
-				String.format(getLobbyColor() + "[AmongUs #%s]", this.lobby.getID().toString().substring(0, 5)), 
-				String.format("%d/%d", this.lobby.getPlayers().size(), this.lobby.getSettings().getPlayersRequired())
-				);
+		setBaseLinesSupplier(() -> new String[]
+				{
+						String.format(getLobbyColor() + "[AmongUs #%s]", this.lobby.getID().toString().substring(0, 5)), 
+						String.format("%d/%d", this.lobby.getPlayers().size(), this.lobby.getSettings().getPlayersRequired())
+				});
 	}
 
 	@Override
