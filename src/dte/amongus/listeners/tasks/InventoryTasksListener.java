@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGameService;
-import dte.amongus.shiptasks.ShipTaskService;
-import dte.amongus.shiptasks.types.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.service.ShipTaskService;
 
 public class InventoryTasksListener implements Listener
 {

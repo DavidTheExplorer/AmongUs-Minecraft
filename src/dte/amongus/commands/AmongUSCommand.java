@@ -32,8 +32,8 @@ import dte.amongus.player.AUPlayer;
 import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
-import dte.amongus.shiptasks.ShipTaskService;
-import dte.amongus.shiptasks.list.wires.WiresTask;
+import dte.amongus.shiptasks.service.ShipTaskService;
+import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter

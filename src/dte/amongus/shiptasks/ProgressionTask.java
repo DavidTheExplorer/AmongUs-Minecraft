@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.types;
+package dte.amongus.shiptasks;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
