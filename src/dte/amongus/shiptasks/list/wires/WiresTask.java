@@ -1,5 +1,7 @@
 package dte.amongus.shiptasks.list.wires;
 
+import java.util.Optional;
+
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGame;
@@ -10,7 +12,7 @@ import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresTask extends ProgressionTask implements InventoryTask<WiresInventoryManager>
 {
-	private final WiresInventoryManager wiresInvManager = new WiresInventoryManager(this);
+	private final WiresInventoryManager inventoryManager = new WiresInventoryManager(this);
 
 	public static final int WIRES_AMOUNT = 4;
 	
@@ -22,19 +24,23 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresInv
 	@Override
 	public WiresInventoryManager getInventoryManager() 
 	{
-		return this.wiresInvManager;
-	}
-	
-	@SuppressWarnings("unchecked") //this project calls this method in the appropriate times
-	public Pair<Integer, ItemStack> getCurrentWire(AUGamePlayer gamePlayer)
-	{
-		return getData(gamePlayer, "Current Wire")
-				.map(data -> (Pair<Integer, ItemStack>) data)
-				.orElse(null);
+		return this.inventoryManager;
 	}
 	
 	public void setCurrentWire(AUGamePlayer gamePlayer, int inventorySlot, ItemStack wire) 
 	{
 		setData(gamePlayer, "Current Wire", Pair.of(inventorySlot, wire));
+	}
+	
+	public void removeCurrentWire(AUGamePlayer gamePlayer) 
+	{
+		removeData(gamePlayer, "Current Wire");
+	}
+	
+	@SuppressWarnings("unchecked") //safe cast if the API is used correctly
+	public Optional<Pair<Integer, ItemStack>> getCurrentWire(AUGamePlayer gamePlayer)
+	{
+		return getData(gamePlayer, "Current Wire")
+				.map(data -> (Pair<Integer, ItemStack>) data);
 	}
 }

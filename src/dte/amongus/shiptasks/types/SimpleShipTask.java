@@ -69,10 +69,8 @@ public abstract class SimpleShipTask implements ShipTask
 	{
 		Map<String, Object> playerData = this.playersData.get(gamePlayer);
 
-		if(playerData == null)
-			return null;
-
-		return Optional.ofNullable(playerData.get(data));
+		return Optional.ofNullable(playerData)
+				.map(playerDataArg -> playerDataArg.get(data));
 	}
 	public Object getOrPut(AUGamePlayer gamePlayer, String data, Object defaultIfAbsent) 
 	{

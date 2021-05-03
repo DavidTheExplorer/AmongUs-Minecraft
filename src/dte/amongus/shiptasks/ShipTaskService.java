@@ -10,7 +10,7 @@ public class ShipTaskService
 {
 	private final Map<AUGamePlayer, ShipTask> currentlyDoing = new HashMap<>();
 	
-	public Optional<ShipTask> getCurrentlyDoing(AUGamePlayer gamePlayer)
+	public Optional<ShipTask> getPlayerTask(AUGamePlayer gamePlayer)
 	{
 		return Optional.ofNullable(this.currentlyDoing.get(gamePlayer));
 	}

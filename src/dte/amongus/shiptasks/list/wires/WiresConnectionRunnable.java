@@ -1,53 +1,58 @@
 package dte.amongus.shiptasks.list.wires;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 
 public class WiresConnectionRunnable extends BukkitRunnable
 {
-	private final Inventory wiresInv;
+	private final Inventory wiresInventory;
 	private final int startIndex, endIndex;
-	private final Queue<Material> progressionMaterials;
+	private final Material connectionMaterial;
+	
+	private int currentIndex;
+	private boolean isFirstRun;
+	
+	private static final ItemBuilder CONNECTED_BUILDER = new ItemBuilder(Material.BLACK_STAINED_GLASS, ChatColor.GRAY + "Connected.");
 
-	private Material currentConnectorMaterial;
-
-	public WiresConnectionRunnable(Inventory wiresInv, int startIndex, int endIndex, Material... progressionMaterials) 
+	public WiresConnectionRunnable(Inventory wiresInventory, int startIndex, int endIndex, Material connectionMaterial) 
 	{
-		this.wiresInv = wiresInv;
+		this.wiresInventory = wiresInventory;
 		this.startIndex = startIndex;
 		this.endIndex = endIndex;
-		this.progressionMaterials = new LinkedList<>(Arrays.asList(progressionMaterials));
+		this.connectionMaterial = connectionMaterial;
+		
+		this.currentIndex = startIndex;
+		this.isFirstRun = true;
 	}
 
 	@Override
 	public void run() 
 	{
-		if(this.progressionMaterials.isEmpty()) 
+		if(this.currentIndex == (this.endIndex+1)) 
 		{
+			this.wiresInventory.setItem(this.currentIndex-1, CONNECTED_BUILDER.createCopy());
+			
+			//remove the glow from both wires
+			GlowEffect.deleteGlow(this.wiresInventory.getItem(this.endIndex+1));
+			GlowEffect.deleteGlow(this.wiresInventory.getItem(this.startIndex-1));
+			
 			cancel();
 			return;
 		}
-		this.currentConnectorMaterial = this.progressionMaterials.poll();
-		refreshConnectors();
-	}
-	public Material getCurrentConnectorMaterial() 
-	{
-		return this.currentConnectorMaterial;
-	}
-	private void refreshConnectors() 
-	{
-		ItemStack currentConnector = new ItemBuilder(this.currentConnectorMaterial, ChatColor.WHITE + "Connecting...").createCopy();
-
-		for(int i = this.startIndex; i <= this.endIndex; i++)
-			this.wiresInv.setItem(i, currentConnector);
+		this.wiresInventory.setItem(this.currentIndex, new ItemBuilder(this.connectionMaterial, ChatColor.WHITE + "Connecting...").createCopy());
+		
+		//set the index before as connected
+		if(!this.isFirstRun)
+			this.wiresInventory.setItem(this.currentIndex -1, CONNECTED_BUILDER.createCopy());
+		
+		this.currentIndex++;
+		
+		if(this.isFirstRun)
+			this.isFirstRun = false;
 	}
 }
