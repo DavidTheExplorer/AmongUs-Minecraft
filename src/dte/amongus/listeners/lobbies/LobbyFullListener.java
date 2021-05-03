@@ -1,17 +1,20 @@
-package dte.amongus.listeners.games;
+package dte.amongus.listeners.lobbies;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import dte.amongus.events.games.GameStartEvent;
 import dte.amongus.events.lobbies.LobbyFullEvent;
+import dte.amongus.games.AUGame;
 import dte.amongus.games.GamesManager;
 import dte.amongus.lobby.AULobby;
 
-public class StartGameListener implements Listener
+public class LobbyFullListener implements Listener
 {
 	private final GamesManager gamesManager;
 	
-	public StartGameListener(GamesManager gamesManager)
+	public LobbyFullListener(GamesManager gamesManager)
 	{
 		this.gamesManager = gamesManager;
 	}
@@ -20,6 +23,8 @@ public class StartGameListener implements Listener
 	public void startGameOnLobbyFull(LobbyFullEvent event) 
 	{
 		AULobby lobby = event.getLobby();
-		this.gamesManager.registerNewGame(lobby, lobby.getGameMap());
+		
+		AUGame newGame = this.gamesManager.registerNewGame(lobby, lobby.getGameMap());
+		Bukkit.getPluginManager().callEvent(new GameStartEvent(newGame));
 	}
 }

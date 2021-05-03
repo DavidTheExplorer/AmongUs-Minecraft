@@ -38,15 +38,15 @@ public class ImpostorKillRetrieverListener implements Listener
 
 		AUGame game = this.gamesManager.getPlayerGame(damager).get();
 		AUGamePlayer damagerGP = game.getPlayer(damager);
-		AUGamePlayer damagedGP = game.getPlayer(damager);
+		AUGamePlayer damagedGP = game.getPlayer(damaged);
 
 		if(damagerGP instanceof Crewmate)
 		{
-			damager.sendMessage(ChatColor.RED + "Attack cancelled! He is your friend.. or is he?");
+			damager.sendMessage(ChatColor.RED + "Attack cancelled! He is your friend... or is he?");
 			event.setCancelled(true);
 			return;
 		}
-		if(damagedGP instanceof Impostor) 
+		if(damagerGP instanceof Impostor && damagedGP instanceof Impostor)
 		{
 			damager.sendMessage(ChatColor.RED + "You cannot kill other impostors.");
 			event.setCancelled(true);
