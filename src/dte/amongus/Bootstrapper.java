@@ -9,10 +9,11 @@ import dte.amongus.holograms.equallable.SimpleEquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;
 import dte.amongus.internal.GamePlayerUtils;
 import dte.amongus.listeners.games.BodyReportListener;
+import dte.amongus.listeners.games.GameStartListener;
 import dte.amongus.listeners.games.GameWinListener;
 import dte.amongus.listeners.games.ImpostorKillListener;
-import dte.amongus.listeners.games.StartGameListener;
 import dte.amongus.listeners.general.AUPlayerRegistrationListeners;
+import dte.amongus.listeners.lobbies.LobbyFullListener;
 import dte.amongus.listeners.lobbies.LobbyLeaveListeners;
 import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
 import dte.amongus.listeners.tasks.InventoryTasksListener;
@@ -72,7 +73,8 @@ class Bootstrapper
 				new LobbyLeaveListeners(this.lobbiesManager),
 
 				//Game
-				new StartGameListener(this.gamesManager),
+				new GameStartListener(),
+				new LobbyFullListener(this.gamesManager),
 				new ImpostorKillListener(), 
 				new GameWinListener(),
 				new BodyReportListener(),

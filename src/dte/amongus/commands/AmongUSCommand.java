@@ -1,5 +1,6 @@
 package dte.amongus.commands;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
@@ -16,13 +17,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import dte.amongus.AmongUs;
 import dte.amongus.corpses.factory.SimpleCorpseFactory;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.GamesManager;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
+import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.lobby.LobbiesManager;
 import dte.amongus.lobby.LobbiesManager.LobbyBuilder;
@@ -128,16 +130,16 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			{
 				if(requestedTempLobby(player, false))
 					return false;
-				
+
 				Block block = player.getTargetBlock(null, 10);
-				
+
 				if(!(block.getState() instanceof Sign)) 
 				{
 					player.sendMessage(ChatColor.RED + "You must be looking at an Empty Sign.");
 					return false;
 				}
 				Sign sign = (Sign) block.getState();
-				
+
 				if(!Arrays.stream(sign.getLines()).allMatch(String::isEmpty))
 				{
 					player.sendMessage(ChatColor.RED + "The Sign you are looking at must be Empty!");
@@ -147,7 +149,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 						.joinableBy(sign)
 						.build(this.lobbiesManager);
 				player.sendMessage(ChatColor.GREEN + "You successfully created a new lobby in your Location.");
-				
+
 				this.tempLobby.addPlayer(this.auPlayersManager.getAUPlayer(player.getUniqueId()));
 				player.sendMessage(ChatColor.GREEN + "You were sent to lobby " + toDisplay(this.tempLobby.getID().toString()));
 				return true;
@@ -160,7 +162,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					return false;
 				
 				Player target = Bukkit.getPlayer(args[1]);
-				
+
 				if(target == null)
 				{
 					player.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -172,13 +174,20 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 				player.sendMessage(ChatColor.YELLOW + target.getName() + ChatColor.GREEN + " was sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
 				target.sendMessage(ChatColor.GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
-				
+
 				AUGame game = this.tempLobby.getCurrentGame();
 
 				if(game == null)
 					return false; //a game didn't start because there aren't enough players
 				
-				Bukkit.broadcastMessage(game.toString());
+				Bukkit.broadcastMessage(ChatColor.GREEN + "Crewmates: " + game.getAlivePlayers(Crewmate.class).stream()
+						.map(crewmate -> crewmate.getPlayer().getName())
+						.collect(joining(", ")));
+				
+				Bukkit.broadcastMessage(ChatColor.RED + "Impostors: " + game.getAlivePlayers(Impostor.class).stream()
+						.map(impostor -> impostor.getPlayer().getName())
+						.collect(joining(", ")));
+				
 				openWireTaskInventory(game);
 				return true;
 			}
@@ -227,7 +236,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		}
 		return false;
 	}
-	
+
 	private boolean requestedTempLobby(CommandSender sender, boolean toExist)
 	{
 		if(toExist && this.tempLobby == null)
@@ -242,12 +251,12 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		}
 		return false;
 	}
-	
+
 	private static String toDisplay(String stringUUID) 
 	{
 		return ChatColor.YELLOW + "#" + stringUUID.substring(0, 8);
 	}
-	
+
 	private void openWireTaskInventory(AUGame game)
 	{
 		List<WiresTask> wiresTasks = IterableUtils.getElementsOf(WiresTask.class, game.getTasks());
@@ -258,14 +267,11 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			return;
 		}
 		WiresTask wiresTask = wiresTasks.get(0);
-		
+
 		for(AUGamePlayer gamePlayer : game.getAlivePlayers()) 
 		{
-			Inventory wiresInv = wiresTask.getInventoryManager().createInventory(gamePlayer);
-			
 			this.shipTaskService.setDoing(gamePlayer, wiresTask);
-			
-			gamePlayer.getPlayer().openInventory(wiresInv);
+			gamePlayer.getPlayer().openInventory(wiresTask.getInventoryManager().createInventory(gamePlayer));
 		}
 	}
 }

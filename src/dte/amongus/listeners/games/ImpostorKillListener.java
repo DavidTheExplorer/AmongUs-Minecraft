@@ -20,6 +20,10 @@ import dte.amongus.player.PlayerRole;
 
 public class ImpostorKillListener implements Listener
 {
+	private static final String 
+	IMPOSTOR_PREFIX = ChatColor.DARK_RED + "Impostor" + ChatColor.RED + " > ",
+	CREWMATE_PREFIX = ChatColor.GREEN + "Crewmate" + ChatColor.AQUA + " > ";
+	
 	@EventHandler
 	public void onImpostorKill(ImpostorKillEvent event) 
 	{
@@ -54,13 +58,10 @@ public class ImpostorKillListener implements Listener
 	}
 	private void sendKillMessages(AUGamePlayer impostor, AUGamePlayer crewmate, AUGame game) 
 	{
-		int totalPlayers = game.getPlayers().size();
-		int crewmatesLeft = game.getDeadPlayers(Crewmate.class).size();
+		int crewmatesLeft = game.getAlivePlayers(Crewmate.class).size() - game.getAlivePlayers(Impostor.class).size();
+		impostor.getPlayer().sendMessage(IMPOSTOR_PREFIX + ChatColor.DARK_AQUA + crewmate.getPlayer().getName() + ChatColor.GRAY + " ate it! (" + ChatColor.AQUA + crewmatesLeft + ChatColor.GRAY + " Crewmates Left).");
 
-		impostor.getPlayer().sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + "You killed " + ChatColor.GOLD + crewmate.getPlayer().getName());
-		impostor.getPlayer().sendMessage(ChatColor.YELLOW + "Impostor > " + ChatColor.GREEN + crewmatesLeft + ChatColor.GRAY + "/" + ChatColor.GREEN + totalPlayers);
-
-		crewmate.getPlayer().sendMessage(ChatColor.RED + "You were killed by " + impostor.getPlayer().getName() + "!");
-		crewmate.getPlayer().sendMessage(ChatColor.RED + "You are now a Ghost. You can only communicate with other ghosts, not with players.");
+		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + ChatColor.GRAY + "The Impostor " + ChatColor.RED + impostor.getPlayer().getName() + ChatColor.GRAY + " killed you :(");
+		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + ChatColor.GRAY + "You are now a " + ChatColor.AQUA + "Ghost! " + ChatColor.UNDERLINE + "You can still finish your tasks" + ChatColor.GRAY + ", but not communicate with alive players.");
 	}
 }
