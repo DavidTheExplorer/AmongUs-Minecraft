@@ -2,7 +2,7 @@ package dte.amongus.internal;
 
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.player.AUPlayer;
-import dte.amongus.player.AUPlayersManager;
+import dte.amongus.player.AUPlayerService;
 import dte.amongus.player.visual.PlayerColor;
 
 public class GamePlayerUtils 
@@ -10,15 +10,15 @@ public class GamePlayerUtils
 	//Container of static methods
 	private GamePlayerUtils(){}
 
-	private static AUPlayersManager auPlayersManager;
+	private static AUPlayerService auPlayerService;
 
-	public static void setup(AUPlayersManager auPlayersManager) 
+	public static void setup(AUPlayerService auPlayerService) 
 	{
-		GamePlayerUtils.auPlayersManager = auPlayersManager;
+		GamePlayerUtils.auPlayerService = auPlayerService;
 	}
 	public static AUPlayer toAUPlayer(AUGamePlayer gamePlayer) 
 	{
-		return auPlayersManager.getAUPlayer(gamePlayer);
+		return auPlayerService.getAUPlayer(gamePlayer);
 	}
 	public static PlayerColor getColor(AUGamePlayer gamePlayer) 
 	{

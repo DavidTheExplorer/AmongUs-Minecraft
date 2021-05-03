@@ -3,7 +3,7 @@ package dte.amongus.cooldown;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CooldownsManager
+public class CooldownService
 {
 	private final Map<String, Cooldown> cooldownByName = new HashMap<>();
 	
@@ -16,7 +16,7 @@ public class CooldownsManager
 		
 		return cooldown;
 	}
-	public void registerCooldown(Cooldown cooldown) 
+	public void register(Cooldown cooldown) 
 	{
 		this.cooldownByName.put(cooldown.getName(), cooldown);
 	}

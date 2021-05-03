@@ -7,15 +7,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import dte.amongus.player.AUPlayersManager;
+import dte.amongus.player.AUPlayerService;
 
 public class AUPlayerRegistrationListeners implements Listener
 {
-	private final AUPlayersManager playersManager;
+	private final AUPlayerService auPlayerService;
 	
-	public AUPlayerRegistrationListeners(AUPlayersManager playersManager) 
+	public AUPlayerRegistrationListeners(AUPlayerService auPlayerService) 
 	{
-		this.playersManager = playersManager;
+		this.auPlayerService = auPlayerService;
 	}
 	
 	@EventHandler
@@ -23,7 +23,7 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.playersManager.load(playerUUID);
+		this.auPlayerService.load(playerUUID);
 	}
 	
 	@EventHandler
@@ -31,6 +31,6 @@ public class AUPlayerRegistrationListeners implements Listener
 	{
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		
-		this.playersManager.unload(playerUUID);
+		this.auPlayerService.unload(playerUUID);
 	}
 }

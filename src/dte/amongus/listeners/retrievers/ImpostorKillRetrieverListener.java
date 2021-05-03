@@ -10,18 +10,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import dte.amongus.deathcontext.ImpostorKillContext;
 import dte.amongus.events.games.ImpostorKillEvent;
 import dte.amongus.games.AUGame;
-import dte.amongus.games.GamesManager;
+import dte.amongus.games.AUGameService;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 
 public class ImpostorKillRetrieverListener implements Listener
 {
-	private final GamesManager gamesManager;
+	private final AUGameService gameService;
 
-	public ImpostorKillRetrieverListener(GamesManager gamesManager)
+	public ImpostorKillRetrieverListener(AUGameService gameService)
 	{
-		this.gamesManager = gamesManager;
+		this.gameService = gameService;
 	}
 
 	@EventHandler
@@ -33,10 +33,10 @@ public class ImpostorKillRetrieverListener implements Listener
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
-		if(!this.gamesManager.onSameGame(damager, damaged))
+		if(!this.gameService.onSameGame(damager, damaged))
 			return;
 
-		AUGame game = this.gamesManager.getPlayerGame(damager).get();
+		AUGame game = this.gameService.getPlayerGame(damager).get();
 		AUGamePlayer damagerGP = game.getPlayer(damager);
 		AUGamePlayer damagedGP = game.getPlayer(damaged);
 

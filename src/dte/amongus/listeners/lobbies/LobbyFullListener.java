@@ -7,16 +7,16 @@ import org.bukkit.event.Listener;
 import dte.amongus.events.games.GameStartEvent;
 import dte.amongus.events.lobbies.LobbyFullEvent;
 import dte.amongus.games.AUGame;
-import dte.amongus.games.GamesManager;
+import dte.amongus.games.AUGameService;
 import dte.amongus.lobby.AULobby;
 
 public class LobbyFullListener implements Listener
 {
-	private final GamesManager gamesManager;
+	private final AUGameService gameService;
 	
-	public LobbyFullListener(GamesManager gamesManager)
+	public LobbyFullListener(AUGameService gameService)
 	{
-		this.gamesManager = gamesManager;
+		this.gameService = gameService;
 	}
 	
 	@EventHandler
@@ -24,7 +24,7 @@ public class LobbyFullListener implements Listener
 	{
 		AULobby lobby = event.getLobby();
 		
-		AUGame newGame = this.gamesManager.registerNewGame(lobby, lobby.getGameMap());
+		AUGame newGame = this.gameService.registerNewGame(lobby, lobby.getGameMap());
 		Bukkit.getPluginManager().callEvent(new GameStartEvent(newGame));
 	}
 }

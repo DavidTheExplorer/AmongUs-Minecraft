@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import dte.amongus.games.players.AUGamePlayer;
 
-public class AUPlayersManager
+public class AUPlayerService
 {
 	private final Map<UUID, AUPlayer> playerByUUID = new HashMap<>();
 	

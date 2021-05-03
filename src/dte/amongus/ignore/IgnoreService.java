@@ -7,7 +7,7 @@ import java.util.Set;
 
 import dte.amongus.player.AUPlayer;
 
-public class IgnoresManager
+public class IgnoreService
 {
 	private final Map<AUPlayer, Set<AUPlayer>> playersIgnores = new HashMap<>();
 	

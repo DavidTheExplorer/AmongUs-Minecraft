@@ -6,19 +6,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import dte.amongus.games.GamesManager;
+import dte.amongus.games.AUGameService;
 import dte.amongus.shiptasks.ShipTaskService;
 import dte.amongus.shiptasks.types.inventory.InventoryTask;
 
 public class InventoryTasksListener implements Listener
 {
-	private final GamesManager gamesManager;
+	private final AUGameService gameService;
 	private final ShipTaskService shipTaskService;
 
-	public InventoryTasksListener(ShipTaskService shipTaskService, GamesManager gamesManager) 
+	public InventoryTasksListener(ShipTaskService shipTaskService, AUGameService gameService) 
 	{
 		this.shipTaskService = shipTaskService;
-		this.gamesManager = gamesManager;
+		this.gameService = gameService;
 	}
 
 	@EventHandler
@@ -26,7 +26,7 @@ public class InventoryTasksListener implements Listener
 	{
 		Player player = (Player) event.getWhoClicked();
 		
-		this.gamesManager.getPlayerGame(player)
+		this.gameService.getPlayerGame(player)
 		.map(game -> game.getPlayer(player))
 		.flatMap(gamePlayer -> this.shipTaskService.getPlayerTask(gamePlayer)) //get the player's current task
 		.filter(InventoryTask.class::isInstance) //verify it's an inventory task
