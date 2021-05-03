@@ -28,11 +28,11 @@ public class InventoryTasksListener implements Listener
 		
 		this.gamesManager.getPlayerGame(player)
 		.map(game -> game.getPlayer(player))
-		.flatMap(gamePlayer -> this.shipTaskService.getCurrentlyDoing(gamePlayer))
-		.filter(InventoryTask.class::isInstance)
+		.flatMap(gamePlayer -> this.shipTaskService.getPlayerTask(gamePlayer)) //get the player's current task
+		.filter(InventoryTask.class::isInstance) //verify it's an inventory task
 		.map(InventoryTask.class::cast)
 		.filter(inventoryTask -> inventoryTask.getInventoryManager().wasInvolvedAt(event))
-		.ifPresent(inventoryTask ->
+		.ifPresent(inventoryTask -> 
 		{
 			event.setCancelled(true);
 			
