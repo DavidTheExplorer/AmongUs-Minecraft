@@ -23,7 +23,7 @@ import dte.amongus.maps.GameMap;
 import dte.amongus.shiptasks.list.wires.WiresTask;
 import dte.amongus.utils.java.UUIDProvider;
 
-public class GamesManager
+public class AUGameService
 {
 	private final Set<AUGame> activeGames = new HashSet<>();
 

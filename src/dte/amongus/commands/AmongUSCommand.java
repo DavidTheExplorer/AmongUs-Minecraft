@@ -21,16 +21,15 @@ import org.bukkit.entity.Player;
 import dte.amongus.AmongUs;
 import dte.amongus.corpses.factory.SimpleCorpseFactory;
 import dte.amongus.games.AUGame;
-import dte.amongus.games.GamesManager;
+import dte.amongus.games.AUGameService;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
-import dte.amongus.lobby.LobbiesManager;
-import dte.amongus.lobby.LobbiesManager.LobbyBuilder;
+import dte.amongus.lobby.AULobbyService;
 import dte.amongus.maps.TestMap;
 import dte.amongus.player.AUPlayer;
-import dte.amongus.player.AUPlayersManager;
+import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
 import dte.amongus.shiptasks.ShipTaskService;
@@ -39,18 +38,18 @@ import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter
 {
-	private final GamesManager gamesManager;
-	private final LobbiesManager lobbiesManager;
-	private final AUPlayersManager auPlayersManager;
+	private final AUGameService gameService;
+	private final AULobbyService lobbyService;
+	private final AUPlayerService auPlayerService;
 	private final ShipTaskService shipTaskService;
 
 	private AULobby tempLobby;
 
-	public AmongUSCommand(GamesManager gamesManager, AUPlayersManager auPlayersManager, LobbiesManager lobbiesManager, ShipTaskService shipTaskService) 
+	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService, ShipTaskService shipTaskService) 
 	{
-		this.gamesManager = gamesManager;
-		this.auPlayersManager = auPlayersManager;
-		this.lobbiesManager = lobbiesManager;
+		this.gameService = gameService;
+		this.auPlayerService = auPlayerService;
+		this.lobbyService = lobbyService;
 		this.shipTaskService = shipTaskService;
 	}
 
@@ -145,12 +144,12 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					player.sendMessage(ChatColor.RED + "The Sign you are looking at must be Empty!");
 					return false;
 				}
-				this.tempLobby = new LobbyBuilder(player.getLocation(), new TestMap(), new SimpleCorpseFactory(), 1, 1)
+				this.tempLobby = new AULobbyService.LobbyBuilder(player.getLocation(), new TestMap(), new SimpleCorpseFactory(), 1, 1)
 						.joinableBy(sign)
-						.build(this.lobbiesManager);
+						.build(this.lobbyService);
 				player.sendMessage(ChatColor.GREEN + "You successfully created a new lobby in your Location.");
 
-				this.tempLobby.addPlayer(this.auPlayersManager.getAUPlayer(player.getUniqueId()));
+				this.tempLobby.addPlayer(this.auPlayerService.getAUPlayer(player.getUniqueId()));
 				player.sendMessage(ChatColor.GREEN + "You were sent to lobby " + toDisplay(this.tempLobby.getID().toString()));
 				return true;
 			}
@@ -168,7 +167,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					player.sendMessage(ChatColor.RED + args[1] + " is not online!");
 					return false;
 				}
-				AUPlayer targetAUPlayer = this.auPlayersManager.getAUPlayer(target.getUniqueId());
+				AUPlayer targetAUPlayer = this.auPlayerService.getAUPlayer(target.getUniqueId());
 				this.tempLobby.addPlayer(targetAUPlayer);
 				target.teleport(this.tempLobby.getSpawnLocation());
 
@@ -229,7 +228,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	@SuppressWarnings("unused")
 	private boolean requestedBeingInAGame(Player player) 
 	{
-		if(this.gamesManager.getPlayerGame(player) == null) 
+		if(this.gameService.getPlayerGame(player) == null) 
 		{
 			player.sendMessage(ChatColor.RED + "You must be in a game to do this.");
 			return true;

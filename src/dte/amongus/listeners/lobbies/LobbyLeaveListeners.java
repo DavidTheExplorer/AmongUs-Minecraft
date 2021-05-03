@@ -5,15 +5,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import dte.amongus.lobby.LobbiesManager;
+import dte.amongus.lobby.AULobbyService;
 
 public class LobbyLeaveListeners implements Listener
 {
-	private final LobbiesManager lobbiesManager;
+	private final AULobbyService lobbyService;
 	
-	public LobbyLeaveListeners(LobbiesManager lobbiesManager) 
+	public LobbyLeaveListeners(AULobbyService lobbyService) 
 	{
-		this.lobbiesManager = lobbiesManager;
+		this.lobbyService = lobbyService;
 	}
 	
 	@EventHandler
@@ -24,6 +24,6 @@ public class LobbyLeaveListeners implements Listener
 	
 	private void removePlayer(Player player) 
 	{
-		this.lobbiesManager.findLobbyOf(player).ifPresent(lobby -> lobby.removePlayer(player));
+		this.lobbyService.findLobbyOf(player).ifPresent(lobby -> lobby.removePlayer(player));
 	}
 }

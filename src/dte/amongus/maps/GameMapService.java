@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameMapsManager 
+public class GameMapService
 {
 	private final Map<String, GameMap> mapByName = new HashMap<>();
 	

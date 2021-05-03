@@ -21,7 +21,7 @@ import dte.amongus.lobby.sign.LobbySign;
 import dte.amongus.maps.GameMap;
 import dte.amongus.utils.java.UUIDProvider;
 
-public class LobbiesManager
+public class AULobbyService
 {
 	private final Map<UUID, AULobby> lobbyByID = new HashMap<>();
 	
@@ -74,7 +74,7 @@ public class LobbiesManager
 			this.joinSign = sign;
 			return this;
 		}
-		public AULobby build(LobbiesManager manager)
+		public AULobby build(AULobbyService lobbyService)
 		{
 			GameSettings settings = new GameSettings(this.crewmates, this.impostors, this.corpseFactory);
 			UUID lobbyID = UUIDProvider.generateUUID(AULobby.class);
@@ -88,7 +88,7 @@ public class LobbiesManager
 				
 				lobby.addStateListener(sign);
 			}
-			manager.registerLobby(lobby);
+			lobbyService.registerLobby(lobby);
 			return lobby;
 		}
 	}

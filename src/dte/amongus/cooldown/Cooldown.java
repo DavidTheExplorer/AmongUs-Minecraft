@@ -101,15 +101,15 @@ public class Cooldown
 			player.sendMessage(String.format("Your %s cooldown will be over in %d seconds.", cooldown.getName(), cooldown.getTimeLeft(player)));
 		};
 
-		private static CooldownsManager cooldownsManager;
+		private static CooldownService cooldownService;
 
 		public CooldownBuilder(String name)
 		{
 			this.name = name;
 		}
-		public static void setCooldownsManager(CooldownsManager cooldownsManager) 
+		public static void setCooldownService(CooldownService cooldownService) 
 		{
-			CooldownBuilder.cooldownsManager = cooldownsManager;
+			CooldownBuilder.cooldownService = cooldownService;
 		}
 		public CooldownBuilder rejectWithDefaultMessage()
 		{
@@ -150,11 +150,11 @@ public class Cooldown
 		}
 		public Cooldown build() 
 		{
-			if(cooldownsManager == null) 
+			if(cooldownService == null) 
 				throw new RuntimeException("Cannot create new cooldowns when the manager is not set.");
 			
 			Cooldown cooldown = new Cooldown(this);
-			cooldownsManager.registerCooldown(cooldown);
+			cooldownService.register(cooldown);
 			return cooldown;
 		}
 	}
