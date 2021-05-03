@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.wires;
+package dte.amongus.shiptasks.wires;
 
 import java.util.Optional;
 
@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
-import dte.amongus.shiptasks.types.ProgressionTask;
-import dte.amongus.shiptasks.types.inventory.InventoryTask;
+import dte.amongus.shiptasks.ProgressionTask;
+import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresTask extends ProgressionTask implements InventoryTask<WiresInventoryManager>

@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.wires;
+package dte.amongus.shiptasks.wires;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 
 import dte.amongus.AmongUs;
 import dte.amongus.games.players.AUGamePlayer;
-import dte.amongus.shiptasks.types.inventory.TaskInventoryManager;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;

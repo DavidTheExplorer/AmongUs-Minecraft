@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.types;
+package dte.amongus.shiptasks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
-import dte.amongus.shiptasks.ShipTask;
 
 public abstract class SimpleShipTask implements ShipTask
 {

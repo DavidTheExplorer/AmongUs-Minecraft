@@ -1,10 +1,11 @@
-package dte.amongus.shiptasks;
+package dte.amongus.shiptasks.service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.shiptasks.ShipTask;
 
 public class ShipTaskService 
 {

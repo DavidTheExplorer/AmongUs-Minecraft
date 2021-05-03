@@ -19,7 +19,7 @@ import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
 import dte.amongus.listeners.tasks.InventoryTasksListener;
 import dte.amongus.lobby.AULobbyService;
 import dte.amongus.player.AUPlayerService;
-import dte.amongus.shiptasks.ShipTaskService;
+import dte.amongus.shiptasks.service.ShipTaskService;
 
 class Bootstrapper
 {
