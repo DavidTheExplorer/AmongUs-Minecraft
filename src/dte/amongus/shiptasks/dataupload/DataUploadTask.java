@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.datauupload;
+package dte.amongus.shiptasks.dataupload;
 
 public class DataUploadTask
 {

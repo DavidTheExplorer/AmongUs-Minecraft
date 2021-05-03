@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.types.inventory;
+package dte.amongus.shiptasks.inventory;
 
 import dte.amongus.shiptasks.ShipTask;
 

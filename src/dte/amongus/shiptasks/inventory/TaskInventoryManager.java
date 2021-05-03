@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.types.inventory;
+package dte.amongus.shiptasks.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
