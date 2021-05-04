@@ -15,37 +15,39 @@ public abstract class TaskInventoryManager<T extends InventoryTask<?>>
 {
 	protected final T task;
 	
-	private final String inventoryTitle;
-	
-	public TaskInventoryManager(T task, String inventoryTitle) 
+	public TaskInventoryManager(T task) 
 	{
 		this.task = task;
-		this.inventoryTitle = String.format(InventoryBuilder.TITLE_PATTERN, inventoryTitle);
-	}
-	public InventoryBuilder newInventoryBuilder(int lines) 
-	{
-		return new InventoryBuilder(lines);
-	}
-	public boolean wasInvolvedAt(InventoryClickEvent event) 
-	{
-		return event.getView().getTitle().equals(this.inventoryTitle);
 	}
 	public abstract Inventory createInventory(AUGamePlayer opener);
-	public abstract void onInventoryClick(InventoryClickEvent event); //change to return a boolean that indicates whether the player finished the task
+	public abstract void onInventoryClick(InventoryClickEvent event); //TODO: change to return a boolean that indicates whether the player finished the task
+	public abstract boolean wasInvolvedAt(InventoryClickEvent event);
 	
-	public class InventoryBuilder
+	protected static boolean testInventory(InventoryClickEvent event, String description) 
+	{
+		String title = event.getView().getTitle();
+		
+		if(!title.startsWith("Task > ")) 
+			return false;
+		
+		int descriptionIndex = title.indexOf("Task > ") + "Task > ".length();
+		
+		return title.substring(descriptionIndex).startsWith(description);
+	}
+	
+	protected static class InventoryBuilder
 	{
 		private int lines;
+		private String title;
 		
 		//walls data
 		private boolean buildWalls;
 		private ItemStack wallsItem;
 		
-		private static final String TITLE_PATTERN = "Task > %s";
-		
-		public InventoryBuilder(int lines) 
+		public InventoryBuilder(int lines, String title)
 		{
 			this.lines = lines;
+			this.title = createTitle(title);
 		}
 		public InventoryBuilder withWalls(ItemStack wallsItem) 
 		{
@@ -55,16 +57,26 @@ public abstract class TaskInventoryManager<T extends InventoryTask<?>>
 		}
 		public InventoryBuilder withWalls() 
 		{
-			return withWalls(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).named(ChatColor.BLACK + "-").createCopy());
+			return withWalls(buildWall(Material.BLACK_STAINED_GLASS_PANE));
 		}
 		public Inventory build()
 		{
-			Inventory inv = Bukkit.createInventory(null, 9 * this.lines, TaskInventoryManager.this.inventoryTitle);
+			Inventory inventory = Bukkit.createInventory(null, 9 * this.lines, this.title);
 			
 			if(this.buildWalls)
-				InventoryUtils.buildWalls(inv, this.wallsItem);
+				InventoryUtils.buildWalls(inventory, this.wallsItem);
 			
-			return inv;
+			return inventory;
+		}
+		
+		private String createTitle(String title) 
+		{
+			return String.format("Task > %s", title);
+		}
+		
+		public static ItemStack buildWall(Material material) 
+		{
+			return new ItemBuilder(material, ChatColor.BLACK + "-").createCopy();
 		}
 	}
 }
