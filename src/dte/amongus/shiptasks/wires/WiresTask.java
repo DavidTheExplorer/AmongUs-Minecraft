@@ -8,6 +8,7 @@ import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.ProgressionTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresTask extends ProgressionTask implements InventoryTask<WiresInventoryManager>
@@ -18,7 +19,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresInv
 	
 	public WiresTask(AUGame game)
 	{
-		super("Wires Fix", "Connect all 4 wires.", game, WIRES_AMOUNT);
+		super("Wires Fix", "Connect all 4 wires.", TaskType.COMMON, game, WIRES_AMOUNT);
 	}
 	
 	@Override

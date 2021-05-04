@@ -7,17 +7,20 @@ import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class SimpleShipTask implements ShipTask
 {
 	private final String name, description;
+	private final TaskType type;
 	private final AUGame game;
 	private final Map<AUGamePlayer, Map<String, Object>> playersData = new HashMap<>();
 
-	public SimpleShipTask(String name, String description, AUGame game) 
+	public SimpleShipTask(String name, String description, TaskType type, AUGame game) 
 	{
 		this.name = name;
 		this.description = description;
+		this.type = type;
 		this.game = game;
 	}
 
@@ -31,6 +34,12 @@ public abstract class SimpleShipTask implements ShipTask
 	public String getDescription() 
 	{
 		return this.description;
+	}
+	
+	@Override
+	public TaskType getType() 
+	{
+		return this.type;
 	}
 
 	@Override

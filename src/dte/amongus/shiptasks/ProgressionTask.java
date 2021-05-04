@@ -2,14 +2,15 @@ package dte.amongus.shiptasks;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class ProgressionTask extends SimpleShipTask
 {
 	private final int maxProgression;
 	
-	public ProgressionTask(String name, String description, AUGame game, int maxProgression) 
+	public ProgressionTask(String name, String description, TaskType type, AUGame game, int maxProgression) 
 	{
-		super(name, description, game);
+		super(name, description, type, game);
 		
 		this.maxProgression = maxProgression;
 	}
