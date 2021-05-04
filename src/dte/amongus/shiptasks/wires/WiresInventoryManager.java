@@ -37,13 +37,13 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 	
 	public WiresInventoryManager(WiresTask wiresTask) 
 	{
-		super(wiresTask, "Fix The Wires");
+		super(wiresTask);
 	}
 	
 	@Override
 	public Inventory createInventory(AUGamePlayer opener) 
 	{
-		Inventory inv = newInventoryBuilder(6)
+		Inventory inventory = new InventoryBuilder(6, "Fix The Wires")
 				.withWalls()
 				.build();
 
@@ -60,15 +60,15 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 
 			//set the wire at the left & right slots
 			ItemStack wire = new ItemBuilder(material, getWireName(material) + " Wire").createCopy();
-			inv.setItem(leftSlot, wire);
-			inv.setItem(rightSlot, wire);
+			inventory.setItem(leftSlot, wire);
+			inventory.setItem(rightSlot, wire);
 
 			//remove the wire's data from the remaining data
 			leftSlots.remove(leftSlot);
 			rightSlots.remove(rightSlot);
 			wires.remove(material);
 		}
-		return inv;
+		return inventory;
 	}
 
 	@Override
@@ -105,11 +105,18 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 			new WiresConnectionRunnable(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, Material.WHITE_STAINED_GLASS).runTaskTimer(AmongUs.getInstance(), 0, 10);
 		}
 	}
+
+	@Override
+	public boolean wasInvolvedAt(InventoryClickEvent event) 
+	{
+		return testInventory(event, "Fix The Wires");
+	}
 	
 	private static boolean isLeftSlot(int slot) 
 	{
 		return Arrays.binarySearch(LEFT_SLOTS, slot) > -1;
 	}
+	
 	private static int getRightSlot(int leftSlot) 
 	{
 		int slot = Arrays.binarySearch(LEFT_SLOTS, leftSlot);
@@ -117,12 +124,14 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 		//get the parallel cell in the right slots array
 		return RIGHT_SLOTS[slot];
 	}
+	
 	private static String getWireName(Material wireMaterial) 
 	{
 		String colorName = WordUtils.capitalizeFully(wireMaterial.name().substring(0, wireMaterial.name().indexOf('_')));
 
 		return getWireColor(wireMaterial) + colorName;
 	}
+	
 	private static ChatColor getWireColor(Material wireMaterial) 
 	{
 		if(wireMaterial == Material.PINK_STAINED_GLASS_PANE) 

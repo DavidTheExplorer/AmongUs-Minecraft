@@ -20,6 +20,7 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.shiptasks.enterid.EnterIDTask;
 import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.UUIDProvider;
 
@@ -35,7 +36,7 @@ public class AUGameService
 
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
-		game.addTask(new WiresTask(game));
+		game.addTask(new WiresTask(game), new EnterIDTask(game));
 		game.setState(GameState.PLAYING);
 
 		//register the game

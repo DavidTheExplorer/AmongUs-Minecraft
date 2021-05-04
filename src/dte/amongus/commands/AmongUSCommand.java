@@ -32,8 +32,9 @@ import dte.amongus.player.AUPlayer;
 import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
+import dte.amongus.shiptasks.enterid.EnterIDTask;
+import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.service.ShipTaskService;
-import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter
@@ -187,7 +188,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 						.map(impostor -> impostor.getPlayer().getName())
 						.collect(joining(", ")));
 				
-				openWireTaskInventory(game);
+				openTaskInventory(game, EnterIDTask.class);
 				return true;
 			}
 			break;
@@ -256,21 +257,21 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		return ChatColor.YELLOW + "#" + stringUUID.substring(0, 8);
 	}
 
-	private void openWireTaskInventory(AUGame game)
+	private <I extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<I> taskClass)
 	{
-		List<WiresTask> wiresTasks = IterableUtils.getElementsOf(WiresTask.class, game.getTasks());
+		List<I> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
 
-		if(wiresTasks.isEmpty()) 
+		if(matchingTasks.isEmpty()) 
 		{
 			game.getAlivePlayers().stream().map(AUGamePlayer::getPlayer).forEach(player -> player.sendMessage(ChatColor.RED + "The game doesn't have a Wires Task!"));
 			return;
 		}
-		WiresTask wiresTask = wiresTasks.get(0);
+		I task = matchingTasks.get(0);
 
 		for(AUGamePlayer gamePlayer : game.getAlivePlayers()) 
 		{
-			this.shipTaskService.setDoing(gamePlayer, wiresTask);
-			gamePlayer.getPlayer().openInventory(wiresTask.getInventoryManager().createInventory(gamePlayer));
+			this.shipTaskService.setDoing(gamePlayer, task);
+			gamePlayer.getPlayer().openInventory(task.getInventoryManager().createInventory(gamePlayer));
 		}
 	}
 }
