@@ -25,4 +25,16 @@ public class NumberUtils
 		}
 		return null;
 	}
+	
+	//throws ArithmeticException if the result had overflowed
+	public static int add(int number, String digits) throws ArithmeticException
+	{
+		return digits.chars()
+				.map(Character::getNumericValue)
+				.reduce(number, (currentNumber, digit) -> Math.addExact(Math.multiplyExact(currentNumber, 10), digit));
+	}
+	public static int add(int number, int digits) throws ArithmeticException
+	{
+		return add(number, String.valueOf(digits));
+	}
 }

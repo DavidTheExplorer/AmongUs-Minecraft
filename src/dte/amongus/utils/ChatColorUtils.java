@@ -1,5 +1,7 @@
 package dte.amongus.utils;
 
+import static org.bukkit.ChatColor.BOLD;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,5 +38,9 @@ public class ChatColorUtils
 			text = text.replace(color, net.md_5.bungee.api.ChatColor.of(color).toString());
 		}
 		return text;
+	}
+	public static String bold(ChatColor color) 
+	{
+		return color.toString() + BOLD;
 	}
 }

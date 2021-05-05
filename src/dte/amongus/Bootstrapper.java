@@ -27,15 +27,15 @@ class Bootstrapper
 	private AULobbyService lobbyService;
 	private AUGameService gameService;
 	private ShipTaskService shipTaskService;
-	
+
 	private HolographicDisplaysHook hdHook;
-	
+
 	private static final AmongUs AMONG_US = AmongUs.getInstance();
-	
+
 	public void bootstrap()
 	{
 		AMONG_US.saveDefaultConfig();
-		
+
 		setupHooks();
 		setupManagers();
 		registerCommands();
@@ -47,7 +47,7 @@ class Bootstrapper
 		this.lobbyService = new AULobbyService();
 		this.gameService = new AUGameService();
 		this.shipTaskService = new ShipTaskService();
-		
+
 		GamePlayerUtils.setup(this.auPlayerService);
 		CooldownBuilder.setCooldownService(new CooldownService());
 		SimpleEquallableHologram.setHolographicsDisplaysHook(this.hdHook);
@@ -62,10 +62,10 @@ class Bootstrapper
 	private void registerListeners()
 	{
 		AMONG_US.registerListeners(
-				
+
 				//General
 				new AUPlayerRegistrationListeners(this.auPlayerService),
-				
+
 				//Retrieving
 				new ImpostorKillRetrieverListener(this.gameService),
 

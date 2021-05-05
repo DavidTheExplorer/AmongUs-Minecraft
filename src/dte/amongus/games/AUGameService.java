@@ -20,6 +20,7 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.shiptasks.enterid.EnterIDTask;
 import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.UUIDProvider;
 
@@ -32,19 +33,19 @@ public class AUGameService
 		//create a game
 		UUID randomID = UUIDProvider.generateUUID(AUGame.class);
 		AUGame game = new AUGame(randomID, lobby, map, lobby.getSettings().getCorpseFactory());
-
+		
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
-		game.addTask(new WiresTask(game));
+		game.addTask(new WiresTask(game), new EnterIDTask(game));
 		game.setState(GameState.PLAYING);
-
+		
 		//register the game
 		lobby.setCurrentGame(game);
 		this.activeGames.add(game);
-
+		
 		return game;
 	}
-	public Optional<AUGame> getPlayerGame(Player player) 
+	public Optional<AUGame> getPlayerGame(Player player)
 	{
 		return this.activeGames.stream()
 				.filter(game -> game.contains(player))
@@ -52,7 +53,12 @@ public class AUGameService
 	}
 	public boolean onSameGame(Player player1, Player player2) 
 	{
-		return getPlayerGame(player1).equals(getPlayerGame(player2));
+		Optional<AUGame> player1Game = getPlayerGame(player1);
+		
+		if(!player1Game.isPresent())
+			return false;
+		
+		return player1Game.equals(getPlayerGame(player2));
 	}
 	public Set<AUGame> getActiveGames()
 	{
