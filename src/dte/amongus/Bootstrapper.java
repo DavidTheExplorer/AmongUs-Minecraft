@@ -1,7 +1,7 @@
 package dte.amongus;
 
 import dte.amongus.commands.AmongUSCommand;
-import dte.amongus.cooldown.Cooldown.CooldownBuilder;
+import dte.amongus.cooldown.Cooldown;
 import dte.amongus.cooldown.CooldownService;
 import dte.amongus.corpses.basic.components.holograms.HologramComponent;
 import dte.amongus.games.AUGameService;
@@ -49,7 +49,7 @@ class Bootstrapper
 		this.shipTaskService = new ShipTaskService();
 
 		GamePlayerUtils.setup(this.auPlayerService);
-		CooldownBuilder.setCooldownService(new CooldownService());
+		Cooldown.Builder.setCooldownService(new CooldownService());
 		SimpleEquallableHologram.setHolographicsDisplaysHook(this.hdHook);
 		HologramComponent.setHolographicDisplaysHook(this.hdHook);
 	}

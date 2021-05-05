@@ -2,6 +2,8 @@ package dte.amongus.shiptasks.wires;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
@@ -13,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.Sets;
 
 import dte.amongus.AmongUs;
+import dte.amongus.cooldown.Cooldown;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.items.GlowEffect;
@@ -22,6 +25,10 @@ import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 {
+	private static final Cooldown WORK_COOLDOWN = new Cooldown.Builder("Wires")
+			.rejectWithMessage(ChatColor.RED + "You are still working on the previous wires.")
+			.build();
+	
 	private static final Integer[]
 			LEFT_SLOTS = {10, 19, 28, 37}, 
 			RIGHT_SLOTS = {16, 25, 34, 43};
@@ -80,15 +87,18 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 			return;
 		
 		Player player = (Player) event.getWhoClicked();
-		AUGamePlayer gamePlayer = this.task.getGame().getPlayer(player);
 		
+		if(WORK_COOLDOWN.wasRejected(player)) 
+			return;
+		
+		AUGamePlayer gamePlayer = this.task.getGame().getPlayer(player);
 		Pair<Integer, ItemStack> currentWireData = this.task.getCurrentWire(gamePlayer).orElse(null);
 
 		if(currentWireData == null)
 		{
 			if(!isLeftSlot(event.getRawSlot())) 
 			{
-				player.sendMessage(ChatColor.RED + "You have to click a Left wire first!");
+				player.sendMessage(ChatColor.RED + "You have to click a Left Wire first!");
 				return;
 			}
 			GlowEffect.addGlow(wire);
@@ -102,6 +112,7 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 			this.task.addProgression(gamePlayer, 25);
 			this.task.removeCurrentWire(gamePlayer);
 			
+			WORK_COOLDOWN.put(player, TimeUnit.SECONDS, 3);
 			new WiresConnectionRunnable(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, Material.WHITE_STAINED_GLASS).runTaskTimer(AmongUs.getInstance(), 0, 10);
 		}
 	}
