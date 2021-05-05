@@ -16,7 +16,7 @@ public class Cooldown
 	private final Map<UUID, Long> playersEndTimes = new HashMap<>();
 	private final CooldownStrategy rejectBehaviour, whenOver;
 
-	Cooldown(CooldownBuilder builder)
+	Cooldown(Builder builder)
 	{
 		this.name = builder.name;
 		this.rejectBehaviour = builder.rejectBehaviour;
@@ -81,14 +81,14 @@ public class Cooldown
 	 */
 	public boolean wasRejected(Player player)
 	{
-		if(isOnCooldown(player))
-			return true;
+		if(!isOnCooldown(player))
+			return false;
 		
 		this.rejectBehaviour.run(player, this);
-		return false;
+		return true;
 	}
 
-	public static class CooldownBuilder
+	public static class Builder
 	{
 		private String name;
 		private CooldownStrategy rejectBehaviour = DO_NOTHING;
@@ -103,15 +103,15 @@ public class Cooldown
 
 		private static CooldownService cooldownService;
 
-		public CooldownBuilder(String name)
+		public Builder(String name)
 		{
 			this.name = name;
 		}
 		public static void setCooldownService(CooldownService cooldownService) 
 		{
-			CooldownBuilder.cooldownService = cooldownService;
+			Builder.cooldownService = cooldownService;
 		}
-		public CooldownBuilder rejectWithDefaultMessage()
+		public Builder rejectWithDefaultMessage()
 		{
 			this.rejectBehaviour = DEFAULT_REJECT_MESSAGE;
 			return this;
@@ -126,7 +126,7 @@ public class Cooldown
 		 * @param message
 		 * @return
 		 */
-		public CooldownBuilder rejectWithMessage(String message)
+		public Builder rejectWithMessage(String message)
 		{
 			this.rejectBehaviour = (player, cooldown) -> 
 			{
@@ -138,12 +138,12 @@ public class Cooldown
 			};
 			return this;
 		}
-		public CooldownBuilder rejectWith(CooldownStrategy rejectionBehaviour) 
+		public Builder rejectWith(CooldownStrategy rejectionBehaviour) 
 		{
 			this.rejectBehaviour = rejectionBehaviour;
 			return this;
 		}
-		public CooldownBuilder whenOver(CooldownStrategy whenOver) 
+		public Builder whenOver(CooldownStrategy whenOver) 
 		{
 			this.whenOver = whenOver;
 			return this;
