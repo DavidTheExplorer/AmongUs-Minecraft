@@ -3,14 +3,14 @@ package dte.amongus.corpses;
 import org.bukkit.Location;
 
 import dte.amongus.corpses.composite.CompositeCorpse;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public class GraveSkullCorpse extends CompositeCorpse //implements SkullCorpse, GraveCorpse
 {
 	private final GraveCorpse graveCorpse;
 	private final SkullCorpse skullCorpse;
 	
-	public GraveSkullCorpse(AUGamePlayer whoDied, Location deathLocation)
+	public GraveSkullCorpse(Crewmate whoDied, Location deathLocation)
 	{
 		super(whoDied);
 		

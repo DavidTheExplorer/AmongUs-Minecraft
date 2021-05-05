@@ -11,14 +11,14 @@ import org.bukkit.block.Block;
 
 import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.blocks.BlockChangeComponent;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.internal.GamePlayerUtils;
 import dte.amongus.player.visual.PlayerColor;
 import dte.amongus.utils.blocks.BlockUtils;
 
 public class GraveCorpse extends BasicCorpse
 {
-	public GraveCorpse(AUGamePlayer whoDied, Location deathLocation) 
+	public GraveCorpse(Crewmate whoDied, Location deathLocation) 
 	{
 		super(whoDied);
 		

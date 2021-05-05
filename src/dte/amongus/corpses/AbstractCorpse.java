@@ -1,6 +1,6 @@
 package dte.amongus.corpses;
 
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public interface AbstractCorpse
 {
@@ -9,7 +9,7 @@ public interface AbstractCorpse
 	 * 
 	 * @return The player who died.
 	 */
-	AUGamePlayer whoDied();
+	Crewmate whoDied();
 	
 	
 	void spawn();

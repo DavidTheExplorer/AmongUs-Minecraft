@@ -11,13 +11,13 @@ import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.BasicCorpseComponent;
 import dte.amongus.corpses.composite.exceptions.CompositeCorpseException;
 import dte.amongus.corpses.composite.exceptions.DuplicateComponentsException;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public class CompositeCorpse extends BasicCorpse
 {
 	private final Set<BasicCorpse> corpses = new HashSet<>();
 	
-	public CompositeCorpse(AUGamePlayer whoDied)
+	public CompositeCorpse(Crewmate whoDied)
 	{
 		super(whoDied);
 	}
