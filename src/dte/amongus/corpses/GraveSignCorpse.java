@@ -4,11 +4,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import dte.amongus.corpses.composite.CompositeCorpse;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public class GraveSignCorpse extends CompositeCorpse
 {
-	public GraveSignCorpse(AUGamePlayer whoDied, Location deathLocation, Material signMaterial, String... signLines)
+	public GraveSignCorpse(Crewmate whoDied, Location deathLocation, Material signMaterial, String... signLines)
 	{
 		super(whoDied);
 		

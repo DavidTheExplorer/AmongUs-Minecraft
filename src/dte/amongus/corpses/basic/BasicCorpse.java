@@ -8,21 +8,21 @@ import java.util.Set;
 
 import dte.amongus.corpses.AbstractCorpse;
 import dte.amongus.corpses.basic.components.BasicCorpseComponent;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.java.IterableUtils;
 
 public class BasicCorpse implements AbstractCorpse, Iterable<BasicCorpseComponent>
 {
-	private final AUGamePlayer whoDied;
+	private final Crewmate whoDied;
 	private final Set<BasicCorpseComponent> components = new HashSet<>(); //a corpse consists of components(blocks, holograms, etc)
 
-	public BasicCorpse(AUGamePlayer whoDied)
+	public BasicCorpse(Crewmate whoDied)
 	{
 		this.whoDied = whoDied;
 	}
 	
 	@Override
-	public AUGamePlayer whoDied()
+	public Crewmate whoDied()
 	{
 		return this.whoDied;
 	}

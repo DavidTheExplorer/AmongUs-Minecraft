@@ -11,13 +11,13 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dte.amongus.AmongUs;
 import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.holograms.HologramComponent;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.holograms.equallable.EquallableHologram;
 import dte.amongus.holograms.equallable.SimpleEquallableHologram;
 
 public class TestCorpse extends BasicCorpse
 {
-	public TestCorpse(AUGamePlayer whoDied, Location deathLocation) 
+	public TestCorpse(Crewmate whoDied, Location deathLocation) 
 	{
 		super(whoDied);
 		
