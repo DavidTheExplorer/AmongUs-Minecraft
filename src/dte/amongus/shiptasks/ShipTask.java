@@ -13,4 +13,7 @@ public interface ShipTask
 	
 	void setFinished(AUGamePlayer gamePlayer);
 	boolean hasFinished(AUGamePlayer gamePlayer);
+	
+	default void onFinish(AUGamePlayer gamePlayer){}
+	default void onStart(AUGamePlayer gamePlayer){}
 }

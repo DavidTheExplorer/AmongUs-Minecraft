@@ -257,20 +257,22 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		return ChatColor.YELLOW + "#" + stringUUID.substring(0, 8);
 	}
 
-	private <I extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<I> taskClass)
+	private <T extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<T> taskClass)
 	{
-		List<I> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
+		List<T> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
 
 		if(matchingTasks.isEmpty()) 
 		{
 			game.getAlivePlayers().stream().map(AUGamePlayer::getPlayer).forEach(player -> player.sendMessage(ChatColor.RED + "The game doesn't have a Wires Task!"));
 			return;
 		}
-		I task = matchingTasks.get(0);
+		T task = matchingTasks.get(0);
 
 		for(AUGamePlayer gamePlayer : game.getAlivePlayers()) 
 		{
 			this.shipTaskService.setDoing(gamePlayer, task);
+			task.onStart(gamePlayer);
+			
 			gamePlayer.getPlayer().openInventory(task.getInventoryManager().createInventory(gamePlayer));
 		}
 	}
