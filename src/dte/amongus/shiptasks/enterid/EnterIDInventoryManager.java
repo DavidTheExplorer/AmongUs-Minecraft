@@ -70,9 +70,9 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 		{
 		case LIME_STAINED_GLASS_PANE:
 			
-			//glow the digit for 8 ticks
+			//glow the digit for 7 ticks
 			GlowEffect.addGlow(item);
-			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), () -> GlowEffect.deleteGlow(item), 8);
+			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), () -> GlowEffect.deleteGlow(item), 7);
 			
 			try 
 			{
