@@ -23,8 +23,10 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	private final Sound digitEnterSound;
 
 	private static final int 
-	ENTER_INDEX = 38,
+	ENTER_INDEX = 15,
 	PAPER_INDEX = 42;
+	
+	private static final int[] DIGITS_INDEXES = {38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
 
 	public EnterIDInventoryManager(EnterIDTask task, Sound digitEnterSound)
 	{
@@ -37,30 +39,22 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	public Inventory createInventory(AUGamePlayer opener)
 	{
 		Inventory inventory = new InventoryBuilder(6, "Your ID is " + this.task.getPersonalID(opener).get()).build();
-
+		
 		//add the digits
-		for(int digit = 1; digit <= 7; digit++) 
-		{
-			int i = digit + 9;
-			inventory.setItem(i, createDigitItem(digit));
-		}
-		inventory.setItem(4, createDigitItem(0));
-		inventory.setItem(21, createDigitItem(8));
-		inventory.setItem(23, createDigitItem(9));
-
+		inventory.setItem(DIGITS_INDEXES[0], createDigitItem(0)); //the zero digit comes first
+		
+		for(int i = 1; i < DIGITS_INDEXES.length; i++)
+			inventory.setItem(DIGITS_INDEXES[i], createDigitItem(i));
+		
 		//add the enter button
-		inventory.setItem(37, InventoryBuilder.buildWall(Material.GREEN_STAINED_GLASS_PANE));
 		inventory.setItem(ENTER_INDEX, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(ChatColor.GREEN) + "Enter ID").createCopy());
-		inventory.setItem(39, InventoryBuilder.buildWall(Material.GREEN_STAINED_GLASS_PANE));
 
 		//add the current id paper
-		inventory.setItem(41, InventoryBuilder.buildWall(Material.GREEN_STAINED_GLASS_PANE));
 		inventory.setItem(PAPER_INDEX, createPaperItem("Nothing"));
-		inventory.setItem(43, InventoryBuilder.buildWall(Material.GREEN_STAINED_GLASS_PANE));
 
 		//decorate the remaining slots as walls
 		InventoryUtils.fillEmptySlots(inventory, InventoryBuilder.buildWall(Material.BLACK_STAINED_GLASS_PANE));
-
+		
 		return inventory;
 	}
 
@@ -92,10 +86,8 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 			
 			//update the new digit
 			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.task.getEnteredID(gamePlayer).get()));
-			
 			player.playSound(player.getLocation(), this.digitEnterSound, 1, 1);
 			break;
-			
 		case GREEN_TERRACOTTA:
 			Integer enteredID = this.task.getEnteredID(gamePlayer).orElse(null);
 
