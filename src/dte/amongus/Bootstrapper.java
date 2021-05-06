@@ -5,7 +5,7 @@ import dte.amongus.cooldown.Cooldown;
 import dte.amongus.cooldown.CooldownService;
 import dte.amongus.corpses.basic.components.holograms.HologramComponent;
 import dte.amongus.games.AUGameService;
-import dte.amongus.holograms.equallable.SimpleEquallableHologram;
+import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;
 import dte.amongus.internal.GamePlayerUtils;
 import dte.amongus.listeners.games.BodyReportListener;
@@ -50,7 +50,7 @@ class Bootstrapper
 
 		GamePlayerUtils.setup(this.auPlayerService);
 		Cooldown.Builder.setCooldownService(new CooldownService());
-		SimpleEquallableHologram.setHolographicsDisplaysHook(this.hdHook);
+		EquallableHologram.setHolographicsDisplaysHook(this.hdHook);
 		HologramComponent.setHolographicDisplaysHook(this.hdHook);
 	}
 	private void registerCommands() 

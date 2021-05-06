@@ -6,7 +6,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 
 import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.BasicCorpseComponent;
-import dte.amongus.holograms.equallable.EquallableHologram;
+import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;
 import dte.amongus.trackables.Trackable;
 

@@ -10,7 +10,7 @@ import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.holograms.HologramComponent;
 import dte.amongus.events.games.BodyReportEvent;
 import dte.amongus.games.players.AUGamePlayer;
-import dte.amongus.holograms.equallable.EquallableHologram;
+import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.internal.GamePlayerUtils;
 
 public class DeathHologramComponent extends HologramComponent

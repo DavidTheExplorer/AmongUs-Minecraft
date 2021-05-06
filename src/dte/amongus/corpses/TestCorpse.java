@@ -12,8 +12,7 @@ import dte.amongus.AmongUs;
 import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.holograms.HologramComponent;
 import dte.amongus.games.players.Crewmate;
-import dte.amongus.holograms.equallable.EquallableHologram;
-import dte.amongus.holograms.equallable.SimpleEquallableHologram;
+import dte.amongus.holograms.EquallableHologram;
 
 public class TestCorpse extends BasicCorpse
 {
@@ -42,6 +41,6 @@ public class TestCorpse extends BasicCorpse
 		hologram.appendTextLine("is a fucking");
 		hologram.appendItemLine(new ItemStack(Material.DIAMOND_SWORD));
 
-		return new SimpleEquallableHologram(hologram);
+		return new EquallableHologram(hologram);
 	}
 }
