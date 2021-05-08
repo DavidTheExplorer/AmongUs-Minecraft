@@ -2,14 +2,19 @@ package dte.amongus.commands;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toCollection;
+import static org.bukkit.ChatColor.DARK_RED;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -32,9 +37,12 @@ import dte.amongus.player.AUPlayer;
 import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
+import dte.amongus.shiptasks.ShipTask;
 import dte.amongus.shiptasks.enterid.EnterIDTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.service.ShipTaskService;
+import dte.amongus.shiptasks.stabilizesteering.StabilizeSteeringTask;
+import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter
@@ -45,6 +53,15 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	private final ShipTaskService shipTaskService;
 
 	private AULobby tempLobby;
+	
+	private static final Map<String, Class<? extends ShipTask>> TASK_CLASS_BY_NAME = new HashMap<>();
+	
+	static 
+	{
+		TASK_CLASS_BY_NAME.put("wires", WiresTask.class);
+		TASK_CLASS_BY_NAME.put("id", EnterIDTask.class);
+		TASK_CLASS_BY_NAME.put("steering", StabilizeSteeringTask.class);
+	}
 
 	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService, ShipTaskService shipTaskService) 
 	{
@@ -54,22 +71,23 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		this.shipTaskService = shipTaskService;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
 	{
 		if(!(sender instanceof Player))
 		{
-			sender.sendMessage(ChatColor.RED + "Only players may execute this command.");
+			sender.sendMessage(RED + "Only players may execute this command.");
 			return false;
 		}
 		Player player = (Player) sender;
-
+		
 		if(!player.isOp())
 		{
-			player.sendMessage(ChatColor.RED + "You don't have enough permissions to execute this command.");
+			player.sendMessage(RED + "You don't have enough permissions to execute this command.");
 			return false;
 		}
-
+		
 		switch(args.length)
 		{
 		case 1:
@@ -108,7 +126,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					{
 						if(spawnsQueue.isEmpty()) 
 						{
-							player.sendMessage(ChatColor.GREEN + "All locations were checked.");
+							player.sendMessage(GREEN + "All locations were checked.");
 							cancel();
 							return;
 						}
@@ -118,12 +136,11 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 						if(nextSpawn.getBlock() == null || !nextSpawn.getBlock().getType().name().endsWith("WOOL")) 
 						{
 							cancel();
-							player.sendMessage(ChatColor.RED + "What are you standing on? It's not a wool.");
+							player.sendMessage(RED + "What are you standing on? It's not a wool.");
 							return;
 						}
 					}
 				}.runTaskTimer(AmongUs.getInstance(), 0, 20 * 2);*/
-
 				return true;
 			}
 			else if(args[0].equalsIgnoreCase("createlobby")) 
@@ -135,23 +152,23 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 				if(!(block.getState() instanceof Sign)) 
 				{
-					player.sendMessage(ChatColor.RED + "You must be looking at an Empty Sign.");
+					player.sendMessage(RED + "You must be looking at an Empty Sign.");
 					return false;
 				}
 				Sign sign = (Sign) block.getState();
 
 				if(!Arrays.stream(sign.getLines()).allMatch(String::isEmpty))
 				{
-					player.sendMessage(ChatColor.RED + "The Sign you are looking at must be Empty!");
+					player.sendMessage(RED + "The Sign you are looking at must be Empty!");
 					return false;
 				}
 				this.tempLobby = new AULobbyService.LobbyBuilder(player.getLocation(), new TestMap(), new SimpleCorpseFactory(), 1, 1)
 						.joinableBy(sign)
 						.build(this.lobbyService);
-				player.sendMessage(ChatColor.GREEN + "You successfully created a new lobby in your Location.");
+				player.sendMessage(GREEN + "You successfully created a new lobby in your Location.");
 
 				this.tempLobby.addPlayer(this.auPlayerService.getAUPlayer(player.getUniqueId()));
-				player.sendMessage(ChatColor.GREEN + "You were sent to lobby " + toDisplay(this.tempLobby.getID().toString()));
+				player.sendMessage(GREEN + "You were sent to lobby " + toDisplay(this.tempLobby.getID().toString()));
 				return true;
 			}
 			break;
@@ -160,42 +177,61 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			{
 				if(requestedTempLobby(sender, true))
 					return false;
-				
+
 				Player target = Bukkit.getPlayer(args[1]);
 
 				if(target == null)
 				{
-					player.sendMessage(ChatColor.RED + args[1] + " is not online!");
+					player.sendMessage(RED + args[1] + " is not online!");
 					return false;
 				}
 				AUPlayer targetAUPlayer = this.auPlayerService.getAUPlayer(target.getUniqueId());
 				this.tempLobby.addPlayer(targetAUPlayer);
 				target.teleport(this.tempLobby.getSpawnLocation());
 
-				player.sendMessage(ChatColor.YELLOW + target.getName() + ChatColor.GREEN + " was sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
-				target.sendMessage(ChatColor.GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
+				player.sendMessage(YELLOW + target.getName() + GREEN + " was sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
+				target.sendMessage(GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
 
 				AUGame game = this.tempLobby.getCurrentGame();
 
 				if(game == null)
 					return false; //a game didn't start because there aren't enough players
-				
-				Bukkit.broadcastMessage(ChatColor.GREEN + "Crewmates: " + game.getAlivePlayers(Crewmate.class).stream()
+
+				Bukkit.broadcastMessage(GREEN + "Crewmates: " + game.getAlivePlayers(Crewmate.class).stream()
 						.map(crewmate -> crewmate.getPlayer().getName())
 						.collect(joining(", ")));
-				
-				Bukkit.broadcastMessage(ChatColor.RED + "Impostors: " + game.getAlivePlayers(Impostor.class).stream()
+
+				Bukkit.broadcastMessage(RED + "Impostors: " + game.getAlivePlayers(Impostor.class).stream()
 						.map(impostor -> impostor.getPlayer().getName())
 						.collect(joining(", ")));
 				
-				openTaskInventory(game, EnterIDTask.class);
+				return true;
+			}
+			else if(args[0].equalsIgnoreCase("openinv")) 
+			{
+				if(requestedBeingInAGame(player))
+					return false;
+				
+				Class<? extends ShipTask> taskClass = TASK_CLASS_BY_NAME.get(args[1].toLowerCase());
+				
+				if(taskClass == null) 
+				{
+					player.sendMessage(RED + "The specified task " + DARK_RED + args[1] + RED + " wasn't found!");
+				}
+				if(!InventoryTask.class.isAssignableFrom(taskClass)) 
+				{
+					player.sendMessage(RED + "The chosen task is not an Inventory Task.");
+					return false;
+				}
+				openTaskInventory(this.gameService.getPlayerGame(player).get(), (Class<? extends InventoryTask<?>>) taskClass);
 				return true;
 			}
 			break;
 		}
-		sender.sendMessage(ChatColor.RED + "/amongus test");
-		sender.sendMessage(ChatColor.RED + "/amongus createLobby");
-		sender.sendMessage(ChatColor.RED + "/amongus add [target]");
+		sender.sendMessage(RED + "/amongus test");
+		sender.sendMessage(RED + "/amongus createLobby");
+		sender.sendMessage(RED + "/amongus openinv [task name]");
+		sender.sendMessage(RED + "/amongus add [target]");
 		return false;
 	}
 
@@ -205,7 +241,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		switch(args.length)
 		{
 		case 1:
-			return Arrays.asList("test", "createlobby", "add");
+			return Arrays.asList("test", "createlobby", "add", "openinv");
 		case 2:
 			if(args[0].equalsIgnoreCase("add"))
 			{
@@ -222,16 +258,19 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 				return onlinePlayersNames;
 			}
+			else if(args[0].equalsIgnoreCase("openinv")) 
+			{
+				return new ArrayList<>(TASK_CLASS_BY_NAME.keySet());
+			}
 		}
 		return null;
 	}
 
-	@SuppressWarnings("unused")
 	private boolean requestedBeingInAGame(Player player) 
 	{
-		if(this.gameService.getPlayerGame(player) == null) 
+		if(!this.gameService.getPlayerGame(player).isPresent()) 
 		{
-			player.sendMessage(ChatColor.RED + "You must be in a game to do this.");
+			player.sendMessage(RED + "You must be in a game to do this.");
 			return true;
 		}
 		return false;
@@ -241,12 +280,12 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	{
 		if(toExist && this.tempLobby == null)
 		{
-			sender.sendMessage(ChatColor.RED + "The temp lobby was not created! Use /amongus createlobby");
+			sender.sendMessage(RED + "The temp lobby was not created! Use /amongus createlobby");
 			return true;
 		}
 		if(!toExist && this.tempLobby != null) 
 		{
-			sender.sendMessage(ChatColor.RED + "The temp lobby already exists!");
+			sender.sendMessage(RED + "The temp lobby already exists!");
 			return true;
 		}
 		return false;
@@ -254,7 +293,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 	private static String toDisplay(String stringUUID) 
 	{
-		return ChatColor.YELLOW + "#" + stringUUID.substring(0, 8);
+		return YELLOW + "#" + stringUUID.substring(0, 8);
 	}
 
 	private <T extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<T> taskClass)
@@ -263,7 +302,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 		if(matchingTasks.isEmpty()) 
 		{
-			game.getAlivePlayers().stream().map(AUGamePlayer::getPlayer).forEach(player -> player.sendMessage(ChatColor.RED + "The game doesn't have a Wires Task!"));
+			game.getAlivePlayers().stream().map(AUGamePlayer::getPlayer).forEach(player -> player.sendMessage(RED + "The game doesn't have a Wires Task!"));
 			return;
 		}
 		T task = matchingTasks.get(0);
@@ -272,7 +311,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		{
 			this.shipTaskService.setDoing(gamePlayer, task);
 			task.onStart(gamePlayer);
-			
+
 			gamePlayer.getPlayer().openInventory(task.getInventoryManager().createInventory(gamePlayer));
 		}
 	}

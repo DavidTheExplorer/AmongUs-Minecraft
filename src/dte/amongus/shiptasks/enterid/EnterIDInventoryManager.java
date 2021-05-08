@@ -38,7 +38,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	@Override
 	public Inventory createInventory(AUGamePlayer opener)
 	{
-		Inventory inventory = new InventoryBuilder(6, "Your ID is " + this.task.getPersonalID(opener).get()).build();
+		Inventory inventory = Bukkit.createInventory(null, 6 * 9, String.format("Your ID is %d", this.task.getPersonalID(opener).get()));
 		
 		//add the digits
 		inventory.setItem(DIGITS_INDEXES[0], createDigitItem(0)); //the zero digit comes first
@@ -53,7 +53,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 		inventory.setItem(PAPER_INDEX, createPaperItem("Nothing"));
 
 		//decorate the remaining slots as walls
-		InventoryUtils.fillEmptySlots(inventory, InventoryBuilder.buildWall(Material.BLACK_STAINED_GLASS_PANE));
+		InventoryUtils.fillEmptySlots(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
 		
 		return inventory;
 	}
@@ -125,12 +125,12 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	{
 		return createPaperItem(String.valueOf(id));
 	}
-
+	
 	private static ItemStack createPaperItem(String id)
 	{
 		return new ItemBuilder(Material.PAPER, ChatColor.AQUA + "Entered ID: " + id).createCopy();
 	}
-
+	
 	private static int getDigit(ItemStack digitItem)
 	{
 		String digitText = ChatColor.stripColor(digitItem.getItemMeta().getDisplayName());

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
@@ -18,6 +19,7 @@ import dte.amongus.AmongUs;
 import dte.amongus.cooldown.Cooldown;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
+import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;
@@ -50,9 +52,8 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 	@Override
 	public Inventory createInventory(AUGamePlayer opener) 
 	{
-		Inventory inventory = new InventoryBuilder(6, "Fix The Wires")
-				.withWalls()
-				.build();
+		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
+		InventoryUtils.buildWalls(inventory, Material.BLACK_STAINED_GLASS_PANE);
 
 		Set<Material> wires = Sets.newHashSet(WIRES_MATERIALS);
 		Set<Integer> leftSlots = Sets.newHashSet(LEFT_SLOTS);
