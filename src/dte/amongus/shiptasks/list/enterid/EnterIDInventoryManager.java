@@ -38,7 +38,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	@Override
 	public Inventory createInventory(AUGamePlayer opener)
 	{
-		Inventory inventory = Bukkit.createInventory(null, 6 * 9, String.format("Your ID is %d", this.task.getPersonalID(opener).get()));
+		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle(String.format("Your ID is %d", this.task.getPersonalID(opener).get())));
 		
 		//add the digits
 		inventory.setItem(DIGITS_INDEXES[0], createDigitItem(0)); //the zero digit comes first
