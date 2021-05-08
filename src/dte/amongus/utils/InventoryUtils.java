@@ -6,11 +6,13 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.Validate;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.objectholders.Pair;
 
 public class InventoryUtils
@@ -33,7 +35,7 @@ public class InventoryUtils
 	 */
 	public static void buildWalls(Inventory inv, Material material) 
 	{
-		buildWalls(inv, new ItemStack(material));
+		buildWalls(inv, new ItemBuilder(material, ChatColor.BLACK + ".").createCopy());
 	}
 	public static void buildWalls(Inventory inv, ItemStack item)
 	{
