@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.wires;
+package dte.amongus.shiptasks.list.wires;
 
 import java.util.Arrays;
 import java.util.Set;

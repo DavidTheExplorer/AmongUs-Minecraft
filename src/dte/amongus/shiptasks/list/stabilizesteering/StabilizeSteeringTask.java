@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.stabilizesteering;
+package dte.amongus.shiptasks.list.stabilizesteering;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.shiptasks.SimpleShipTask;

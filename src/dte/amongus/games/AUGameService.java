@@ -20,9 +20,9 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
-import dte.amongus.shiptasks.enterid.EnterIDTask;
-import dte.amongus.shiptasks.stabilizesteering.StabilizeSteeringTask;
-import dte.amongus.shiptasks.wires.WiresTask;
+import dte.amongus.shiptasks.list.enterid.EnterIDTask;
+import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
+import dte.amongus.shiptasks.list.wires.WiresTask;
 import dte.amongus.utils.java.UUIDProvider;
 
 public class AUGameService

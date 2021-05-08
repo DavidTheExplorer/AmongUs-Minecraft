@@ -38,11 +38,11 @@ import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
 import dte.amongus.shiptasks.ShipTask;
-import dte.amongus.shiptasks.enterid.EnterIDTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.list.enterid.EnterIDTask;
+import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
+import dte.amongus.shiptasks.list.wires.WiresTask;
 import dte.amongus.shiptasks.service.ShipTaskService;
-import dte.amongus.shiptasks.stabilizesteering.StabilizeSteeringTask;
-import dte.amongus.shiptasks.wires.WiresTask;
 import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter
