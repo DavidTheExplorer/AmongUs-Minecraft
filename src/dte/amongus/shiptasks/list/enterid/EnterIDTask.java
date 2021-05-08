@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.enterid;
+package dte.amongus.shiptasks.list.enterid;
 
 import java.util.Optional;
 

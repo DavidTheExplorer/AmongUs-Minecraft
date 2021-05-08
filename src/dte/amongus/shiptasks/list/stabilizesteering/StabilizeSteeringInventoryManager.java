@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.stabilizesteering;
+package dte.amongus.shiptasks.list.stabilizesteering;
 
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.GREEN;
