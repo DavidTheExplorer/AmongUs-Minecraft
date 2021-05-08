@@ -33,7 +33,7 @@ public abstract class TaskInventoryManager<T extends InventoryTask<?>>
 		if(TITLE_PATTERN.matcher(description).matches())
 			return false;
 		
-		return title.substring(title.indexOf(">") + 2).equals(description);
+		return title.substring(title.indexOf(">") + 2).startsWith(description);
 	}
 
 	protected static String createTitle(String description)
