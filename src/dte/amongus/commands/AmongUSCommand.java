@@ -43,6 +43,7 @@ import dte.amongus.shiptasks.list.enterid.EnterIDTask;
 import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
 import dte.amongus.shiptasks.list.wires.WiresTask;
 import dte.amongus.shiptasks.service.ShipTaskService;
+import dte.amongus.utils.blocks.SignUtils;
 import dte.amongus.utils.java.IterableUtils;
 
 public class AmongUSCommand implements CommandExecutor, TabCompleter
@@ -70,7 +71,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		this.lobbyService = lobbyService;
 		this.shipTaskService = shipTaskService;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
@@ -94,7 +95,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 			if(args[0].equalsIgnoreCase("test"))
 			{
 				Sabotage sabotage = GatesSabotage.from(player.getLocation().getBlock());
-
+				
 				sabotage.activate();
 				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), sabotage::disable, 20 * 3);
 
@@ -156,8 +157,8 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					return false;
 				}
 				Sign sign = (Sign) block.getState();
-
-				if(!Arrays.stream(sign.getLines()).allMatch(String::isEmpty))
+				
+				if(!SignUtils.isEmpty(sign))
 				{
 					player.sendMessage(RED + "The Sign you are looking at must be Empty!");
 					return false;
