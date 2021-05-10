@@ -8,6 +8,7 @@ import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.NumberUtils;
 import dte.amongus.utils.java.RandomUtils;
@@ -29,12 +30,12 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	
 	public Optional<Integer> getPersonalID(AUGamePlayer gamePlayer) 
 	{
-		return getData(gamePlayer, "Personal ID").map(Integer.class::cast);
+		return getData(gamePlayer, "Personal ID", Integer.class);
 	}
 	
 	public Optional<Integer> getEnteredID(AUGamePlayer gamePlayer)
 	{
-		return getData(gamePlayer, "Entered ID").map(Integer.class::cast);
+		return getData(gamePlayer, "Entered ID", Integer.class);
 	}
 	
 	public void enterDigit(AUGamePlayer gamePlayer, int digit) throws ArithmeticException

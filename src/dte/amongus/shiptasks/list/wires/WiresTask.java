@@ -41,7 +41,6 @@ public class WiresTask extends ProgressionTask implements InventoryTask
 	@SuppressWarnings("unchecked") //safe cast if the API is used correctly
 	public Optional<Pair<Integer, ItemStack>> getCurrentWire(AUGamePlayer gamePlayer)
 	{
-		return getData(gamePlayer, "Current Wire")
-				.map(data -> (Pair<Integer, ItemStack>) data);
+		return getData(gamePlayer, "Current Wire", Pair.class).map(pair -> (Pair<Integer, ItemStack>) pair);
 	}
 }
