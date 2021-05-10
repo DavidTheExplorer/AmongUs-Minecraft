@@ -8,7 +8,7 @@ public abstract class ProgressionTask extends SimpleShipTask
 {
 	private final int maxProgression;
 	
-	public ProgressionTask(String name, String description, TaskType type, AUGame game, int maxProgression) 
+	protected ProgressionTask(String name, String description, TaskType type, AUGame game, int maxProgression) 
 	{
 		super(name, description, type, game);
 		

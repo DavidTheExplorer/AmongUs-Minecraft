@@ -19,7 +19,7 @@ public abstract class SimpleShipTask implements ShipTask
 	private final Map<AUGamePlayer, Map<String, Object>> playersData = new HashMap<>();
 	private final Set<AUGamePlayer> finishers = new HashSet<>();
 	
-	public SimpleShipTask(String name, String description, TaskType type, AUGame game) 
+	protected SimpleShipTask(String name, String description, TaskType type, AUGame game) 
 	{
 		this.name = name;
 		this.description = description;
@@ -63,33 +63,34 @@ public abstract class SimpleShipTask implements ShipTask
 		return this.finishers.contains(gamePlayer);
 	}
 
-	public void setData(AUGamePlayer gamePlayer, String data, Object value)
+	protected void setData(AUGamePlayer gamePlayer, String data, Object value)
 	{
 		Map<String, Object> playerData = this.playersData.computeIfAbsent(gamePlayer, p -> new HashMap<>());
 		
 		playerData.put(data, value);
 	}
-	public void removeData(AUGamePlayer gamePlayer, String data)
+	protected void removeData(AUGamePlayer gamePlayer, String data)
 	{
 		Map<String, Object> playerData = this.playersData.get(gamePlayer);
 		
 		if(playerData != null)
 			playerData.remove(data);
 	}
-	public Optional<Object> getData(AUGamePlayer gamePlayer, String data)
+	protected <T> Optional<T> getData(AUGamePlayer gamePlayer, String data, Class<T> valueClass)
 	{
 		Map<String, Object> playerData = this.playersData.get(gamePlayer);
 
 		return Optional.ofNullable(playerData)
-				.map(playerDataArg -> playerDataArg.get(data));
+				.map(playerDataArg -> playerDataArg.get(data))
+				.map(valueClass::cast);
 	}
-	public <T> T getOrPut(AUGamePlayer gamePlayer, String data, T defaultIfAbsent) 
+	protected <T> T getOrPut(AUGamePlayer gamePlayer, String data, T defaultIfAbsent) 
 	{
 		return getOrPut(gamePlayer, data, () -> defaultIfAbsent);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T getOrPut(AUGamePlayer gamePlayer, String data, Supplier<T> defaultSupplier)
+	protected <T> T getOrPut(AUGamePlayer gamePlayer, String data, Supplier<T> defaultSupplier)
 	{
 		Map<String, Object> playerData = this.playersData.computeIfAbsent(gamePlayer, p -> new HashMap<>());
 
