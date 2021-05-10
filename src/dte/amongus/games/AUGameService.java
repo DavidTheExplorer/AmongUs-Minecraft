@@ -37,7 +37,7 @@ public class AUGameService
 		
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
-		game.addTask(new WiresTask(game), new EnterIDTask(game), new StabilizeSteeringTask(game));
+		game.addTask(new WiresTask(game), new EnterIDTask(game), new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE));
 		game.setState(GameState.PLAYING);
 		
 		//register the game

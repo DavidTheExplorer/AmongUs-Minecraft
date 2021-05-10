@@ -1,5 +1,7 @@
 package dte.amongus.shiptasks.list.stabilizesteering;
 
+import org.bukkit.Sound;
+
 import dte.amongus.games.AUGame;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
@@ -8,11 +10,13 @@ import dte.amongus.shiptasks.type.TaskType;
 
 public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTask
 {
-	private final StabilizeSteeringInventoryManager inventoryManager = new StabilizeSteeringInventoryManager(this);
+	private final StabilizeSteeringInventoryManager inventoryManager;
 	
-	public StabilizeSteeringTask(AUGame game) 
+	public StabilizeSteeringTask(AUGame game, Sound steeringSound) 
 	{
 		super("Stabilize Steering", "Stabilize The Steering!", TaskType.SHORT, game);
+		
+		this.inventoryManager = new StabilizeSteeringInventoryManager(steeringSound);
 	}
 
 	@Override
