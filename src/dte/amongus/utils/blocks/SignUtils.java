@@ -38,6 +38,10 @@ public class SignUtils
 		else
 			return insertEmptyLines(lines); //there are less than 4 lines
 	}
+	public static boolean isEmpty(Sign sign)
+	{
+		return Arrays.stream(sign.getLines()).allMatch(String::isEmpty);
+	}
 	public static boolean isSign(Material material) 
 	{
 		return material.name().endsWith("SIGN");
