@@ -296,7 +296,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		return YELLOW + "#" + stringUUID.substring(0, 8);
 	}
 
-	private <T extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<T> taskClass)
+	private <T extends InventoryTask> void openTaskInventory(AUGame game, Class<T> taskClass)
 	{
 		List<T> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
 

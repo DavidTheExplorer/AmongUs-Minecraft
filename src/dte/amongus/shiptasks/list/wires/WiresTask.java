@@ -11,7 +11,7 @@ import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.objectholders.Pair;
 
-public class WiresTask extends ProgressionTask implements InventoryTask<WiresInventoryManager>
+public class WiresTask extends ProgressionTask implements InventoryTask
 {
 	private final WiresInventoryManager inventoryManager = new WiresInventoryManager(this);
 

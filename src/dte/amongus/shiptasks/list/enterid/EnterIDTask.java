@@ -12,7 +12,7 @@ import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.NumberUtils;
 import dte.amongus.utils.java.RandomUtils;
 
-public class EnterIDTask extends SimpleShipTask implements InventoryTask<EnterIDInventoryManager>
+public class EnterIDTask extends SimpleShipTask implements InventoryTask
 {
 	private final EnterIDInventoryManager inventoryManager = new EnterIDInventoryManager(this, Sound.BLOCK_ANVIL_USE);
 

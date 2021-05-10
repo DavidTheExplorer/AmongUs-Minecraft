@@ -25,8 +25,10 @@ import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;
 import dte.amongus.utils.java.objectholders.Pair;
 
-public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
+public class WiresInventoryManager extends TaskInventoryManager
 {
+	private final WiresTask wiresTask;
+	
 	private static final Cooldown WORK_COOLDOWN = new Cooldown.Builder("Wires")
 			.rejectWithMessage(ChatColor.RED + "You are still working on the previous wires.")
 			.build();
@@ -46,7 +48,7 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 	
 	public WiresInventoryManager(WiresTask wiresTask) 
 	{
-		super(wiresTask);
+		this.wiresTask = wiresTask;
 	}
 	
 	@Override
@@ -92,8 +94,8 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 		if(WORK_COOLDOWN.wasRejected(player)) 
 			return;
 		
-		AUGamePlayer gamePlayer = this.task.getGame().getPlayer(player);
-		Pair<Integer, ItemStack> currentWireData = this.task.getCurrentWire(gamePlayer).orElse(null);
+		AUGamePlayer gamePlayer = this.wiresTask.getGame().getPlayer(player);
+		Pair<Integer, ItemStack> currentWireData = this.wiresTask.getCurrentWire(gamePlayer).orElse(null);
 
 		if(currentWireData == null)
 		{
@@ -103,15 +105,15 @@ public class WiresInventoryManager extends TaskInventoryManager<WiresTask>
 				return;
 			}
 			GlowEffect.addGlow(wire);
-			this.task.setCurrentWire(gamePlayer, event.getRawSlot(), wire);
+			this.wiresTask.setCurrentWire(gamePlayer, event.getRawSlot(), wire);
 		}
 		else if(event.getRawSlot() == getRightSlot(currentWireData.getFirst()))
 		{
 			ItemStack rightWire = event.getInventory().getItem(getRightSlot(currentWireData.getFirst()));
 			GlowEffect.addGlow(rightWire);
 			
-			this.task.addProgression(gamePlayer, 25);
-			this.task.removeCurrentWire(gamePlayer);
+			this.wiresTask.addProgression(gamePlayer, 25);
+			this.wiresTask.removeCurrentWire(gamePlayer);
 			
 			WORK_COOLDOWN.put(player, TimeUnit.SECONDS, 3);
 			new WiresConnectionRunnable(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, Material.WHITE_STAINED_GLASS).runTaskTimer(AmongUs.getInstance(), 0, 10);

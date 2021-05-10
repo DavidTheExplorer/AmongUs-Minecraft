@@ -5,7 +5,7 @@ import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.type.TaskType;
 
-public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTask<StabilizeSteeringInventoryManager>
+public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTask
 {
 	private final StabilizeSteeringInventoryManager inventoryManager = new StabilizeSteeringInventoryManager(this);
 	

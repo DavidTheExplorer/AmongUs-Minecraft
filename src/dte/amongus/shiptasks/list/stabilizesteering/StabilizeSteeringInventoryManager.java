@@ -14,17 +14,12 @@ import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.ItemBuilder;
 
-public class StabilizeSteeringInventoryManager extends TaskInventoryManager<StabilizeSteeringTask>
+public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 {
 	private static final int[] TARGET_INDEXES = {22, 30, 31, 32, 40};
 	
 	private static final ItemBuilder TARGET_ITEM_BUILDER = new ItemBuilder(Material.WHITE_WOOL, AQUA + "Target")
 			.withLore(WHITE + "Click the " + AQUA + "Middle" + WHITE + "!");
-
-	public StabilizeSteeringInventoryManager(StabilizeSteeringTask task) 
-	{
-		super(task);
-	}
 
 	@Override
 	public Inventory createInventory(AUGamePlayer opener) 

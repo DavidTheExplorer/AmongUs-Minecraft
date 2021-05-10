@@ -18,8 +18,9 @@ import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 
-public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
+public class EnterIDInventoryManager extends TaskInventoryManager
 {
+	private final EnterIDTask enterIDTask;
 	private final Sound digitEnterSound;
 
 	private static final int 
@@ -28,17 +29,16 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	
 	private static final int[] DIGITS_INDEXES = {38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
 
-	public EnterIDInventoryManager(EnterIDTask task, Sound digitEnterSound)
+	public EnterIDInventoryManager(EnterIDTask enterIDTask, Sound digitEnterSound)
 	{
-		super(task);
-
+		this.enterIDTask = enterIDTask;
 		this.digitEnterSound = digitEnterSound;
 	}
 
 	@Override
 	public Inventory createInventory(AUGamePlayer opener)
 	{
-		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle(String.format("Your ID is %d", this.task.getPersonalID(opener).get())));
+		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle(String.format("Your ID is %d", this.enterIDTask.getPersonalID(opener).get())));
 		
 		//add the digits
 		inventory.setItem(DIGITS_INDEXES[0], createDigitItem(0)); //the zero digit comes first
@@ -63,7 +63,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 	public void onInventoryClick(InventoryClickEvent event) 
 	{
 		Player player = (Player) event.getWhoClicked();
-		AUGamePlayer gamePlayer = this.task.getGame().getPlayer(player);
+		AUGamePlayer gamePlayer = this.enterIDTask.getGame().getPlayer(player);
 		ItemStack item = event.getCurrentItem();
 
 		switch(item.getType()) 
@@ -76,7 +76,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 			
 			try 
 			{
-				this.task.enterDigit(gamePlayer, getDigit(item));
+				this.enterIDTask.enterDigit(gamePlayer, getDigit(item));
 			}
 			catch(ArithmeticException exception) 
 			{
@@ -85,18 +85,18 @@ public class EnterIDInventoryManager extends TaskInventoryManager<EnterIDTask>
 			}
 			
 			//update the new digit
-			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.task.getEnteredID(gamePlayer).get()));
+			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.enterIDTask.getEnteredID(gamePlayer).get()));
 			player.playSound(player.getLocation(), this.digitEnterSound, 1, 1);
 			break;
 		case GREEN_TERRACOTTA:
-			Integer enteredID = this.task.getEnteredID(gamePlayer).orElse(null);
+			Integer enteredID = this.enterIDTask.getEnteredID(gamePlayer).orElse(null);
 
 			if(enteredID == null)
 			{
 				player.sendMessage(ChatColor.RED + "What's your Personal ID?");
 				return;
 			}
-			if(!this.task.getPersonalID(gamePlayer).get().equals(enteredID))
+			if(!this.enterIDTask.getPersonalID(gamePlayer).get().equals(enteredID))
 			{
 				player.sendMessage(ChatColor.RED + "Invalid Personal ID!");
 				return;
