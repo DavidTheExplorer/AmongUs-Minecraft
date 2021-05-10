@@ -223,7 +223,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					player.sendMessage(RED + "The chosen task is not an Inventory Task.");
 					return false;
 				}
-				openTaskInventory(this.gameService.getPlayerGame(player).get(), (Class<? extends InventoryTask<?>>) taskClass);
+				openTaskInventory(this.gameService.getPlayerGame(player).get(), (Class<? extends InventoryTask>) taskClass);
 				return true;
 			}
 			break;

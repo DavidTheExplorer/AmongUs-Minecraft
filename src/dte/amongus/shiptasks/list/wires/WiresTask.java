@@ -8,6 +8,7 @@ import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.ProgressionTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.objectholders.Pair;
 
@@ -23,7 +24,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask
 	}
 	
 	@Override
-	public WiresInventoryManager getInventoryManager() 
+	public TaskInventoryManager getInventoryManager() 
 	{
 		return this.inventoryManager;
 	}

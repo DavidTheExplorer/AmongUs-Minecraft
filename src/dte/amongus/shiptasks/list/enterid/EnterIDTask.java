@@ -23,7 +23,7 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	}
 
 	@Override
-	public EnterIDInventoryManager getInventoryManager() 
+	public TaskInventoryManager getInventoryManager() 
 	{
 		return this.inventoryManager;
 	}

@@ -3,6 +3,7 @@ package dte.amongus.shiptasks.list.stabilizesteering;
 import dte.amongus.games.AUGame;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.type.TaskType;
 
 public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTask
@@ -15,7 +16,7 @@ public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTa
 	}
 
 	@Override
-	public StabilizeSteeringInventoryManager getInventoryManager() 
+	public TaskInventoryManager getInventoryManager() 
 	{
 		return this.inventoryManager;
 	}
