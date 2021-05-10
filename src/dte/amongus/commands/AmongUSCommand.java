@@ -223,7 +223,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					player.sendMessage(RED + "The chosen task is not an Inventory Task.");
 					return false;
 				}
-				openTaskInventory(this.gameService.getPlayerGame(player).get(), (Class<? extends InventoryTask<?>>) taskClass);
+				openTaskInventory(this.gameService.getPlayerGame(player).get(), (Class<? extends InventoryTask>) taskClass);
 				return true;
 			}
 			break;
@@ -296,7 +296,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		return YELLOW + "#" + stringUUID.substring(0, 8);
 	}
 
-	private <T extends InventoryTask<?>> void openTaskInventory(AUGame game, Class<T> taskClass)
+	private <T extends InventoryTask> void openTaskInventory(AUGame game, Class<T> taskClass)
 	{
 		List<T> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
 

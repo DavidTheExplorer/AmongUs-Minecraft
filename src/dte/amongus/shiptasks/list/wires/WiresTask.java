@@ -8,10 +8,11 @@ import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.ProgressionTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.objectholders.Pair;
 
-public class WiresTask extends ProgressionTask implements InventoryTask<WiresInventoryManager>
+public class WiresTask extends ProgressionTask implements InventoryTask
 {
 	private final WiresInventoryManager inventoryManager = new WiresInventoryManager(this);
 
@@ -23,7 +24,7 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresInv
 	}
 	
 	@Override
-	public WiresInventoryManager getInventoryManager() 
+	public TaskInventoryManager getInventoryManager() 
 	{
 		return this.inventoryManager;
 	}
@@ -41,7 +42,6 @@ public class WiresTask extends ProgressionTask implements InventoryTask<WiresInv
 	@SuppressWarnings("unchecked") //safe cast if the API is used correctly
 	public Optional<Pair<Integer, ItemStack>> getCurrentWire(AUGamePlayer gamePlayer)
 	{
-		return getData(gamePlayer, "Current Wire")
-				.map(data -> (Pair<Integer, ItemStack>) data);
+		return getData(gamePlayer, "Current Wire", Pair.class).map(pair -> (Pair<Integer, ItemStack>) pair);
 	}
 }

@@ -3,9 +3,9 @@ package dte.amongus.shiptasks.inventory;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.ShipTask;
 
-public interface InventoryTask<IM extends TaskInventoryManager<?>> extends ShipTask
+public interface InventoryTask extends ShipTask
 {
-	IM getInventoryManager();
+	TaskInventoryManager getInventoryManager();
 	
 	@Override
 	default void onFinish(AUGamePlayer gamePlayer) 

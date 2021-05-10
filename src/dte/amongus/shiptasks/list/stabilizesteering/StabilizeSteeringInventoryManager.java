@@ -6,6 +6,8 @@ import static org.bukkit.ChatColor.WHITE;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -14,16 +16,18 @@ import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.ItemBuilder;
 
-public class StabilizeSteeringInventoryManager extends TaskInventoryManager<StabilizeSteeringTask>
+public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 {
+	private final Sound steeringSound;
+	
 	private static final int[] TARGET_INDEXES = {22, 30, 31, 32, 40};
 	
 	private static final ItemBuilder TARGET_ITEM_BUILDER = new ItemBuilder(Material.WHITE_WOOL, AQUA + "Target")
 			.withLore(WHITE + "Click the " + AQUA + "Middle" + WHITE + "!");
 
-	public StabilizeSteeringInventoryManager(StabilizeSteeringTask task) 
+	public StabilizeSteeringInventoryManager(Sound steeringSound) 
 	{
-		super(task);
+		this.steeringSound = steeringSound;
 	}
 
 	@Override
@@ -50,11 +54,14 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager<Stab
 			return;
 		
 		Inventory inventory = event.getInventory();
+		Player player = (Player) event.getWhoClicked();
 		
 		InventoryUtils.allSlotsThat(inventory, i -> i.getType() == Material.WHITE_STAINED_GLASS_PANE).forEach(index -> inventory.setItem(index, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE)));
 		InventoryUtils.fillRow(inventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		InventoryUtils.fillColumn(inventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		inventory.setItem(31, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
+		
+		player.playSound(player.getLocation(), this.steeringSound, 1, 1);
 	}
 
 	@Override

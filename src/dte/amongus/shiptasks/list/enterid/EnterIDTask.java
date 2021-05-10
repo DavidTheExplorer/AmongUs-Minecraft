@@ -8,33 +8,36 @@ import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.NumberUtils;
 import dte.amongus.utils.java.RandomUtils;
 
-public class EnterIDTask extends SimpleShipTask implements InventoryTask<EnterIDInventoryManager>
+public class EnterIDTask extends SimpleShipTask implements InventoryTask
 {
-	private final EnterIDInventoryManager inventoryManager = new EnterIDInventoryManager(this, Sound.BLOCK_ANVIL_USE);
+	private final EnterIDInventoryManager inventoryManager;
 
-	public EnterIDTask(AUGame game)
+	public EnterIDTask(AUGame game, Sound digitEnterSound)
 	{
 		super("Enter ID", "Enter your Personal ID", TaskType.COMMON, game);
+		
+		this.inventoryManager = new EnterIDInventoryManager(this, digitEnterSound);
 	}
 
 	@Override
-	public EnterIDInventoryManager getInventoryManager() 
+	public TaskInventoryManager getInventoryManager() 
 	{
 		return this.inventoryManager;
 	}
 	
 	public Optional<Integer> getPersonalID(AUGamePlayer gamePlayer) 
 	{
-		return getData(gamePlayer, "Personal ID").map(Integer.class::cast);
+		return getData(gamePlayer, "Personal ID", Integer.class);
 	}
 	
 	public Optional<Integer> getEnteredID(AUGamePlayer gamePlayer)
 	{
-		return getData(gamePlayer, "Entered ID").map(Integer.class::cast);
+		return getData(gamePlayer, "Entered ID", Integer.class);
 	}
 	
 	public void enterDigit(AUGamePlayer gamePlayer, int digit) throws ArithmeticException
