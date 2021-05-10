@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import dte.amongus.games.AUGame.GameState;
@@ -37,7 +38,7 @@ public class AUGameService
 		
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
-		game.addTask(new WiresTask(game), new EnterIDTask(game), new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE));
+		game.addTask(new WiresTask(game), new EnterIDTask(game, Sound.ENTITY_ARROW_HIT_PLAYER), new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE));
 		game.setState(GameState.PLAYING);
 		
 		//register the game

@@ -15,11 +15,13 @@ import dte.amongus.utils.java.RandomUtils;
 
 public class EnterIDTask extends SimpleShipTask implements InventoryTask
 {
-	private final EnterIDInventoryManager inventoryManager = new EnterIDInventoryManager(this, Sound.BLOCK_ANVIL_USE);
+	private final EnterIDInventoryManager inventoryManager;
 
-	public EnterIDTask(AUGame game)
+	public EnterIDTask(AUGame game, Sound digitEnterSound)
 	{
 		super("Enter ID", "Enter your Personal ID", TaskType.COMMON, game);
+		
+		this.inventoryManager = new EnterIDInventoryManager(this, digitEnterSound);
 	}
 
 	@Override
