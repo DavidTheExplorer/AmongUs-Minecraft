@@ -106,17 +106,21 @@ public class WiresInventoryManager extends TaskInventoryManager
 			}
 			GlowEffect.addGlow(wire);
 			this.wiresTask.setCurrentWire(gamePlayer, event.getRawSlot(), wire);
+			return;
 		}
-		else if(event.getRawSlot() == getRightSlot(currentWireData.getFirst()))
+		int rightSlot = getRightSlot(currentWireData.getFirst());
+		
+		if(event.getRawSlot() == rightSlot)
 		{
-			ItemStack rightWire = event.getInventory().getItem(getRightSlot(currentWireData.getFirst()));
+			WORK_COOLDOWN.put(player, TimeUnit.SECONDS, 3);
+			
+			ItemStack rightWire = event.getInventory().getItem(rightSlot);
 			GlowEffect.addGlow(rightWire);
 			
 			this.wiresTask.addProgression(gamePlayer, 25);
 			this.wiresTask.removeCurrentWire(gamePlayer);
 			
-			WORK_COOLDOWN.put(player, TimeUnit.SECONDS, 3);
-			new WiresConnectionRunnable(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, Material.WHITE_STAINED_GLASS).runTaskTimer(AmongUs.getInstance(), 0, 10);
+			startConnectionAnimation(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, rightWire.getType());
 		}
 	}
 
@@ -148,11 +152,16 @@ public class WiresInventoryManager extends TaskInventoryManager
 	
 	private static ChatColor getWireColor(Material wireMaterial) 
 	{
-		if(wireMaterial == Material.PINK_STAINED_GLASS_PANE) 
+		if(wireMaterial == Material.PINK_STAINED_GLASS_PANE)
 			return ChatColor.LIGHT_PURPLE;
 
 		String materialColor = wireMaterial.name().substring(0, wireMaterial.name().indexOf('_'));
 
 		return ChatColor.valueOf(materialColor);
+	}
+	
+	private static void startConnectionAnimation(Inventory inventory, int start, int end, Material wireMaterial) 
+	{
+		new WiresConnectionRunnable(inventory, start, end, getWireColor(wireMaterial), wireMaterial).runTaskTimer(AmongUs.getInstance(), 0, 10);
 	}
 }
