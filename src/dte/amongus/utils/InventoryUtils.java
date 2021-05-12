@@ -2,6 +2,7 @@ package dte.amongus.utils;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -28,6 +29,18 @@ public class InventoryUtils
 		verifyNotNull(inv, "inventory");
 
 		return itemsStream(inv).count() == 0;
+	}
+	public static int randomEmptySlot(Inventory inv) 
+	{
+		long emptySlotsAmount = emptySlotsStream(inv).count();
+		
+		if(emptySlotsAmount == 0)
+			return -1;
+		
+		return emptySlotsStream(inv)
+				.skip(ThreadLocalRandom.current().nextLong(emptySlotsAmount))
+				.findFirst()
+				.getAsInt();
 	}
 	
 	/*

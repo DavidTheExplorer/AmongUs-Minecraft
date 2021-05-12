@@ -39,6 +39,7 @@ import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
 import dte.amongus.shiptasks.ShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
+import dte.amongus.shiptasks.list.cleano2filter.CleanO2FilterTask;
 import dte.amongus.shiptasks.list.enterid.EnterIDTask;
 import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
 import dte.amongus.shiptasks.list.wires.WiresTask;
@@ -62,6 +63,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		TASK_CLASS_BY_NAME.put("wires", WiresTask.class);
 		TASK_CLASS_BY_NAME.put("id", EnterIDTask.class);
 		TASK_CLASS_BY_NAME.put("steering", StabilizeSteeringTask.class);
+		TASK_CLASS_BY_NAME.put("o2", CleanO2FilterTask.class);
 	}
 
 	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService, ShipTaskService shipTaskService) 
