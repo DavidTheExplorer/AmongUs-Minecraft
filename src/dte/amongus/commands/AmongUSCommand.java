@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -22,6 +23,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import dte.amongus.AmongUs;
 import dte.amongus.corpses.factory.SimpleCorpseFactory;
@@ -35,8 +37,6 @@ import dte.amongus.lobby.AULobbyService;
 import dte.amongus.maps.TestMap;
 import dte.amongus.player.AUPlayer;
 import dte.amongus.player.AUPlayerService;
-import dte.amongus.sabotages.GatesSabotage;
-import dte.amongus.sabotages.Sabotage;
 import dte.amongus.shiptasks.ShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.list.enterid.EnterIDTask;
@@ -94,10 +94,32 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		case 1:
 			if(args[0].equalsIgnoreCase("test"))
 			{
-				Sabotage sabotage = GatesSabotage.from(player.getLocation().getBlock());
+				new BukkitRunnable()
+				{
+					private int test = 100;
+					private float pitch = 0;
+					
+					@Override
+					public void run() 
+					{
+						//https://www.youtube.com/watch?v=R-ZrGu0bi1A
+						//the sound is either Stone or Redstone Block breaking.
+						player.playSound(player.getLocation(), Sound.BLOCK_STONE_BREAK, 1, this.pitch);
+						
+						if(this.test == 0)
+							cancel();
+						
+						this.test -= 10;
+						this.pitch += 0.05;
+						
+						System.out.println(this.pitch);
+					}
+				}.runTaskTimer(AmongUs.getInstance(), 5, 0);
+				
+				/*Sabotage sabotage = GatesSabotage.from(player.getLocation().getBlock());
 				
 				sabotage.activate();
-				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), sabotage::disable, 20 * 3);
+				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), sabotage::disable, 20 * 3);*/
 
 				/*Hologram h1 = new CommonEquallableHologram(HologramsAPI.createHologram(AmongUs.getInstance(), player.getLocation().add(0, 3, 0)));
 				Hologram h2 = new CommonEquallableHologram(HologramsAPI.createHologram(AmongUs.getInstance(), player.getLocation().add(0, 6, 0)));
