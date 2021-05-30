@@ -21,6 +21,7 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.shiptasks.list.cleano2filter.CleanO2FilterTask;
 import dte.amongus.shiptasks.list.enterid.EnterIDTask;
 import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
 import dte.amongus.shiptasks.list.wires.WiresTask;
@@ -38,7 +39,13 @@ public class AUGameService
 		
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
-		game.addTask(new WiresTask(game), new EnterIDTask(game, Sound.ENTITY_ARROW_HIT_PLAYER), new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE));
+		
+		game.addTask(
+				new WiresTask(game), 
+				new EnterIDTask(game, Sound.ENTITY_ARROW_HIT_PLAYER), 
+				new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE), 
+				new CleanO2FilterTask(game, 5, Sound.BLOCK_GRASS_BREAK));
+		
 		game.setState(GameState.PLAYING);
 		
 		//register the game

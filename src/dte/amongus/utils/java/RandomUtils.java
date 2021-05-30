@@ -77,6 +77,9 @@ public class RandomUtils
 	 */
 	public static <E> E randomElement(E[] array)
 	{
+		if(array.length == 0)
+			return null;
+		
 		int randomIndex = randomInt(0, array.length);
 
 		return array[randomIndex];
