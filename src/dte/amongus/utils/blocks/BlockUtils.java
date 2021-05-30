@@ -23,6 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Bisected.Half;
+import org.bukkit.block.data.type.Leaves;
 
 public class BlockUtils
 {
@@ -123,5 +124,13 @@ public class BlockUtils
 	{
 		if(!isDoor(doorMaterial))
 			throw new IllegalArgumentException(String.format("The provided material(%s) doesn't represent a Door!", doorMaterial.name()));
+	}
+	
+	/*
+	 * Leaves
+	 */
+	public static boolean isLeaf(Material material) 
+	{
+		return Leaves.class.isAssignableFrom(material.data);
 	}
 }

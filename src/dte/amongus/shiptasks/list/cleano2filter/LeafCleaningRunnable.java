@@ -1,63 +1,92 @@
 package dte.amongus.shiptasks.list.cleano2filter;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import dte.amongus.AmongUs;
+import dte.amongus.games.players.AUGamePlayer;
+
 public class LeafCleaningRunnable extends BukkitRunnable
 {
-	private final Inventory o2Inventory;
+	private final CleanO2FilterTask cleanO2FilterTask;
+	private final Inventory taskInventory;
+	private final AUGamePlayer cleanerGamePlayer;
+	private final List<Integer> exitPath;
+	private final Sound cleaningSound;
 	private final int chainIndex;
 	
-	private int currentIndex;
-	
-	/*
-	 * 1: 0   1   2   3   4   5   6   7   8 
-	 * 2: 9   10  11  12  13  14  15  16  17
-	 * 3: 18  19  20  21  22  23  24  25
-	 */
-	
-	public LeafCleaningRunnable(Inventory o2Inventory, int leafIndex, int chainIndex) 
+	private ItemStack chainItem; //before the chain is opened(the chain is removed from the inventory), it's saved here
+	private int currentPathIndex = 1;
+
+	public LeafCleaningRunnable(CleanO2FilterTask cleanO2FilterTask, Inventory taskInventory, AUGamePlayer cleanerGamePlayer, List<Integer> exitPath, Sound cleaningSound) 
 	{
-		this.o2Inventory = o2Inventory;
-		this.currentIndex = leafIndex;
-		this.chainIndex = chainIndex;
+		this.cleanO2FilterTask = cleanO2FilterTask;
+		this.taskInventory = taskInventory;
+		this.cleanerGamePlayer = cleanerGamePlayer;
+		this.exitPath = exitPath;
+		this.cleaningSound = cleaningSound;
+		this.chainIndex = exitPath.get(exitPath.size()-2);
 	}
-	
+
 	@Override
-	public void run() 
+	public void run()
 	{
-		if(this.currentIndex == this.chainIndex) 
+		forwardLeaf();
+		this.cleanerGamePlayer.getPlayer().playSound(this.cleanerGamePlayer.getPlayer().getLocation(), this.cleaningSound, 1, 1);
+		this.currentPathIndex++;
+		
+		if(this.currentPathIndex == this.exitPath.size()) 
 		{
-			this.o2Inventory.setItem(this.currentIndex-1, null);
+			closeChain();
+			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), this::removeLeaf, 10);
+			this.cleanO2FilterTask.removeCurrentLeafData(this.cleanerGamePlayer);
+			
+			//return the (Left Click) to the leaves' names
+			CleanO2FilterInventoryManager.setLeavesTo(this.taskInventory, leaf -> CleanO2FilterInventoryManager.createLeaf(leaf.getType()));
+			
+			cancel();
 			return;
 		}
-		ItemStack leaf = this.o2Inventory.getItem(this.currentIndex);
-		this.o2Inventory.setItem(this.currentIndex, null);
 		
-		int nextIndex = calculateNextIndex();
-		this.o2Inventory.setItem(nextIndex, leaf);
+		if(shouldOpenChain())
+		{
+			saveChain();
+			openChain();
+		}
 	}
 	
-	private int calculateNextIndex() 
+	private void forwardLeaf()
 	{
-		int currentRow = getRow(this.currentIndex);
-		int chainRow = getRow(this.chainIndex);
-		
-		if(currentRow == chainRow) 
-			return --this.currentIndex;
-		
-		//the leaf is above the chain
-		if(currentRow < chainRow)
-			return this.currentIndex+9;
-		
-		throw new RuntimeException("How did we get here?");
+		int leafIndex = this.exitPath.get(this.currentPathIndex-1);
+		int nextIndex = this.exitPath.get(this.currentPathIndex);
+
+		ItemStack leaf = this.taskInventory.getItem(leafIndex);
+		this.taskInventory.setItem(leafIndex, null);
+		this.taskInventory.setItem(nextIndex, leaf);
 	}
-	
-	private static int getRow(int index) 
+	private boolean shouldOpenChain()
 	{
-		int row = index % 9;
-		
-		return row == 0 ? 1 : row;
+		return this.chainIndex == this.exitPath.get(this.currentPathIndex);
+	}
+	private void openChain() 
+	{
+		this.taskInventory.setItem(this.chainIndex, null);
+	}
+	private void saveChain() 
+	{
+		this.chainItem = this.taskInventory.getItem(this.chainIndex);
+	}
+	private void closeChain() 
+	{
+		this.taskInventory.setItem(this.chainIndex, this.chainItem);
+	}
+	private void removeLeaf() 
+	{
+		this.taskInventory.setItem(this.exitPath.get(this.currentPathIndex-1), null);
 	}
 }
