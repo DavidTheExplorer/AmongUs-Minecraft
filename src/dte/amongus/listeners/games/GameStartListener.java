@@ -18,23 +18,25 @@ public class GameStartListener implements Listener
 	private static final ItemBuilder 
 	IMPOSTOR_ICON_BUILDER = new ItemBuilder(Material.REDSTONE, ChatColor.RED + "You are an Impostor"),
 	CREWMATE_ICON_BUILDER = new ItemBuilder(Material.FEATHER, ChatColor.AQUA + "You are a Crewmate");
-	
+
 	@EventHandler
 	public void onGameStart(GameStartEvent event) 
 	{
 		AUGame game = event.getGame();
-		
-		displayRole(game, Crewmate.class, ChatColor.AQUA, "Crewmate", "Work hard to save the Ship!", CREWMATE_ICON_BUILDER.createCopy());
-		displayRole(game, Impostor.class, ChatColor.RED, "IMPOSTOR", "Work smart to conquer the Ship!", IMPOSTOR_ICON_BUILDER.createCopy());
+
+		sendRoleTitle(game, Crewmate.class, ChatColor.AQUA, "Crewmate", "Work hard to save the Ship!", CREWMATE_ICON_BUILDER.createCopy());
+		sendRoleTitle(game, Impostor.class, ChatColor.RED, "IMPOSTOR", "Work smart to conquer the Ship!", IMPOSTOR_ICON_BUILDER.createCopy());
 	}
-	
-	private void displayRole(AUGame game, Class<? extends AUGamePlayer> roleClass, ChatColor color, String displayName, String description, ItemStack icon) 
+
+	private void sendRoleTitle(AUGame game, Class<? extends AUGamePlayer> roleClass, ChatColor color, String displayName, String description, ItemStack icon) 
 	{
-		game.getAlivePlayers(roleClass).stream().map(AUGamePlayer::getPlayer).forEach(gamePlayer -> 
+		game.getAlivePlayers(roleClass).stream()
+		.map(AUGamePlayer::getPlayer)
+		.forEach(gamePlayer -> 
 		{
 			//title
 			gamePlayer.sendTitle(color + "Role: " + displayName, color + description, 0, 80, 20);
-			
+
 			//icon in inventory
 			gamePlayer.getInventory().setItem(8, icon);
 		});
