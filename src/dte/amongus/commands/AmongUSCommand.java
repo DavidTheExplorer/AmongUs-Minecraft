@@ -170,7 +170,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				player.sendMessage(GREEN + "You successfully created a new lobby in your Location.");
 
 				this.tempLobby.addPlayer(this.auPlayerService.getAUPlayer(player.getUniqueId()));
-				player.sendMessage(GREEN + "You were sent to lobby " + toDisplay(this.tempLobby.getID().toString()));
+				player.sendMessage(GREEN + "You were sent to lobby " + toDisplay(this.tempLobby));
 				return true;
 			}
 			break;
@@ -189,10 +189,9 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				}
 				AUPlayer targetAUPlayer = this.auPlayerService.getAUPlayer(target.getUniqueId());
 				this.tempLobby.addPlayer(targetAUPlayer);
-				target.teleport(this.tempLobby.getSpawnLocation());
 
-				player.sendMessage(YELLOW + target.getName() + GREEN + " was sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
-				target.sendMessage(GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby.getID().toString()));
+				player.sendMessage(YELLOW + target.getName() + GREEN + " was sent to Lobby " + toDisplay(this.tempLobby));
+				target.sendMessage(GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby));
 
 				AUGame game = this.tempLobby.getCurrentGame();
 
@@ -219,6 +218,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				if(taskClass == null) 
 				{
 					player.sendMessage(RED + "The specified task " + DARK_RED + args[1] + RED + " wasn't found!");
+					return false;
 				}
 				if(!InventoryTask.class.isAssignableFrom(taskClass)) 
 				{
@@ -293,9 +293,9 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		return false;
 	}
 
-	private static String toDisplay(String stringUUID) 
+	private static String toDisplay(AULobby lobby) 
 	{
-		return YELLOW + "#" + stringUUID.substring(0, 8);
+		return YELLOW + "#" + lobby.getID().toString().substring(0, 8);
 	}
 
 	private <T extends InventoryTask> void openTaskInventory(AUGame game, Class<T> taskClass)
