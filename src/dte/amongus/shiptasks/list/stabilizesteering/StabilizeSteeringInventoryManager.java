@@ -1,8 +1,8 @@
 package dte.amongus.shiptasks.list.stabilizesteering;
 
-import static org.bukkit.ChatColor.AQUA;
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
 import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.WHITE;
 
 import org.bukkit.Bukkit;
@@ -20,11 +20,8 @@ import dte.amongus.utils.items.ItemBuilder;
 public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 {
 	private final Sound steeringSound;
-	
-	private static final int[] TARGET_INDEXES = {22, 30, 31, 32, 40};
-	
-	private static final ItemBuilder TARGET_ITEM_BUILDER = new ItemBuilder(Material.WHITE_WOOL, AQUA + "Target")
-			.withLore(WHITE + "Click the " + AQUA + "Middle" + WHITE + "!");
+
+	private static final int PREVIOUS_TARGET_INDEX = 16, NEW_TARGET_INDEX = 31;
 
 	public StabilizeSteeringInventoryManager(Sound steeringSound) 
 	{
@@ -37,31 +34,38 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		Inventory inventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
 		InventoryUtils.fillEmptySlots(inventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
-		//add the "target cross" in the middle of the inventory
-		for(int targetIndex : TARGET_INDEXES)
-			inventory.setItem(targetIndex, TARGET_ITEM_BUILDER.createCopy());
+		//add the new target to the middle of the inventory
+		inventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "New Target")
+				.withLore(WHITE + "Click here to Retarget!")
+				.createCopy());
 		
 		//add the "aim" stuff
 		InventoryUtils.fillRow(inventory, 1, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		InventoryUtils.fillColumn(inventory, 7, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-
+		
+		inventory.setItem(PREVIOUS_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, RED + "Current Target")
+				.withLore(WHITE + "Click on another one.")
+				.createCopy());
+		
 		return inventory;
 	}
 
+	
+	
 	@Override
 	public void onInventoryClick(InventoryClickEvent event) 
 	{
-		if(event.getRawSlot() != 31)
+		if(event.getRawSlot() != NEW_TARGET_INDEX)
 			return;
 		
 		Inventory inventory = event.getInventory();
-		Player player = (Player) event.getWhoClicked();
-		
 		InventoryUtils.allSlotsThat(inventory, i -> i.getType() == Material.WHITE_STAINED_GLASS_PANE).forEach(index -> inventory.setItem(index, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE)));
 		InventoryUtils.fillRow(inventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		InventoryUtils.fillColumn(inventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		inventory.setItem(31, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
+		inventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
+		inventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
+		Player player = (Player) event.getWhoClicked();
 		player.playSound(player.getLocation(), this.steeringSound, 1, 1);
 	}
 
