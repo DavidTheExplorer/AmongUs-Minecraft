@@ -1,7 +1,6 @@
 package dte.amongus.shiptasks;
 
 import dte.amongus.games.AUGame;
-import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.type.TaskType;
 
@@ -31,8 +30,8 @@ public abstract class ProgressionTask extends SimpleShipTask
 		}
 		return newProgression == 100;
 	}
-	public int getProgression(AUGamePlayer gamePlayer) 
+	public int getProgression(Crewmate crewmate) 
 	{
-		return (Integer) getOrPut(gamePlayer, "Progression", 0);
+		return (Integer) getOrPut(crewmate, "Progression", 0);
 	}
 }

@@ -1,9 +1,9 @@
 package dte.amongus.corpses.reportablefinder;
 
 import dte.amongus.corpses.AbstractCorpse;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public interface ReportableCorpseFinder
 {
-	AbstractCorpse find(AUGamePlayer gamePlayer);
+	AbstractCorpse find(Crewmate crewmate);
 }

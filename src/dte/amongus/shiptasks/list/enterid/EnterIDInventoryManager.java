@@ -13,7 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.AmongUs;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
@@ -37,7 +37,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	}
 
 	@Override
-	public Inventory createInventory(AUGamePlayer opener)
+	public Inventory createInventory(Crewmate opener)
 	{
 		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle(String.format("Your ID is %d", this.enterIDTask.getPersonalID(opener).get())));
 		
@@ -61,10 +61,9 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 
 	@SuppressWarnings("incomplete-switch")
 	@Override
-	public void onInventoryClick(InventoryClickEvent event) 
+	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
-		Player player = (Player) event.getWhoClicked();
-		AUGamePlayer gamePlayer = this.enterIDTask.getGame().getPlayer(player);
+		Player crewmatePlayer = (Player) event.getWhoClicked();
 		ItemStack item = event.getCurrentItem();
 
 		switch(item.getType()) 
@@ -77,32 +76,32 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			
 			try 
 			{
-				this.enterIDTask.enterDigit(gamePlayer, getDigit(item));
+				this.enterIDTask.enterDigit(crewmate, getDigit(item));
 			}
 			catch(ArithmeticException exception) 
 			{
-				player.sendMessage(ChatColor.RED + "Too Many Digits!");
+				crewmatePlayer.sendMessage(ChatColor.RED + "Too Many Digits!");
 				return;
 			}
 			
 			//update the new digit
-			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.enterIDTask.getEnteredID(gamePlayer).get()));
-			player.playSound(player.getLocation(), this.digitEnterSound, 1, 1);
+			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.enterIDTask.getEnteredID(crewmate).get()));
+			crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.digitEnterSound, 1, 1);
 			break;
 		case GREEN_TERRACOTTA:
-			Integer enteredID = this.enterIDTask.getEnteredID(gamePlayer).orElse(null);
+			Integer enteredID = this.enterIDTask.getEnteredID(crewmate).orElse(null);
 
 			if(enteredID == null)
 			{
-				player.sendMessage(ChatColor.RED + "What's your Personal ID?");
+				crewmatePlayer.sendMessage(ChatColor.RED + "What's your Personal ID?");
 				return;
 			}
-			if(!this.enterIDTask.getPersonalID(gamePlayer).get().equals(enteredID))
+			if(!this.enterIDTask.getPersonalID(crewmate).get().equals(enteredID))
 			{
-				player.sendMessage(ChatColor.RED + "Invalid Personal ID!");
+				crewmatePlayer.sendMessage(ChatColor.RED + "Invalid Personal ID!");
 				return;
 			}
-			player.sendMessage(ChatColor.GREEN + "Success - You were successfully identified.");
+			crewmatePlayer.sendMessage(ChatColor.GREEN + "Success - You were successfully identified.");
 			break;
 		}
 	}

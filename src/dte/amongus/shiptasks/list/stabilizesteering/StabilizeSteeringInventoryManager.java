@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.ItemBuilder;
@@ -29,7 +29,7 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 	}
 
 	@Override
-	public Inventory createInventory(AUGamePlayer opener) 
+	public Inventory createInventory(Crewmate opener) 
 	{
 		Inventory inventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
 		InventoryUtils.fillEmptySlots(inventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
@@ -49,11 +49,9 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		
 		return inventory;
 	}
-
-	
 	
 	@Override
-	public void onInventoryClick(InventoryClickEvent event) 
+	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
 		if(event.getRawSlot() != NEW_TARGET_INDEX)
 			return;
@@ -65,8 +63,8 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		inventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
 		inventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
-		Player player = (Player) event.getWhoClicked();
-		player.playSound(player.getLocation(), this.steeringSound, 1, 1);
+		Player crewmatePlayer = (Player) event.getWhoClicked();
+		crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.steeringSound, 1, 1);
 	}
 
 	@Override

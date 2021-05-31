@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGame;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.ProgressionTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
@@ -29,19 +29,19 @@ public class WiresTask extends ProgressionTask implements InventoryTask
 		return this.inventoryManager;
 	}
 	
-	public void setCurrentWire(AUGamePlayer gamePlayer, int inventorySlot, ItemStack wire) 
+	public void setCurrentWire(Crewmate crewmate, int inventorySlot, ItemStack wire) 
 	{
-		setData(gamePlayer, "Current Wire", Pair.of(inventorySlot, wire));
+		setData(crewmate, "Current Wire", Pair.of(inventorySlot, wire));
 	}
 	
-	public void removeCurrentWire(AUGamePlayer gamePlayer) 
+	public void removeCurrentWire(Crewmate crewmate) 
 	{
-		removeData(gamePlayer, "Current Wire");
+		removeData(crewmate, "Current Wire");
 	}
 	
 	@SuppressWarnings("unchecked") //safe cast if the API is used correctly
-	public Optional<Pair<Integer, ItemStack>> getCurrentWire(AUGamePlayer gamePlayer)
+	public Optional<Pair<Integer, ItemStack>> getCurrentWire(Crewmate crewmate)
 	{
-		return getData(gamePlayer, "Current Wire", Pair.class).map(pair -> (Pair<Integer, ItemStack>) pair);
+		return getData(crewmate, "Current Wire", Pair.class).map(pair -> (Pair<Integer, ItemStack>) pair);
 	}
 }

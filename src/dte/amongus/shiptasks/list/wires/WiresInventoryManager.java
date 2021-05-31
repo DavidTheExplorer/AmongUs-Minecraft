@@ -19,7 +19,6 @@ import com.google.common.collect.Sets;
 
 import dte.amongus.AmongUs;
 import dte.amongus.cooldown.Cooldown;
-import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
@@ -55,7 +54,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 	}
 	
 	@Override
-	public Inventory createInventory(AUGamePlayer opener) 
+	public Inventory createInventory(Crewmate crewmate) 
 	{
 		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
 		InventoryUtils.buildWalls(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
@@ -85,41 +84,41 @@ public class WiresInventoryManager extends TaskInventoryManager
 	}
 
 	@Override
-	public void onInventoryClick(InventoryClickEvent event) 
+	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
 		ItemStack wire = event.getCurrentItem();
 		
 		if(!WIRES_MATERIALS.contains(wire.getType()))
 			return;
 		
-		Player player = (Player) event.getWhoClicked();
+		Player crewmatePlayer = (Player) event.getWhoClicked();
 		
-		if(WORK_COOLDOWN.wasRejected(player)) 
+		if(WORK_COOLDOWN.wasRejected(crewmatePlayer)) 
 			return;
 		
-		Crewmate crewmate = this.wiresTask.getGame().getPlayer(player, Crewmate.class);
 		Pair<Integer, ItemStack> currentWireData = this.wiresTask.getCurrentWire(crewmate).orElse(null);
 
 		if(currentWireData == null)
 		{
 			if(!isLeftSlot(event.getRawSlot())) 
 			{
-				player.sendMessage(ChatColor.RED + "You have to click a Left Wire first!");
+				crewmatePlayer.sendMessage(ChatColor.RED + "You have to click a Left Wire first!");
 				return;
 			}
 			if(event.getInventory().getItem(event.getRawSlot()+1) != null) 
 			{
-				player.sendMessage(ChatColor.RED + "Wire already connected!");
+				crewmatePlayer.sendMessage(ChatColor.RED + "Wire already connected!");
 				return;
 			}
 			GlowEffect.addGlow(wire);
 			this.wiresTask.setCurrentWire(crewmate, event.getRawSlot(), wire);
+			return;
 		}
 		int rightSlot = getRightSlot(currentWireData.getFirst());
 		
 		if(event.getRawSlot() == rightSlot)
 		{
-			WORK_COOLDOWN.put(player, TimeUnit.SECONDS, 3);
+			WORK_COOLDOWN.put(crewmatePlayer, TimeUnit.SECONDS, 3);
 			
 			ItemStack rightWire = event.getInventory().getItem(rightSlot);
 			GlowEffect.addGlow(rightWire);

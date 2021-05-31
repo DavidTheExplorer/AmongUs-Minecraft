@@ -7,15 +7,15 @@ import org.bukkit.block.Block;
 
 import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.blocks.BlockChangeComponent;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 
 public class DeathSignComponent extends BlockChangeComponent
 {
-	public DeathSignComponent(BasicCorpse corpse, Block block, Material signMaterial, AUGamePlayer whoDied)
+	public DeathSignComponent(BasicCorpse corpse, Block block, Material signMaterial)
 	{
-		super(corpse, block, toSign(signMaterial, createLinesFor(whoDied)));
+		super(corpse, block, toSign(signMaterial, createLinesFor(corpse.whoDied())));
 	}
-	private static String[] createLinesFor(AUGamePlayer whoDied)
+	private static String[] createLinesFor(Crewmate whoDied)
 	{
 		String playerName = whoDied.getPlayer().getName();
 		

@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.bukkit.Sound;
 
 import dte.amongus.games.AUGame;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
@@ -35,18 +35,18 @@ public class CleanO2FilterTask extends SimpleShipTask implements InventoryTask
 		return this.leavesAmount;
 	}
 	
-	public Optional<Integer> getCurrentLeafData(AUGamePlayer gamePlayer)
+	public Optional<Integer> getCurrentLeafData(Crewmate crewmate)
 	{
-		return getData(gamePlayer, "Current Leaf Index", Integer.class);
+		return getData(crewmate, "Current Leaf Index", Integer.class);
 	}
 	
-	public void setCurrentLeafData(AUGamePlayer gamePlayer, int leafIndex) 
+	public void setCurrentLeafData(Crewmate crewmate, int leafIndex) 
 	{
-		setData(gamePlayer, "Current Leaf Index", leafIndex);
+		setData(crewmate, "Current Leaf Index", leafIndex);
 	}
 	
-	public void removeCurrentLeafData(AUGamePlayer gamePlayer) 
+	public void removeCurrentLeafData(Crewmate crewmate) 
 	{
-		removeData(gamePlayer, "Current Leaf Index");
+		removeData(crewmate, "Current Leaf Index");
 	}
 }
