@@ -1,10 +1,8 @@
 package dte.amongus.shiptasks;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
@@ -16,7 +14,6 @@ public abstract class SimpleShipTask implements ShipTask
 	private final String name, description;
 	private final TaskType type;
 	private final AUGame game;
-	private final Set<Crewmate> finishers = new HashSet<>();
 	private final Map<Crewmate, Map<String, Object>> playersData = new HashMap<>();
 	
 	protected SimpleShipTask(String name, String description, TaskType type, AUGame game) 
@@ -49,18 +46,6 @@ public abstract class SimpleShipTask implements ShipTask
 	public AUGame getGame() 
 	{
 		return this.game;
-	}
-	
-	@Override
-	public void setFinished(Crewmate crewmate) 
-	{
-		this.finishers.add(crewmate);
-	}
-	
-	@Override
-	public boolean hasFinished(Crewmate crewmate) 
-	{
-		return this.finishers.contains(crewmate);
 	}
 
 	protected void setData(Crewmate crewmate, String data, Object value)

@@ -11,9 +11,6 @@ public interface ShipTask
 	TaskType getType();
 	AUGame getGame();
 	
-	void setFinished(Crewmate crewmate);
-	boolean hasFinished(Crewmate crewmate);
-	
 	default void onFinish(Crewmate crewmate){}
 	default void onStart(Crewmate crewmate){}
 }
