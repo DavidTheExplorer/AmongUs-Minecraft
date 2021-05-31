@@ -7,7 +7,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -112,7 +111,7 @@ public class AUGame
 	}
 	public Set<ShipTask> getTasks()
 	{
-		return Collections.unmodifiableSet(this.tasks);
+		return new HashSet<>(this.tasks);
 	}
 	
 	public Collection<AUGamePlayer> getPlayers()

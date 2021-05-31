@@ -71,7 +71,7 @@ public class AUGameService
 	}
 	public Set<AUGame> getActiveGames()
 	{
-		return Collections.unmodifiableSet(this.activeGames);
+		return new HashSet<>(this.activeGames);
 	}
 	
 	private Collection<AUGamePlayer> toGamePlayers(AULobby lobby, AUGame game)

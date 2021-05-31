@@ -1,8 +1,8 @@
 package dte.amongus.maps;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class GameMapService
@@ -23,7 +23,7 @@ public class GameMapService
 	}
 	public Collection<GameMap> getMaps()
 	{
-		return Collections.unmodifiableCollection(this.mapByName.values());
+		return new HashSet<>(this.mapByName.values());
 	}
 	
 	/*private class IdentifyableMap extends GameMap implements Named

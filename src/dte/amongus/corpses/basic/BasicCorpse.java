@@ -1,6 +1,5 @@
 package dte.amongus.corpses.basic;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
@@ -45,7 +44,7 @@ public class BasicCorpse implements AbstractCorpse, Iterable<BasicCorpseComponen
 	}
 	public Set<BasicCorpseComponent> getComponents()
 	{
-		return Collections.unmodifiableSet(this.components);
+		return new HashSet<>(this.components);
 	}
 	public <C extends BasicCorpseComponent> Set<C> getComponents(Class<C> componentClass)
 	{
