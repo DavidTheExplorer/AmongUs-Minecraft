@@ -189,7 +189,6 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				}
 				AUPlayer targetAUPlayer = this.auPlayerService.getAUPlayer(target.getUniqueId());
 				this.tempLobby.addPlayer(targetAUPlayer);
-				target.teleport(this.tempLobby.getSpawnLocation());
 
 				player.sendMessage(YELLOW + target.getName() + GREEN + " was sent to Lobby " + toDisplay(this.tempLobby));
 				target.sendMessage(GREEN + "You were sent to Lobby " + toDisplay(this.tempLobby));
