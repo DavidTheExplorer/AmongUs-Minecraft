@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
@@ -48,19 +49,17 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	}
 	
 	@Override
-	public void onStart(AUGamePlayer gamePlayer) 
+	public void onStart(Crewmate crewmate) 
 	{
 		//set the player's personal ID as a 3-5 digits number
 		int randomID = RandomUtils.randomInt(100, 99999, true, true);
 		
-		setData(gamePlayer, "Personal ID", randomID);
+		setData(crewmate, "Personal ID", randomID);
 	}
 	
 	@Override
-	public void onFinish(AUGamePlayer gamePlayer) 
+	public void onFinish(Crewmate crewmate) 
 	{
-		InventoryTask.super.onFinish(gamePlayer);
-		
-		removeData(gamePlayer, "Personal ID");
+		removeData(crewmate, "Personal ID");
 	}
 }
