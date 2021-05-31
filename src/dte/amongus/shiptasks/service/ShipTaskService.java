@@ -5,22 +5,23 @@ import java.util.Map;
 import java.util.Optional;
 
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.ShipTask;
 
 public class ShipTaskService 
 {
-	private final Map<AUGamePlayer, ShipTask> currentlyDoing = new HashMap<>();
+	private final Map<Crewmate, ShipTask> currentlyDoing = new HashMap<>();
 	
 	public Optional<ShipTask> getPlayerTask(AUGamePlayer gamePlayer)
 	{
 		return Optional.ofNullable(this.currentlyDoing.get(gamePlayer));
 	}
-	public void setDoing(AUGamePlayer gamePlayer, ShipTask task) 
+	public void setDoing(Crewmate crewmate, ShipTask task) 
 	{
-		this.currentlyDoing.put(gamePlayer, task);
+		this.currentlyDoing.put(crewmate, task);
 	}
-	public void setNoTask(AUGamePlayer gamePlayer) 
+	public void setNoTask(Crewmate crewmate) 
 	{
-		this.currentlyDoing.remove(gamePlayer);
+		this.currentlyDoing.remove(crewmate);
 	}
 }

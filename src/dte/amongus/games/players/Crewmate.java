@@ -20,6 +20,11 @@ public class Crewmate extends AUGamePlayer
 	{
 		super(player, game, PlayerRole.CREWMATE);
 	}
+	public void addFinishedTask(ShipTask task) 
+	{
+		this.remainingTasks.remove(task);
+		this.completedTasks.add(task);
+	}
 	public List<ShipTask> getRemainingTasks()
 	{
 		return this.remainingTasks;

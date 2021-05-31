@@ -1,5 +1,7 @@
 package dte.amongus.shiptasks.list.wires;
 
+import static dte.amongus.utils.InventoryUtils.createDummyItem;
+
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +20,7 @@ import com.google.common.collect.Sets;
 import dte.amongus.AmongUs;
 import dte.amongus.cooldown.Cooldown;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
@@ -55,7 +58,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 	public Inventory createInventory(AUGamePlayer opener) 
 	{
 		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
-		InventoryUtils.buildWalls(inventory, Material.BLACK_STAINED_GLASS_PANE);
+		InventoryUtils.buildWalls(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
 
 		Set<Material> wires = Sets.newHashSet(WIRES_MATERIALS);
 		Set<Integer> leftSlots = Sets.newHashSet(LEFT_SLOTS);
@@ -94,8 +97,8 @@ public class WiresInventoryManager extends TaskInventoryManager
 		if(WORK_COOLDOWN.wasRejected(player)) 
 			return;
 		
-		AUGamePlayer gamePlayer = this.wiresTask.getGame().getPlayer(player);
-		Pair<Integer, ItemStack> currentWireData = this.wiresTask.getCurrentWire(gamePlayer).orElse(null);
+		Crewmate crewmate = this.wiresTask.getGame().getPlayer(player, Crewmate.class);
+		Pair<Integer, ItemStack> currentWireData = this.wiresTask.getCurrentWire(crewmate).orElse(null);
 
 		if(currentWireData == null)
 		{
@@ -104,9 +107,13 @@ public class WiresInventoryManager extends TaskInventoryManager
 				player.sendMessage(ChatColor.RED + "You have to click a Left Wire first!");
 				return;
 			}
+			if(event.getInventory().getItem(event.getRawSlot()+1) != null) 
+			{
+				player.sendMessage(ChatColor.RED + "Wire already connected!");
+				return;
+			}
 			GlowEffect.addGlow(wire);
-			this.wiresTask.setCurrentWire(gamePlayer, event.getRawSlot(), wire);
-			return;
+			this.wiresTask.setCurrentWire(crewmate, event.getRawSlot(), wire);
 		}
 		int rightSlot = getRightSlot(currentWireData.getFirst());
 		
@@ -117,8 +124,8 @@ public class WiresInventoryManager extends TaskInventoryManager
 			ItemStack rightWire = event.getInventory().getItem(rightSlot);
 			GlowEffect.addGlow(rightWire);
 			
-			this.wiresTask.addProgression(gamePlayer, 25);
-			this.wiresTask.removeCurrentWire(gamePlayer);
+			this.wiresTask.addProgression(crewmate, 25);
+			this.wiresTask.removeCurrentWire(crewmate);
 			
 			startConnectionAnimation(event.getInventory(), currentWireData.getFirst()+1, event.getRawSlot()-1, rightWire.getType());
 		}

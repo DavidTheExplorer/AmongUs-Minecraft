@@ -2,6 +2,7 @@ package dte.amongus.shiptasks;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class ProgressionTask extends SimpleShipTask
@@ -15,19 +16,18 @@ public abstract class ProgressionTask extends SimpleShipTask
 		this.maxProgression = maxProgression;
 	}
 	
-	//returns whether the player finished the task after the progression was added
-	public boolean addProgression(AUGamePlayer gamePlayer, int amount)
+	public boolean addProgression(Crewmate crewmate, int amount)
 	{
-		int newProgression = getProgression(gamePlayer) + amount;
+		int newProgression = getProgression(crewmate) + amount;
 		
 		if(newProgression > this.maxProgression) 
 		{
-			setFinished(gamePlayer);
-			removeData(gamePlayer, "Progression");
+			crewmate.addFinishedTask(this);
+			removeData(crewmate, "Progression");
 		}
 		else
 		{
-			setData(gamePlayer, "Progression", newProgression);
+			setData(crewmate, "Progression", newProgression);
 		}
 		return newProgression == 100;
 	}
