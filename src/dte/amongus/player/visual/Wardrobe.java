@@ -1,6 +1,5 @@
 package dte.amongus.player.visual;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +24,6 @@ public class Wardrobe
 	}
 	public Set<PlayerColor> getUnlockedColors()
 	{
-		return Collections.unmodifiableSet(this.unlockedColors);
+		return new HashSet<>(this.unlockedColors);
 	}
 }

@@ -1,6 +1,5 @@
 package dte.amongus.maps;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +24,7 @@ public class GameMap
 	}
 	public Set<Location> getSpawnLocations() 
 	{
-		return Collections.unmodifiableSet(this.spawnLocations);
+		return new HashSet<>(this.spawnLocations);
 	}
 	
 	@Override

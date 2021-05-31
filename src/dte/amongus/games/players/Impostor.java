@@ -1,7 +1,6 @@
 package dte.amongus.games.players;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class Impostor extends AUGamePlayer
 	}
 	public Set<Crewmate> getKilledPlayers()
 	{
-		return Collections.unmodifiableSet(this.crewmatesKilled);
+		return new HashSet<>(this.crewmatesKilled); 
 	}
 	public List<ShipTask> getFakeTasks()
 	{
