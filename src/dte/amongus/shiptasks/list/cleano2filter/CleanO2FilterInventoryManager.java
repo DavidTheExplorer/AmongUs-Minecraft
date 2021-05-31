@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.Lists;
 
 import dte.amongus.AmongUs;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.blocks.BlockUtils;
@@ -44,7 +44,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	}
 
 	@Override
-	public Inventory createInventory(AUGamePlayer opener) 
+	public Inventory createInventory(Crewmate opener) 
 	{
 		Inventory inventory = Bukkit.createInventory(null, 9 * 6, createTitle("Clean the Leaves"));
 		InventoryUtils.buildWalls(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
@@ -64,35 +64,34 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	}
 
 	@Override
-	public void onInventoryClick(InventoryClickEvent event) 
+	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
 		Inventory inventory = event.getInventory();
 		ItemStack item = event.getCurrentItem();
-		Player player = (Player) event.getWhoClicked();
-		AUGamePlayer gamePlayer = this.cleanO2FilterTask.getGame().getPlayer(player);
-		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafData(gamePlayer);
+		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafData(crewmate);
 
 		if(BlockUtils.isLeaf(item.getType()))
 		{
 			if(currentLeafIndex.isPresent())
 			{
-				player.sendMessage(RED + "One by One!");
+				crewmatePlayer.sendMessage(RED + "One by One!");
 				return;
 			}
 			GlowEffect.addGlow(item);
-			this.cleanO2FilterTask.setCurrentLeafData(gamePlayer, event.getRawSlot());
+			this.cleanO2FilterTask.setCurrentLeafData(crewmate, event.getRawSlot());
 			setLeavesTo(inventory, leaf -> CleanO2FilterInventoryManager.createInformativeLeaf(leaf.getType()));
 		}
 		else if(item.getType() == Material.CHAIN) 
 		{
 			if(!currentLeafIndex.isPresent()) 
 			{
-				player.sendMessage(RED + "You have to select a Leaf!");
+				crewmatePlayer.sendMessage(RED + "You have to select a Leaf!");
 				return;
 			}
 			List<Integer> exitPath = calculateExitPath(currentLeafIndex.get(), event.getRawSlot());
 
-			new LeafCleaningRunnable(this.cleanO2FilterTask, inventory, gamePlayer, exitPath, this.cleaningSound).runTaskTimer(AmongUs.getInstance(), 0, 5);
+			new LeafCleaningRunnable(this.cleanO2FilterTask, inventory, crewmate, exitPath, this.cleaningSound).runTaskTimer(AmongUs.getInstance(), 0, 5);
 		}
 	}
 

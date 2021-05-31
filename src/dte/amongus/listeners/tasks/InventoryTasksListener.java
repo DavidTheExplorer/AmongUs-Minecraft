@@ -1,12 +1,14 @@
 package dte.amongus.listeners.tasks;
 
+import java.util.Objects;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGameService;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.service.ShipTaskService;
 
@@ -25,23 +27,23 @@ public class InventoryTasksListener implements Listener
 	public void onTaskInventoryClick(InventoryClickEvent event) 
 	{
 		Player player = (Player) event.getWhoClicked();
-		
+
 		this.gameService.getPlayerGame(player)
-		.map(game -> game.getPlayer(player))
-		.flatMap(gamePlayer -> this.shipTaskService.getPlayerTask(gamePlayer)) //get the player's current task
-		.filter(InventoryTask.class::isInstance) //verify it's an inventory task
+		.map(playerGame -> playerGame.getPlayer(player, Crewmate.class))
+		.filter(Objects::nonNull) //verify the inventory clicker is Crewmate
+		.flatMap(this.shipTaskService::getPlayerTask)
+		.filter(InventoryTask.class::isInstance) //verify the crewmate's current task is an inventory task
 		.map(InventoryTask.class::cast)
 		.filter(inventoryTask -> inventoryTask.getInventoryManager().wasInvolvedAt(event))
 		.ifPresent(inventoryTask -> 
 		{
 			event.setCancelled(true);
-			
-			ItemStack item = event.getCurrentItem();
 
-			if(item == null)
+			if(event.getCurrentItem() == null)
 				return;
 			
-			inventoryTask.getInventoryManager().onInventoryClick(event);
+			Crewmate crewmate = this.gameService.getPlayerGame(player).get().getPlayer(player, Crewmate.class);
+			inventoryTask.getInventoryManager().onInventoryClick(crewmate, event);
 		});
 	}
 }
