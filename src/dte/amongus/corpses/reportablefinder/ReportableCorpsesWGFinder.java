@@ -33,7 +33,7 @@ public class ReportableCorpsesWGFinder implements ReportableCorpseFinder
 				.findFirst() //the player might be inside multiple corpse regions, so choose an arbitrary one
 				.map(region -> Bukkit.getPlayer(getDeadCrewmateName(region)))
 				.map(deadCrewmate -> gamePlayer.getGame().getPlayer(deadCrewmate, Crewmate.class))
-				.map(Crewmate::getCorpse)
+				.map(deadCrewmate -> deadCrewmate.getDeathContext().get().getCorpse())
 				.orElse(null);
 	}
 	private boolean isCorpseRegion(ProtectedRegion region)
