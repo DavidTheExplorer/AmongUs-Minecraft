@@ -1,6 +1,7 @@
 package dte.amongus.shiptasks.list.enterid;
 
 import static dte.amongus.utils.ChatColorUtils.bold;
+import static dte.amongus.utils.InventoryUtils.createDummyItem;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -27,7 +27,6 @@ import dte.amongus.AmongUs;
 import dte.amongus.corpses.factory.SimpleCorpseFactory;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.AUGameService;
-import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
@@ -303,19 +302,19 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	{
 		List<T> matchingTasks = IterableUtils.getElementsOf(taskClass, game.getTasks());
 
-		if(matchingTasks.isEmpty()) 
+		if(matchingTasks.isEmpty())
 		{
-			game.getAlivePlayers().stream().map(AUGamePlayer::getPlayer).forEach(player -> player.sendMessage(RED + "The game doesn't have a Wires Task!"));
+			game.getAlivePlayers(Crewmate.class).stream().map(Crewmate::getPlayer).forEach(player -> player.sendMessage(RED + "The game doesn't have a Wires Task!"));
 			return;
 		}
 		T task = matchingTasks.get(0);
 
-		for(AUGamePlayer gamePlayer : game.getAlivePlayers()) 
+		for(Crewmate crewmate : game.getAlivePlayers(Crewmate.class)) 
 		{
-			this.shipTaskService.setDoing(gamePlayer, task);
-			task.onStart(gamePlayer);
+			this.shipTaskService.setDoing(crewmate, task);
+			task.onStart(crewmate);
 
-			gamePlayer.getPlayer().openInventory(task.getInventoryManager().createInventory(gamePlayer));
+			crewmate.getPlayer().openInventory(task.getInventoryManager().createInventory(crewmate));
 		}
 	}
 }

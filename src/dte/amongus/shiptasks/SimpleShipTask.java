@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class SimpleShipTask implements ShipTask
@@ -17,7 +18,7 @@ public abstract class SimpleShipTask implements ShipTask
 	private final TaskType type;
 	private final AUGame game;
 	private final Map<AUGamePlayer, Map<String, Object>> playersData = new HashMap<>();
-	private final Set<AUGamePlayer> finishers = new HashSet<>();
+	private final Set<Crewmate> finishers = new HashSet<>();
 	
 	protected SimpleShipTask(String name, String description, TaskType type, AUGame game) 
 	{
@@ -52,15 +53,15 @@ public abstract class SimpleShipTask implements ShipTask
 	}
 
 	@Override
-	public void setFinished(AUGamePlayer gamePlayer) 
+	public void setFinished(Crewmate crewmate) 
 	{
-		this.finishers.add(gamePlayer);
+		this.finishers.add(crewmate);
 	}
 
 	@Override
-	public boolean hasFinished(AUGamePlayer gamePlayer) 
+	public boolean hasFinished(Crewmate crewmate) 
 	{
-		return this.finishers.contains(gamePlayer);
+		return this.finishers.contains(crewmate);
 	}
 
 	protected void setData(AUGamePlayer gamePlayer, String data, Object value)

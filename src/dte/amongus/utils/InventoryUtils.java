@@ -278,7 +278,7 @@ public class InventoryUtils
 	/*
 	 * Item Factories
 	 */
-	public static ItemStack createWall(Material material) 
+	public static ItemStack createDummyItem(Material material) 
 	{
 		return new ItemBuilder(material, ChatColor.BLACK + ".").createCopy();
 	}
