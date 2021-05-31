@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 
 import dte.amongus.corpses.AbstractCorpse;
 import dte.amongus.events.games.BodyReportEvent;
-import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.games.players.Crewmate;
 import dte.amongus.internal.AUGameUtils;
 import dte.amongus.internal.GamePlayerUtils;
 
@@ -22,7 +22,7 @@ public class BodyReportListener implements Listener
 		notifyDeath(corpse.whoDied());
 	}
 	
-	private void notifyDeath(AUGamePlayer whoDied) 
+	private void notifyDeath(Crewmate whoDied) 
 	{
 		String coloredDeadName = GamePlayerUtils.getColoredName(whoDied);
 		

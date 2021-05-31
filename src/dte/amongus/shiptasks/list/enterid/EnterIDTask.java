@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.bukkit.Sound;
 
 import dte.amongus.games.AUGame;
-import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.SimpleShipTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
@@ -31,21 +30,21 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 		return this.inventoryManager;
 	}
 	
-	public Optional<Integer> getPersonalID(AUGamePlayer gamePlayer) 
+	public Optional<Integer> getPersonalID(Crewmate crewmate) 
 	{
-		return getData(gamePlayer, "Personal ID", Integer.class);
+		return getData(crewmate, "Personal ID", Integer.class);
 	}
 	
-	public Optional<Integer> getEnteredID(AUGamePlayer gamePlayer)
+	public Optional<Integer> getEnteredID(Crewmate crewmate)
 	{
-		return getData(gamePlayer, "Entered ID", Integer.class);
+		return getData(crewmate, "Entered ID", Integer.class);
 	}
 	
-	public void enterDigit(AUGamePlayer gamePlayer, int digit) throws ArithmeticException
+	public void enterDigit(Crewmate crewmate, int digit) throws ArithmeticException
 	{
-		int currentEnteredID = getOrPut(gamePlayer, "Entered ID", 0);
+		int currentEnteredID = getOrPut(crewmate, "Entered ID", 0);
 
-		setData(gamePlayer, "Entered ID", NumberUtils.add(currentEnteredID, digit));
+		setData(crewmate, "Entered ID", NumberUtils.add(currentEnteredID, digit));
 	}
 	
 	@Override

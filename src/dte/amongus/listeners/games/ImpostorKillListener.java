@@ -56,7 +56,7 @@ public class ImpostorKillListener implements Listener
 			//TODO: add the sabotage map
 		}
 	}
-	private void sendKillMessages(AUGamePlayer impostor, AUGamePlayer crewmate, AUGame game) 
+	private void sendKillMessages(Impostor impostor, Crewmate crewmate, AUGame game) 
 	{
 		int crewmatesLeft = game.getAlivePlayers(Crewmate.class).size() - game.getAlivePlayers(Impostor.class).size();
 		impostor.getPlayer().sendMessage(IMPOSTOR_PREFIX + ChatColor.DARK_AQUA + crewmate.getPlayer().getName() + ChatColor.GRAY + " ate it! (" + ChatColor.AQUA + crewmatesLeft + ChatColor.GRAY + " Crewmates Left).");
