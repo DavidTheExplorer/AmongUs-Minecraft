@@ -1,5 +1,6 @@
 package dte.amongus.shiptasks.list.cleano2filter;
 
+import static dte.amongus.utils.InventoryUtils.createDummyItem;
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;

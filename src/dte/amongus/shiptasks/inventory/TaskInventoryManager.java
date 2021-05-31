@@ -1,16 +1,11 @@
 package dte.amongus.shiptasks.inventory;
 
-import static org.bukkit.ChatColor.BLACK;
-
 import java.util.regex.Pattern;
 
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.players.AUGamePlayer;
-import dte.amongus.utils.items.ItemBuilder;
 
 public abstract class TaskInventoryManager
 {
@@ -33,10 +28,5 @@ public abstract class TaskInventoryManager
 			return false;
 		
 		return title.substring(title.indexOf(">") + 2).startsWith(description);
-	}
-
-	protected static ItemStack createDummyItem(Material material) 
-	{
-		return new ItemBuilder(material, BLACK + ".").createCopy();
 	}
 }
