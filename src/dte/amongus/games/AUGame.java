@@ -100,7 +100,6 @@ public class AUGame
 	public AbstractCorpse spawnCorpse(Crewmate whoDied, Location deathLocation)
 	{
 		AbstractCorpse corpse = this.corpseFactory.generateCorpse(whoDied, deathLocation);
-		whoDied.setCorpse(corpse);
 		corpse.spawn();
 
 		return corpse;
