@@ -1,7 +1,8 @@
 package dte.amongus.listeners.retrievers;
 
+import static org.bukkit.ChatColor.RED;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,13 +43,13 @@ public class ImpostorKillRetrieverListener implements Listener
 
 		if(damagerGP instanceof Crewmate)
 		{
-			damager.sendMessage(ChatColor.RED + "Attack cancelled! He is your friend... or is he?");
+			damager.sendMessage(RED + "Attack cancelled! He is your friend... or is he?");
 			event.setCancelled(true);
 			return;
 		}
 		if(damagerGP instanceof Impostor && damagedGP instanceof Impostor)
 		{
-			damager.sendMessage(ChatColor.RED + "You cannot kill other impostors.");
+			damager.sendMessage(RED + "You cannot kill other impostors.");
 			event.setCancelled(true);
 			return;
 		}
@@ -60,6 +61,6 @@ public class ImpostorKillRetrieverListener implements Listener
 	{
 		String randomTaskName = RandomUtils.randomElement(game.getTasks()).getName();
 
-		damager.sendMessage(ChatColor.RED + String.format("You can't damage while being a crewmate. Maybe Go and %s?!", randomTaskName));
+		damager.sendMessage(.ED + String.format("You can't damage while being a crewmate. Maybe Go and %s?!", randomTaskName));
 	}*/
 }

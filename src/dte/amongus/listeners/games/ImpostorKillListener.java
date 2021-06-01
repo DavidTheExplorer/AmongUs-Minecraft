@@ -1,7 +1,14 @@
 package dte.amongus.listeners.games;
 
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.DARK_AQUA;
+import static org.bukkit.ChatColor.DARK_RED;
+import static org.bukkit.ChatColor.GRAY;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.UNDERLINE;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,8 +28,8 @@ import dte.amongus.player.PlayerRole;
 public class ImpostorKillListener implements Listener
 {
 	private static final String 
-	IMPOSTOR_PREFIX = ChatColor.DARK_RED + "Impostor" + ChatColor.RED + " > ",
-	CREWMATE_PREFIX = ChatColor.GREEN + "Crewmate" + ChatColor.AQUA + " > ";
+	IMPOSTOR_PREFIX = DARK_RED + "Impostor" + RED + " > ",
+	CREWMATE_PREFIX = GREEN + "Crewmate" + AQUA + " > ";
 	
 	@EventHandler
 	public void onImpostorKill(ImpostorKillEvent event) 
@@ -59,9 +66,9 @@ public class ImpostorKillListener implements Listener
 	private void sendKillMessages(Impostor impostor, Crewmate crewmate, AUGame game) 
 	{
 		int crewmatesLeft = game.getAlivePlayers(Crewmate.class).size() - game.getAlivePlayers(Impostor.class).size();
-		impostor.getPlayer().sendMessage(IMPOSTOR_PREFIX + ChatColor.DARK_AQUA + crewmate.getPlayer().getName() + ChatColor.GRAY + " ate it! (" + ChatColor.AQUA + crewmatesLeft + ChatColor.GRAY + " Crewmates Left).");
+		impostor.getPlayer().sendMessage(IMPOSTOR_PREFIX + DARK_AQUA + crewmate.getPlayer().getName() + GRAY + " ate it! (" + AQUA + crewmatesLeft + GRAY + " Crewmates Left).");
 
-		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + ChatColor.GRAY + "The Impostor " + ChatColor.RED + impostor.getPlayer().getName() + ChatColor.GRAY + " killed you :(");
-		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + ChatColor.GRAY + "You are now a " + ChatColor.AQUA + "Ghost! " + ChatColor.UNDERLINE + "You can still finish your tasks" + ChatColor.GRAY + ", but not communicate with alive players.");
+		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + GRAY + "The Impostor " + RED + impostor.getPlayer().getName() + GRAY + " killed you :(");
+		crewmate.getPlayer().sendMessage(CREWMATE_PREFIX + GRAY + "You are now a " + AQUA + "Ghost! " + UNDERLINE + "You can still finish your tasks" + GRAY + ", but not communicate with alive players.");
 	}
 }

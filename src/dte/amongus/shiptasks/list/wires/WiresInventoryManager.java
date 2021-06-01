@@ -1,6 +1,7 @@
 package dte.amongus.shiptasks.list.wires;
 
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static org.bukkit.ChatColor.RED;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 	private final WiresTask wiresTask;
 	
 	private static final Cooldown WORK_COOLDOWN = new Cooldown.Builder("Wires")
-			.rejectWithMessage(ChatColor.RED + "You are still working on the previous wires.")
+			.rejectWithMessage(RED + "You are still working on the previous wires.")
 			.build();
 	
 	private static final Integer[]
@@ -102,12 +103,12 @@ public class WiresInventoryManager extends TaskInventoryManager
 		{
 			if(!isLeftSlot(event.getRawSlot())) 
 			{
-				crewmatePlayer.sendMessage(ChatColor.RED + "You have to click a Left Wire first!");
+				crewmatePlayer.sendMessage(RED + "You have to click a Left Wire first!");
 				return;
 			}
 			if(event.getInventory().getItem(event.getRawSlot()+1) != null) 
 			{
-				crewmatePlayer.sendMessage(ChatColor.RED + "Wire already connected!");
+				crewmatePlayer.sendMessage(RED + "Wire already connected!");
 				return;
 			}
 			GlowEffect.addGlow(wire);

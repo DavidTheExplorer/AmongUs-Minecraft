@@ -1,5 +1,8 @@
 package dte.amongus.lobby.sign;
 
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -48,6 +51,6 @@ public class LobbySign extends DisplaySign implements LobbyStateListener
 
 	private ChatColor getLobbyColor()
 	{
-		return this.lobby.isFull() ? ChatColor.RED : ChatColor.GREEN;
+		return this.lobby.isFull() ? RED : GREEN;
 	}
 }

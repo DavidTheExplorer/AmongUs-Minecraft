@@ -2,6 +2,9 @@ package dte.amongus.shiptasks.list.enterid;
 
 import static dte.amongus.utils.ChatColorUtils.bold;
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,7 +51,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			inventory.setItem(DIGITS_INDEXES[i], createDigitItem(i));
 		
 		//add the enter button
-		inventory.setItem(ENTER_INDEX, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(ChatColor.GREEN) + "Enter ID").createCopy());
+		inventory.setItem(ENTER_INDEX, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(GREEN) + "Enter ID").createCopy());
 
 		//add the current id paper
 		inventory.setItem(PAPER_INDEX, createPaperItem("Nothing"));
@@ -80,7 +83,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			}
 			catch(ArithmeticException exception) 
 			{
-				crewmatePlayer.sendMessage(ChatColor.RED + "Too Many Digits!");
+				crewmatePlayer.sendMessage(RED + "Too Many Digits!");
 				return;
 			}
 			
@@ -93,15 +96,15 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 
 			if(enteredID == null)
 			{
-				crewmatePlayer.sendMessage(ChatColor.RED + "What's your Personal ID?");
+				crewmatePlayer.sendMessage(RED + "What's your Personal ID?");
 				return;
 			}
 			if(!this.enterIDTask.getPersonalID(crewmate).get().equals(enteredID))
 			{
-				crewmatePlayer.sendMessage(ChatColor.RED + "Invalid Personal ID!");
+				crewmatePlayer.sendMessage(RED + "Invalid Personal ID!");
 				return;
 			}
-			crewmatePlayer.sendMessage(ChatColor.GREEN + "Success - You were successfully identified.");
+			crewmatePlayer.sendMessage(GREEN + "Success - You were successfully identified.");
 			break;
 		}
 	}
@@ -116,7 +119,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	{
 		int amount = digit == 0 ? 1 : digit;
 
-		return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + String.valueOf(digit))
+		return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE, GREEN + String.valueOf(digit))
 				.amountOf(amount)
 				.createCopy();
 	}
@@ -128,7 +131,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	
 	private static ItemStack createPaperItem(String id)
 	{
-		return new ItemBuilder(Material.PAPER, ChatColor.AQUA + "Entered ID: " + id).createCopy();
+		return new ItemBuilder(Material.PAPER, AQUA + "Entered ID: " + id).createCopy();
 	}
 	
 	private static int getDigit(ItemStack digitItem)

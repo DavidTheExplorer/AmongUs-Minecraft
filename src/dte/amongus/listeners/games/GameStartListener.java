@@ -1,5 +1,8 @@
 package dte.amongus.listeners.games;
 
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.RED;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -16,16 +19,16 @@ import dte.amongus.utils.items.ItemBuilder;
 public class GameStartListener implements Listener
 {
 	private static final ItemBuilder 
-	IMPOSTOR_ICON_BUILDER = new ItemBuilder(Material.REDSTONE, ChatColor.RED + "You are an Impostor"),
-	CREWMATE_ICON_BUILDER = new ItemBuilder(Material.FEATHER, ChatColor.AQUA + "You are a Crewmate");
+	IMPOSTOR_ICON_BUILDER = new ItemBuilder(Material.REDSTONE, RED + "You are an Impostor"),
+	CREWMATE_ICON_BUILDER = new ItemBuilder(Material.FEATHER, AQUA + "You are a Crewmate");
 
 	@EventHandler
 	public void onGameStart(GameStartEvent event) 
 	{
 		AUGame game = event.getGame();
-
-		sendRoleTitle(game, Crewmate.class, ChatColor.AQUA, "Crewmate", "Work hard to save the Ship!", CREWMATE_ICON_BUILDER.createCopy());
-		sendRoleTitle(game, Impostor.class, ChatColor.RED, "IMPOSTOR", "Work smart to conquer the Ship!", IMPOSTOR_ICON_BUILDER.createCopy());
+		
+		sendRoleTitle(game, Crewmate.class, AQUA, "Crewmate", "Work hard to save the Ship!", CREWMATE_ICON_BUILDER.createCopy());
+		sendRoleTitle(game, Impostor.class, RED, "IMPOSTOR", "Work smart to conquer the Ship!", IMPOSTOR_ICON_BUILDER.createCopy());
 	}
 
 	private void sendRoleTitle(AUGame game, Class<? extends AUGamePlayer> roleClass, ChatColor color, String displayName, String description, ItemStack icon) 

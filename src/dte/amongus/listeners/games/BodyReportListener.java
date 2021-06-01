@@ -1,6 +1,7 @@
 package dte.amongus.listeners.games;
 
-import org.bukkit.ChatColor;
+import static org.bukkit.ChatColor.WHITE;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +28,6 @@ public class BodyReportListener implements Listener
 		String coloredDeadName = GamePlayerUtils.getColoredName(whoDied);
 		
 		for(Player player : AUGameUtils.getBukkitPlayers(whoDied.getGame()))
-			player.sendMessage(coloredDeadName + ChatColor.WHITE + "'s corpse was found!");
+			player.sendMessage(coloredDeadName + WHITE + "'s corpse was found!");
 	}
 }

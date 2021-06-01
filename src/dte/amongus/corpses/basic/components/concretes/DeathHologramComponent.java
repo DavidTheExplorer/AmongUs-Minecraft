@@ -1,7 +1,9 @@
 package dte.amongus.corpses.basic.components.concretes;
 
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.WHITE;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
@@ -32,8 +34,8 @@ public class DeathHologramComponent extends HologramComponent
 		Location fixedLocation = this.hologram.getLocation().add(0, this.height, 0);
 		this.hologram.teleport(fixedLocation);
 		
-		this.hologram.appendTextLine(GamePlayerUtils.getColoredName(getParentCorpse().whoDied()) + ChatColor.WHITE + " died here.");
-		this.hologram.appendTextLine(ChatColor.WHITE + ">> " + ChatColor.GOLD + "Click to REPORT" + ChatColor.WHITE + " <<").setTouchHandler(createReportTouchHandler());
+		this.hologram.appendTextLine(GamePlayerUtils.getColoredName(getParentCorpse().whoDied()) + WHITE + " died here.");
+		this.hologram.appendTextLine(WHITE + ">> " + GOLD + "Click to REPORT" + WHITE + " <<").setTouchHandler(createReportTouchHandler());
 	}
 	
 	private TouchHandler createReportTouchHandler() 
