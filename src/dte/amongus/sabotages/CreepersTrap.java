@@ -1,10 +1,12 @@
 package dte.amongus.sabotages;
 
+import static org.bukkit.ChatColor.GOLD;
+import static org.bukkit.ChatColor.RED;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
@@ -64,7 +66,7 @@ public class CreepersTrap extends GatesSabotage
 	{
 		Creeper creeper = this.creepersLocation.getWorld().spawn(this.creepersLocation, Creeper.class);
 		creeper.setHealth(10.0);
-		creeper.setCustomName(ChatColor.GOLD + "Suprise Madafaka");
+		creeper.setCustomName(GOLD + "Suprise Madafaka");
 		
 		return creeper;
 	}
@@ -84,7 +86,7 @@ public class CreepersTrap extends GatesSabotage
 				return;
 			
 			event.blockList().clear();
-			EntityUtils.getNearby(event.getEntity(), Player.class, 10).forEach(player -> player.sendMessage(ChatColor.RED + "You didn't get scared... Right?"));
+			EntityUtils.getNearby(event.getEntity(), Player.class, 10).forEach(player -> player.sendMessage(RED + "You didn't get scared... Right?"));
 		}
 
 		@EventHandler
