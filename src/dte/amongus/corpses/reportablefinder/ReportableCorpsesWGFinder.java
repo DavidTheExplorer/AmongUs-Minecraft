@@ -24,7 +24,7 @@ public class ReportableCorpsesWGFinder implements ReportableCorpseFinder
 	}
 
 	@Override
-	public Corpse find(Crewmate crewmate) 
+	public Corpse findFor(Crewmate crewmate) 
 	{
 		List<ProtectedRegion> playerRegions = this.wgHook.getPlayerRegions(crewmate.getPlayer());
 		AUGame game = crewmate.getGame();

@@ -5,5 +5,5 @@ import dte.amongus.games.players.Crewmate;
 
 public interface ReportableCorpseFinder
 {
-	Corpse find(Crewmate crewmate);
+	Corpse findFor(Crewmate crewmate);
 }
