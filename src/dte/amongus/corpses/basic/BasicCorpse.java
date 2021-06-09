@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 import dte.amongus.corpses.basic.components.BasicCorpseComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.java.IterableUtils;
 
-public class BasicCorpse implements AbstractCorpse, Iterable<BasicCorpseComponent>
+public class BasicCorpse implements Corpse, Iterable<BasicCorpseComponent>
 {
 	private final Crewmate whoDied;
 	private final Set<BasicCorpseComponent> components = new HashSet<>(); //a corpse consists of components(blocks, holograms, etc)

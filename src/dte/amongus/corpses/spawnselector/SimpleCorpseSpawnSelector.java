@@ -9,11 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ClassUtils;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 
 public class SimpleCorpseSpawnSelector implements CorpseSpawnSelector
 {
-	private final Map<Class<? extends AbstractCorpse>, CorpseSpawnRule[]> corpsesRules = new HashMap<>();
+	private final Map<Class<? extends Corpse>, CorpseSpawnRule[]> corpsesRules = new HashMap<>();
 	private final CorpseSpawnRule defaultRule;
 
 	public SimpleCorpseSpawnSelector(CorpseSpawnRule defaultRule) 
@@ -22,7 +22,7 @@ public class SimpleCorpseSpawnSelector implements CorpseSpawnSelector
 	}
 	
 	@Override
-	public Location getLocation(Location deathLocation, Class<? extends AbstractCorpse> corpseClass) 
+	public Location getLocation(Location deathLocation, Class<? extends Corpse> corpseClass) 
 	{
 		CorpseSpawnRule[] spawnRules = this.corpsesRules.getOrDefault(corpseClass, new CorpseSpawnRule[]{this.defaultRule});
 		
@@ -30,14 +30,14 @@ public class SimpleCorpseSpawnSelector implements CorpseSpawnSelector
 	}
 
 	@Override
-	public void setRulesFor(Class<? extends AbstractCorpse> corpseClass, CorpseSpawnRule... rules) 
+	public void setRulesFor(Class<? extends Corpse> corpseClass, CorpseSpawnRule... rules) 
 	{
 		CorpseSpawnRule[] withParentsRules = ArrayUtils.addAll(rules, getParentsRules(corpseClass));
 		
 		this.corpsesRules.put(corpseClass, withParentsRules);
 	}
 	
-	private CorpseSpawnRule[] getParentsRules(Class<? extends AbstractCorpse> corpseClass)
+	private CorpseSpawnRule[] getParentsRules(Class<? extends Corpse> corpseClass)
 	{
 		return ClassUtils.getAllSuperclasses(corpseClass).stream()
 				.map(this.corpsesRules::get)

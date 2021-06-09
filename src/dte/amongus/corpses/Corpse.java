@@ -2,7 +2,7 @@ package dte.amongus.corpses;
 
 import dte.amongus.games.players.Crewmate;
 
-public interface AbstractCorpse
+public interface Corpse
 {
 	/**
 	 * Returns the player that this corpse belongs to(the player who died).

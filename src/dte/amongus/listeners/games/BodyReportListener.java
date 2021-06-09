@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 import dte.amongus.events.games.BodyReportEvent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.internal.AUGameUtils;
@@ -17,7 +17,7 @@ public class BodyReportListener implements Listener
 	@EventHandler
 	public void onBodyReported(BodyReportEvent event) 
 	{
-		AbstractCorpse corpse = event.getFoundCorpse();
+		Corpse corpse = event.getFoundCorpse();
 		corpse.despawn();
 		
 		notifyDeath(corpse.whoDied());

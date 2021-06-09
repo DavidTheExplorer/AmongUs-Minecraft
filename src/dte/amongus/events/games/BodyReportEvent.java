@@ -2,24 +2,24 @@ package dte.amongus.events.games;
 
 import org.bukkit.event.HandlerList;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 import dte.amongus.games.players.AUGamePlayer;
 
 public class BodyReportEvent extends GameEvent
 {
-	private final AbstractCorpse foundCorpse;
+	private final Corpse foundCorpse;
 	private final AUGamePlayer reporter;
 
 	private static final HandlerList HANDLERS = new HandlerList();
 
-	public BodyReportEvent(AbstractCorpse foundCorpse, AUGamePlayer reporter) 
+	public BodyReportEvent(Corpse foundCorpse, AUGamePlayer reporter) 
 	{
 		super(reporter.getGame());
 
 		this.foundCorpse = foundCorpse;
 		this.reporter = reporter;
 	}
-	public AbstractCorpse getFoundCorpse() 
+	public Corpse getFoundCorpse() 
 	{
 		return this.foundCorpse;
 	}
