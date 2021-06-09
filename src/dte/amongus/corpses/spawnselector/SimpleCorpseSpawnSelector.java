@@ -42,7 +42,7 @@ public class SimpleCorpseSpawnSelector implements CorpseSpawnSelector
 		return ClassUtils.getAllSuperclasses(corpseClass).stream()
 				.map(this.corpsesRules::get)
 				.filter(Objects::nonNull)
-				.flatMap(rules -> Arrays.asList(rules).stream())
+				.flatMap(Arrays::stream)
 				.toArray(CorpseSpawnRule[]::new);
 	}
 }
