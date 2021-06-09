@@ -8,11 +8,11 @@ import dte.amongus.games.players.Crewmate;
 
 public class GraveSignCorpse extends CompositeCorpse
 {
-	public GraveSignCorpse(Crewmate whoDied, Location deathLocation, Material signMaterial, String... signLines)
+	public GraveSignCorpse(Crewmate whoDied, Location deathLocation, Material signMaterial)
 	{
 		super(whoDied);
 		
 		addCorpse(new GraveCorpse(whoDied, deathLocation));
-		addCorpse(new SignCorpse(whoDied, deathLocation, signMaterial, signLines));
+		addCorpse(new SignCorpse(whoDied, deathLocation, signMaterial));
 	}
 }

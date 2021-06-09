@@ -30,18 +30,19 @@ public class ReportableCorpsesWGFinder implements ReportableCorpseFinder
 		AUGame game = crewmate.getGame();
 		
 		return playerRegions.stream()
-				.filter(this::isCorpseRegion)
+				.filter(ReportableCorpsesWGFinder::isCorpseRegion)
 				.findFirst() //the player might be inside multiple corpse regions, so choose an arbitrary one
 				.map(region -> getDeadCrewmate(game, region))
 				.map(deadCrewmate -> deadCrewmate.getDeathContext().get().getCorpse())
 				.orElse(null);
 	}
 	
-	private boolean isCorpseRegion(ProtectedRegion region)
+	private static boolean isCorpseRegion(ProtectedRegion region)
 	{
 		return region.getId().endsWith("-body");
 	}
-	private Crewmate getDeadCrewmate(AUGame game, ProtectedRegion region) 
+	
+	private static Crewmate getDeadCrewmate(AUGame game, ProtectedRegion region) 
 	{
 		String crewmateName = region.getId().substring(0, region.getId().indexOf("-body"));
 		
