@@ -2,18 +2,18 @@ package dte.amongus.deathcontext;
 
 import org.bukkit.Location;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 
 public class DeathContext 
 {
 	private final Location deathLocation;
-	private AbstractCorpse corpse;
+	private Corpse corpse;
 	
 	public DeathContext(Location deathLocation)
 	{
 		this.deathLocation = deathLocation;
 	}
-	public DeathContext(Location deathLocation, AbstractCorpse corpse) 
+	public DeathContext(Location deathLocation, Corpse corpse) 
 	{
 		this(deathLocation);
 		
@@ -23,7 +23,7 @@ public class DeathContext
 	{
 		return this.deathLocation;
 	}
-	public AbstractCorpse getCorpse()
+	public Corpse getCorpse()
 	{
 		return this.corpse;
 	}

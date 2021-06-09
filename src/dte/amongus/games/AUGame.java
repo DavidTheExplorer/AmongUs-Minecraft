@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 import dte.amongus.corpses.factory.CorpseFactory;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
@@ -97,9 +97,9 @@ public class AUGame
 		
 		return playerType.isInstance(gamePlayer) ? playerType.cast(gamePlayer) : null;
 	}
-	public AbstractCorpse spawnCorpse(Crewmate whoDied, Location deathLocation)
+	public Corpse spawnCorpse(Crewmate whoDied, Location deathLocation)
 	{
-		AbstractCorpse corpse = this.corpseFactory.generateCorpse(whoDied, deathLocation);
+		Corpse corpse = this.corpseFactory.generateCorpse(whoDied, deathLocation);
 		corpse.spawn();
 
 		return corpse;

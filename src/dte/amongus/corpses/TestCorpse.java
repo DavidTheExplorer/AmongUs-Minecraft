@@ -20,17 +20,12 @@ public class TestCorpse extends BasicCorpse
 	{
 		super(whoDied);
 		
-		registerComponents(deathLocation);
-	}
-	
-	private void registerComponents(Location deathLocation)
-	{
-		Block spawnBlock = deathLocation.getBlock();
+		Block deathBlock = deathLocation.getBlock();
 
-		/*addComponent(new BlockChangeComponent(this, spawnBlock, Material.OBSIDIAN));
-		addComponent(new DeathSignComponent(this, spawnBlock, Material.BIRCH_SIGN, getWhoDied().getPlayer().getName()));*/
+		/*addComponent(new BlockChangeComponent(this, deathBlock, Material.OBSIDIAN));
+		addComponent(new DeathSignComponent(this, deathBlock, Material.BIRCH_SIGN, getWhoDied().getPlayer().getName()));*/
 		
-		addComponent(HologramComponent.of(this, createHologram(spawnBlock.getLocation())));
+		addComponent(HologramComponent.of(this, createHologram(deathBlock.getLocation())));
 	}
 
 	private EquallableHologram createHologram(Location location) 

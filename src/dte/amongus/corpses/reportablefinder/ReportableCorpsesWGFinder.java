@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import dte.amongus.corpses.AbstractCorpse;
+import dte.amongus.corpses.Corpse;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.hooks.WorldGuardHook;
@@ -24,7 +24,7 @@ public class ReportableCorpsesWGFinder implements ReportableCorpseFinder
 	}
 
 	@Override
-	public AbstractCorpse find(Crewmate crewmate) 
+	public Corpse findFor(Crewmate crewmate) 
 	{
 		List<ProtectedRegion> playerRegions = this.wgHook.getPlayerRegions(crewmate.getPlayer());
 		AUGame game = crewmate.getGame();

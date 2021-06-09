@@ -1,6 +1,8 @@
 package dte.amongus.corpses;
 
-import java.util.Collections;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import org.bukkit.Location;
@@ -11,6 +13,7 @@ import dte.amongus.corpses.basic.BasicCorpse;
 import dte.amongus.corpses.basic.components.blocks.BlockChangeComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.blocks.BlockUtils;
+import dte.amongus.utils.java.StreamUtils;
 
 public class WoolCorpse extends BasicCorpse
 {
@@ -18,17 +21,16 @@ public class WoolCorpse extends BasicCorpse
 	{
 		super(whoDied);
 		
-		registerComponents(deathLocation, woolColor);
+		getWoolBlocks(deathLocation, woolColor).forEach(this::addComponent);
 	}
 	
-	private void registerComponents(Location deathLocation, Material woolColor) 
+	private List<BlockChangeComponent> getWoolBlocks(Location deathLocation, Material woolColor)
 	{
 		List<Block> blocks = BlockUtils.getFacedBlocks(deathLocation.getBlock(), BlockUtils.CIRCLE_FACES);
 		
-		List<Block> half = blocks.subList(0, blocks.size()/2);
-		Collections.shuffle(half);
-		
-		for(Block block : half)
-			addComponent(new BlockChangeComponent(this, block, woolColor));
+		return blocks.stream()
+				.limit(blocks.size()/2)
+				.map(block -> new BlockChangeComponent(this, block, woolColor))
+				.collect(collectingAndThen(toList(), StreamUtils::randomized));
 	}
 }
