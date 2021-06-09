@@ -4,16 +4,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.blocks.BlockChangeComponent;
+import dte.amongus.corpses.basic.components.concretes.DeathSignComponent;
 import dte.amongus.games.players.Crewmate;
-import dte.amongus.utils.blocks.transformers.BlockTransformer;
 
 public class SignCorpse extends BasicCorpse
 {
-	public SignCorpse(Crewmate whoDied, Location deathLocation, Material signMaterial, String... lines) 
+	public SignCorpse(Crewmate whoDied, Location deathLocation, Material signMaterial) 
 	{
 		super(whoDied);
 		
-		addComponent(new BlockChangeComponent(this, deathLocation.getBlock(), BlockTransformer.toSign(signMaterial, lines)));
+		addComponent(new DeathSignComponent(this, deathLocation.getBlock(), signMaterial));
 	}
 }
