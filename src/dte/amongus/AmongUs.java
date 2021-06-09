@@ -29,13 +29,13 @@ import dte.amongus.utils.ModernJavaPlugin;
 
 public class AmongUs extends ModernJavaPlugin
 {
-	//services
+	//Services
 	private AUPlayerService auPlayerService;
 	private AULobbyService lobbyService;
 	private AUGameService gameService;
 	private ShipTaskService shipTaskService;
 	
-	//hooks
+	//Hooks
 	private HolographicDisplaysHook hdHook;
 	
 	private static AmongUs INSTANCE;
@@ -53,24 +53,19 @@ public class AmongUs extends ModernJavaPlugin
 
 		prepareOnlineHelpers();
 	}
-	private void setupServices()
+	
+	public static AmongUs getInstance()
 	{
-		this.auPlayerService = new AUPlayerService();
-		this.lobbyService = new AULobbyService();
-		this.gameService = new AUGameService();
-		this.shipTaskService = new ShipTaskService();
-
-		GamePlayerUtils.setup(this.auPlayerService);
-		Cooldown.Builder.setCooldownService(new CooldownService());
-		EquallableHologram.setHolographicsDisplaysHook(this.hdHook);
-		HologramComponent.setHolographicDisplaysHook(this.hdHook);
+		return INSTANCE;
 	}
+	
 	private void registerCommands() 
 	{
 		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gameService, this.auPlayerService, this.lobbyService, this.shipTaskService);
 		getCommand("amongus").setExecutor(amongUsCommand);
 		getCommand("amongus").setTabCompleter(amongUsCommand);
 	}
+	
 	private void registerListeners()
 	{
 		registerListeners(
@@ -93,10 +88,26 @@ public class AmongUs extends ModernJavaPlugin
 				new InventoryTasksListener(this.shipTaskService, this.gameService)
 				);
 	}
+	
+	private void setupServices()
+	{
+		this.auPlayerService = new AUPlayerService();
+		this.lobbyService = new AULobbyService();
+		this.gameService = new AUGameService();
+		this.shipTaskService = new ShipTaskService();
+
+		GamePlayerUtils.setup(this.auPlayerService);
+		Cooldown.Builder.setCooldownService(new CooldownService());
+	}
+	
 	private void setupHooks() 
 	{
 		this.hdHook = new HolographicDisplaysHook();
+		
+		EquallableHologram.setHolographicsDisplaysHook(this.hdHook);
+		HologramComponent.setHolographicDisplaysHook(this.hdHook);
 	}
+	
 	private void prepareOnlineHelpers()
 	{
 		Location poolLocation = new Location(Bukkit.getWorld("world"), 39, 64, 2);
@@ -105,10 +116,5 @@ public class AmongUs extends ModernJavaPlugin
 		.map(Bukkit::getPlayer)
 		.filter(Objects::nonNull)
 		.forEach(helper -> helper.teleport(poolLocation));
-	}
-	
-	public static AmongUs getInstance()
-	{
-		return INSTANCE;
 	}
 }
