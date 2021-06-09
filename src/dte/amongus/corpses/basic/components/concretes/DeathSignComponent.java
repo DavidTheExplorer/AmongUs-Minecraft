@@ -19,6 +19,6 @@ public class DeathSignComponent extends BlockChangeComponent
 	{
 		String playerName = whoDied.getPlayer().getName();
 		
-		return new String[]{playerName, "was assasu", "nated here.", "R.I.P"};
+		return new String[]{playerName, "was assasinated", "Here.", "R.I.P"};
 	}
 }
