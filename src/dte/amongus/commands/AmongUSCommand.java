@@ -36,13 +36,12 @@ import dte.amongus.player.AUPlayer;
 import dte.amongus.player.AUPlayerService;
 import dte.amongus.sabotages.GatesSabotage;
 import dte.amongus.sabotages.Sabotage;
+import dte.amongus.shiptasks.CleanO2FilterTask;
+import dte.amongus.shiptasks.EnterIDTask;
 import dte.amongus.shiptasks.ShipTask;
+import dte.amongus.shiptasks.StabilizeSteeringTask;
+import dte.amongus.shiptasks.WiresTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
-import dte.amongus.shiptasks.list.cleano2filter.CleanO2FilterTask;
-import dte.amongus.shiptasks.list.enterid.EnterIDTask;
-import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
-import dte.amongus.shiptasks.list.wires.WiresTask;
-import dte.amongus.shiptasks.service.ShipTaskService;
 import dte.amongus.utils.blocks.SignUtils;
 import dte.amongus.utils.java.IterableUtils;
 
@@ -51,7 +50,6 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 	private final AUGameService gameService;
 	private final AULobbyService lobbyService;
 	private final AUPlayerService auPlayerService;
-	private final ShipTaskService shipTaskService;
 
 	private AULobby tempLobby;
 	
@@ -65,12 +63,11 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		TASK_CLASS_BY_NAME.put("o2", CleanO2FilterTask.class);
 	}
 
-	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService, ShipTaskService shipTaskService) 
+	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService) 
 	{
 		this.gameService = gameService;
 		this.auPlayerService = auPlayerService;
 		this.lobbyService = lobbyService;
-		this.shipTaskService = shipTaskService;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -311,7 +308,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 		for(Crewmate crewmate : game.getAlivePlayers(Crewmate.class)) 
 		{
-			this.shipTaskService.setDoing(crewmate, task);
+			game.setCurrentTask(crewmate, task);
 			task.onStart(crewmate);
 
 			crewmate.getPlayer().openInventory(task.getInventoryManager().createInventory(crewmate));

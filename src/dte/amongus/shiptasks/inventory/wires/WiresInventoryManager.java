@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.wires;
+package dte.amongus.shiptasks.inventory.wires;
 
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
 import static org.bukkit.ChatColor.RED;
@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import dte.amongus.AmongUs;
 import dte.amongus.cooldown.Cooldown;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.shiptasks.WiresTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;

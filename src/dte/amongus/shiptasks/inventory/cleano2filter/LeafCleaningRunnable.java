@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.cleano2filter;
+package dte.amongus.shiptasks.inventory.cleano2filter;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import dte.amongus.AmongUs;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.shiptasks.CleanO2FilterTask;
 
 public class LeafCleaningRunnable extends BukkitRunnable
 {

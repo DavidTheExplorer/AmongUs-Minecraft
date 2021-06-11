@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.wires;
+package dte.amongus.shiptasks.inventory.wires;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

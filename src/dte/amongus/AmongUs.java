@@ -24,7 +24,6 @@ import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
 import dte.amongus.listeners.tasks.InventoryTasksListener;
 import dte.amongus.lobby.AULobbyService;
 import dte.amongus.player.AUPlayerService;
-import dte.amongus.shiptasks.service.ShipTaskService;
 import dte.amongus.utils.ModernJavaPlugin;
 
 public class AmongUs extends ModernJavaPlugin
@@ -33,7 +32,6 @@ public class AmongUs extends ModernJavaPlugin
 	private AUPlayerService auPlayerService;
 	private AULobbyService lobbyService;
 	private AUGameService gameService;
-	private ShipTaskService shipTaskService;
 	
 	//Hooks
 	private HolographicDisplaysHook hdHook;
@@ -61,7 +59,7 @@ public class AmongUs extends ModernJavaPlugin
 	
 	private void registerCommands() 
 	{
-		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gameService, this.auPlayerService, this.lobbyService, this.shipTaskService);
+		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gameService, this.auPlayerService, this.lobbyService);
 		getCommand("amongus").setExecutor(amongUsCommand);
 		getCommand("amongus").setTabCompleter(amongUsCommand);
 	}
@@ -85,7 +83,7 @@ public class AmongUs extends ModernJavaPlugin
 				new ImpostorKillListener(), 
 				new GameWinListener(),
 				new BodyReportListener(),
-				new InventoryTasksListener(this.shipTaskService, this.gameService)
+				new InventoryTasksListener(this.gameService)
 				);
 	}
 	
@@ -94,7 +92,6 @@ public class AmongUs extends ModernJavaPlugin
 		this.auPlayerService = new AUPlayerService();
 		this.lobbyService = new AULobbyService();
 		this.gameService = new AUGameService();
-		this.shipTaskService = new ShipTaskService();
 
 		GamePlayerUtils.setup(this.auPlayerService);
 		Cooldown.Builder.setCooldownService(new CooldownService());

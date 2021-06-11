@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.cleano2filter;
+package dte.amongus.shiptasks.inventory.cleano2filter;
 
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
 import static org.bukkit.ChatColor.AQUA;
@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 
 import dte.amongus.AmongUs;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.shiptasks.CleanO2FilterTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.blocks.BlockUtils;
