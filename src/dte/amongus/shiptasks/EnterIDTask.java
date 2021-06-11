@@ -17,11 +17,11 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 {
 	private final EnterIDInventoryManager inventoryManager;
 
-	public EnterIDTask(AUGame game, Sound digitEnterSound)
+	public EnterIDTask(AUGame game, Sound digitEnterSound, Sound identificationSucceedSound)
 	{
 		super("Enter ID", "Enter your Personal ID", TaskType.COMMON, game);
 		
-		this.inventoryManager = new EnterIDInventoryManager(this, digitEnterSound);
+		this.inventoryManager = new EnterIDInventoryManager(this, digitEnterSound, identificationSucceedSound);
 	}
 
 	@Override
@@ -60,5 +60,6 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	public void onFinish(Crewmate crewmate) 
 	{
 		removeData(crewmate, "Personal ID");
+		removeData(crewmate, "Entered ID");
 	}
 }

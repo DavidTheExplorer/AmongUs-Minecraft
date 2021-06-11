@@ -41,7 +41,7 @@ public class LeafCleaningRunnable extends BukkitRunnable
 		this.cleaner.getPlayer().playSound(this.cleaner.getPlayer().getLocation(), this.cleaningSound, 1, 1);
 		this.currentPathIndex++;
 		
-		if(this.currentPathIndex == this.exitPath.size()) 
+		if(isLeafOutside()) 
 		{
 			closeChain();
 			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), this::removeLeaf, 10);
@@ -74,6 +74,11 @@ public class LeafCleaningRunnable extends BukkitRunnable
 	private boolean shouldOpenChain()
 	{
 		return this.chainIndex == this.exitPath.get(this.currentPathIndex);
+	}
+	
+	private boolean isLeafOutside() 
+	{
+		return this.currentPathIndex == this.exitPath.size();
 	}
 	
 	private void openChain() 

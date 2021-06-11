@@ -27,6 +27,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 {
 	private final EnterIDTask enterIDTask;
 	private final Sound digitEnterSound;
+	private final Sound identificationSucceedSound;
 
 	private static final int 
 	ENTER_INDEX = 15,
@@ -34,10 +35,11 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	
 	private static final int[] DIGITS_INDEXES = {38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
 
-	public EnterIDInventoryManager(EnterIDTask enterIDTask, Sound digitEnterSound)
+	public EnterIDInventoryManager(EnterIDTask enterIDTask, Sound digitEnterSound, Sound identificationSucceedSound)
 	{
 		this.enterIDTask = enterIDTask;
 		this.digitEnterSound = digitEnterSound;
+		this.identificationSucceedSound = identificationSucceedSound;
 	}
 
 	@Override
@@ -106,6 +108,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 				return;
 			}
 			crewmatePlayer.sendMessage(GREEN + "Success - You were successfully identified.");
+			crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.identificationSucceedSound, 1, 1);
 			break;
 		}
 	}
