@@ -22,11 +22,11 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.shiptasks.CleanO2FilterTask;
+import dte.amongus.shiptasks.EnterIDTask;
 import dte.amongus.shiptasks.ShipTask;
-import dte.amongus.shiptasks.list.cleano2filter.CleanO2FilterTask;
-import dte.amongus.shiptasks.list.enterid.EnterIDTask;
-import dte.amongus.shiptasks.list.stabilizesteering.StabilizeSteeringTask;
-import dte.amongus.shiptasks.list.wires.WiresTask;
+import dte.amongus.shiptasks.StabilizeSteeringTask;
+import dte.amongus.shiptasks.WiresTask;
 import dte.amongus.utils.java.RandomUtils;
 import dte.amongus.utils.java.UUIDProvider;
 

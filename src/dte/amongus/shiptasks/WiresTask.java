@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.wires;
+package dte.amongus.shiptasks;
 
 import java.util.Optional;
 
@@ -6,13 +6,13 @@ import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
-import dte.amongus.shiptasks.ProgressionTask;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
-import dte.amongus.shiptasks.type.TaskType;
+import dte.amongus.shiptasks.inventory.wires.WiresInventoryManager;
+import dte.amongus.shiptasks.progression.SimpleProgressionTask;
 import dte.amongus.utils.java.objectholders.Pair;
 
-public class WiresTask extends ProgressionTask implements InventoryTask
+public class WiresTask extends SimpleProgressionTask implements InventoryTask
 {
 	private final WiresInventoryManager inventoryManager = new WiresInventoryManager(this);
 

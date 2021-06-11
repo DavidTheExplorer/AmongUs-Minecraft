@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.enterid;
+package dte.amongus.shiptasks.inventory.enterid;
 
 import static dte.amongus.utils.ChatColorUtils.bold;
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.AmongUs;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.shiptasks.EnterIDTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;

@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.list.stabilizesteering;
+package dte.amongus.shiptasks.inventory.stabilizesteering;
 
 import static dte.amongus.utils.InventoryUtils.createDummyItem;
 import static org.bukkit.ChatColor.GREEN;
