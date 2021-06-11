@@ -14,6 +14,7 @@ public class CompositeCorpseException extends RuntimeException
 		
 		this.compositeCorpse = compositeCorpse;
 	}
+	
 	public CompositeCorpse getCorpse() 
 	{
 		return this.compositeCorpse;

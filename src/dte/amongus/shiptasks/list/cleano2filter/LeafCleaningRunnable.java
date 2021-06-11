@@ -69,22 +69,27 @@ public class LeafCleaningRunnable extends BukkitRunnable
 		this.taskInventory.setItem(leafIndex, null);
 		this.taskInventory.setItem(nextIndex, leaf);
 	}
+	
 	private boolean shouldOpenChain()
 	{
 		return this.chainIndex == this.exitPath.get(this.currentPathIndex);
 	}
+	
 	private void openChain() 
 	{
 		this.taskInventory.setItem(this.chainIndex, null);
 	}
+	
 	private void saveChain() 
 	{
 		this.chainItem = this.taskInventory.getItem(this.chainIndex);
 	}
+	
 	private void closeChain() 
 	{
 		this.taskInventory.setItem(this.chainIndex, this.chainItem);
 	}
+	
 	private void removeLeaf() 
 	{
 		this.taskInventory.setItem(this.exitPath.get(this.currentPathIndex-1), null);

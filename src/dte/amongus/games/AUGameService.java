@@ -54,12 +54,14 @@ public class AUGameService
 		
 		return game;
 	}
+	
 	public Optional<AUGame> getPlayerGame(Player player)
 	{
 		return this.activeGames.stream()
 				.filter(game -> game.contains(player))
 				.findFirst();
 	}
+	
 	public boolean onSameGame(Player player1, Player player2) 
 	{
 		Optional<AUGame> player1Game = getPlayerGame(player1);
@@ -69,6 +71,7 @@ public class AUGameService
 		
 		return player1Game.equals(getPlayerGame(player2));
 	}
+	
 	public Set<AUGame> getActiveGames()
 	{
 		return new HashSet<>(this.activeGames);

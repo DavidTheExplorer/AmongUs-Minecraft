@@ -20,14 +20,17 @@ public class Impostor extends AUGamePlayer
 	{
 		super(player, game, PlayerRole.IMPOSTOR);
 	}
+	
 	public Set<Crewmate> getKilledPlayers()
 	{
 		return new HashSet<>(this.crewmatesKilled); 
 	}
+	
 	public List<ShipTask> getFakeTasks()
 	{
 		return this.fakeTasks;
 	}
+	
 	public void addKill(Crewmate crewmate)
 	{
 		this.crewmatesKilled.add(crewmate);

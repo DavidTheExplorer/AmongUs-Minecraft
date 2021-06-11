@@ -22,10 +22,12 @@ public class Cooldown
 		this.rejectBehaviour = builder.rejectBehaviour;
 		this.whenOver = builder.whenOver;
 	}
+	
 	public String getName() 
 	{
 		return this.name;
 	}
+	
 	public void put(Player player, TimeUnit unit, long unitAmount) 
 	{
 		long endTime = System.currentTimeMillis() + unit.toMillis(unitAmount);
@@ -37,10 +39,12 @@ public class Cooldown
 			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), () ->  this.whenOver.run(player, this), timeInTicks);
 		}
 	}
+	
 	public boolean isOnCooldown(Player player) 
 	{
 		return isOnCooldown(player.getUniqueId());
 	}
+	
 	public boolean isOnCooldown(UUID playerUUID) 
 	{
 		Long endTime = this.playersEndTimes.get(playerUUID);
@@ -57,6 +61,7 @@ public class Cooldown
 		}
 		return true;
 	}
+	
 	public void delete(UUID playerUUID) 
 	{
 		this.playersEndTimes.remove(playerUUID);
@@ -107,10 +112,12 @@ public class Cooldown
 		{
 			this.name = name;
 		}
+		
 		public static void setCooldownService(CooldownService cooldownService) 
 		{
 			Builder.cooldownService = cooldownService;
 		}
+		
 		public Builder rejectWithDefaultMessage()
 		{
 			this.rejectBehaviour = DEFAULT_REJECT_MESSAGE;
@@ -138,16 +145,19 @@ public class Cooldown
 			};
 			return this;
 		}
+		
 		public Builder rejectWith(CooldownStrategy rejectionBehaviour) 
 		{
 			this.rejectBehaviour = rejectionBehaviour;
 			return this;
 		}
+		
 		public Builder whenOver(CooldownStrategy whenOver) 
 		{
 			this.whenOver = whenOver;
 			return this;
 		}
+		
 		public Cooldown build() 
 		{
 			if(cooldownService == null) 

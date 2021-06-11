@@ -37,6 +37,7 @@ public class GraveCorpse extends BasicCorpse
 		
 		return Material.valueOf(deadColor.name() + "_WOOL");
 	}
+	
 	private List<BlockChangeComponent> getGraveAround(Block deathBlock)
 	{
 		Block[] graveBlocks = BlockUtils.getFacedBlocks(deathBlock, BlockUtils.CIRCLE_FACES).stream().toArray(Block[]::new);

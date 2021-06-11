@@ -17,6 +17,7 @@ public class GameWinEvent extends GameEvent
 		
 		this.winnerRole = winnerRole;
 	}
+	
 	public PlayerRole getWinnerType() 
 	{
 		return this.winnerRole;
@@ -27,6 +28,7 @@ public class GameWinEvent extends GameEvent
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;

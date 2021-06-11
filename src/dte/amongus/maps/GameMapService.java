@@ -13,14 +13,17 @@ public class GameMapService
 	{
 		return this.mapByName.get(mapName);
 	}
+	
 	public void register(GameMap map) 
 	{
 		this.mapByName.put(map.getName(), map);
 	}
+	
 	public int mapsAmount()
 	{
 		return this.mapByName.size();
 	}
+	
 	public Collection<GameMap> getMaps()
 	{
 		return new HashSet<>(this.mapByName.values());

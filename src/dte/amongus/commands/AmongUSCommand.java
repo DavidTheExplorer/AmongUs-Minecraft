@@ -253,7 +253,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				List<String> onlinePlayersNames = Bukkit.getOnlinePlayers().stream()
 						.map(Player::getName)
 						.collect(toCollection(LinkedList::new));
-
+				
 				//if the sender is a player - they must've been in the game - so their name is excluded
 				if(sender instanceof Player)
 					onlinePlayersNames.remove(((Player) sender).getName());

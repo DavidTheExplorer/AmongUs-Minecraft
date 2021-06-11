@@ -15,10 +15,12 @@ public class ShipTaskService
 	{
 		return Optional.ofNullable(this.currentlyDoing.get(crewmate));
 	}
+	
 	public void setDoing(Crewmate crewmate, ShipTask task) 
 	{
 		this.currentlyDoing.put(crewmate, task);
 	}
+	
 	public void setNoTask(Crewmate crewmate) 
 	{
 		this.currentlyDoing.remove(crewmate);

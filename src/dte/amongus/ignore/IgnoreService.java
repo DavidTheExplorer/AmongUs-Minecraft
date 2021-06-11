@@ -17,10 +17,12 @@ public class IgnoreService
 	{
 		this.playersIgnores.computeIfAbsent(ignorer, u -> new HashSet<>()).add(ignored);
 	}
+	
 	public boolean isIgnored(AUPlayer ignorer, AUPlayer ignored) 
 	{
 		return this.playersIgnores.getOrDefault(ignorer, DUMMY_LIST).contains(ignored);
 	}
+	
 	public void unIgnore(AUPlayer ignorer, AUPlayer ignored) 
 	{
 		this.playersIgnores.getOrDefault(ignorer, DUMMY_LIST).remove(ignored);

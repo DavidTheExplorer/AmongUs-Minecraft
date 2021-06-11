@@ -16,6 +16,7 @@ public class EntityUtils
 	{
 		return getNearby(source, toFilerEntityClass, radius, radius, radius);
 	}
+	
 	public static <E extends LivingEntity> List<E> getNearby(Entity source, Class<E> toFilerEntityClass, int xRadius, int yRadius, int zRadius)
 	{
 		List<Entity> nearby = source.getNearbyEntities(xRadius, yRadius, zRadius);

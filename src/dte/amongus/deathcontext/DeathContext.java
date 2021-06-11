@@ -19,10 +19,12 @@ public class DeathContext
 		
 		this.corpse = corpse;
 	}
+	
 	public Location getDeathLocation()
 	{
 		return this.deathLocation;
 	}
+	
 	public Corpse getCorpse()
 	{
 		return this.corpse;

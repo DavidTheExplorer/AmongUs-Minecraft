@@ -19,10 +19,12 @@ public class BodyReportEvent extends GameEvent
 		this.foundCorpse = foundCorpse;
 		this.reporter = reporter;
 	}
+	
 	public Corpse getFoundCorpse() 
 	{
 		return this.foundCorpse;
 	}
+	
 	public AUGamePlayer getReporter() 
 	{
 		return this.reporter;
@@ -33,6 +35,7 @@ public class BodyReportEvent extends GameEvent
 	{
 		return HANDLERS;
 	}
+	
 	public static HandlerList getHandlerList()
 	{
 		return HANDLERS;

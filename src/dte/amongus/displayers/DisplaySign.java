@@ -35,6 +35,7 @@ public abstract class DisplaySign implements Displayer<String[]>
 	{
 		this.baseLinesSupplier = baseLinesSupplier;
 	}
+	
 	protected void setBaseLines(String... baseLines) 
 	{
 		this.baseLinesSupplier = () -> baseLines;

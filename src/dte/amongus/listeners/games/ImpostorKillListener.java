@@ -50,6 +50,7 @@ public class ImpostorKillListener implements Listener
 		}
 		game.spawnCorpse(crewmate, event.getContext().getDeathLocation());
 	}
+	
 	private void setSpectator(AUGamePlayer gamePlayer, DeathContext deathContext) 
 	{
 		gamePlayer.setDead(deathContext);
@@ -63,6 +64,7 @@ public class ImpostorKillListener implements Listener
 			//TODO: add the sabotage map
 		}
 	}
+	
 	private void sendKillMessages(Impostor impostor, Crewmate crewmate, AUGame game) 
 	{
 		int crewmatesLeft = game.getAlivePlayers(Crewmate.class).size() - game.getAlivePlayers(Impostor.class).size();
