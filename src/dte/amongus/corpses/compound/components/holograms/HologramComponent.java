@@ -1,28 +1,28 @@
-package dte.amongus.corpses.basic.components.holograms;
+package dte.amongus.corpses.compound.components.holograms;
 
 import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.BasicCorpseComponent;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.CompoundCorpseComponent;
 import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;
 import dte.amongus.trackables.Trackable;
 
-public class HologramComponent extends BasicCorpseComponent implements Trackable
+public class HologramComponent extends CompoundCorpseComponent implements Trackable
 {
 	protected final Hologram hologram;
 	
 	private static HolographicDisplaysHook WG_HOOK = null;
 	
-	public HologramComponent(BasicCorpse corpse, EquallableHologram hiddenHologram)
+	public HologramComponent(CompoundCorpse corpse, EquallableHologram hiddenHologram)
 	{
 		super(corpse);
 		
 		this.hologram = hiddenHologram;
 	}
-	public static HologramComponent of(BasicCorpse corpse, EquallableHologram hologram) 
+	public static HologramComponent of(CompoundCorpse corpse, EquallableHologram hologram) 
 	{
 		WG_HOOK.setVisibility(hologram, false);
 

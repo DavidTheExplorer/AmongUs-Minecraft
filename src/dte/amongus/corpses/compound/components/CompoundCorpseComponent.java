@@ -1,16 +1,16 @@
-package dte.amongus.corpses.basic.components;
+package dte.amongus.corpses.compound.components;
 
-import dte.amongus.corpses.basic.BasicCorpse;
+import dte.amongus.corpses.compound.CompoundCorpse;
 
-public abstract class BasicCorpseComponent 
+public abstract class CompoundCorpseComponent 
 {
-	private final BasicCorpse parentCorpse;
+	private final CompoundCorpse parentCorpse;
 	
-	protected BasicCorpseComponent(BasicCorpse parentCorpse) 
+	protected CompoundCorpseComponent(CompoundCorpse parentCorpse) 
 	{
 		this.parentCorpse = parentCorpse;
 	}
-	public BasicCorpse getParentCorpse() 
+	public CompoundCorpse getParentCorpse() 
 	{
 		return this.parentCorpse;
 	}

@@ -1,17 +1,17 @@
-package dte.amongus.corpses.basic.components.blocks;
+package dte.amongus.corpses.compound.components.blocks;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.BasicCorpseComponent;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.CompoundCorpseComponent;
 import dte.amongus.trackables.Trackable;
 
-public abstract class AbstractBlockComponent extends BasicCorpseComponent implements Trackable
+public abstract class AbstractBlockComponent extends CompoundCorpseComponent implements Trackable
 {
 	private final Location blockLocation;
 	
-	protected AbstractBlockComponent(BasicCorpse parentCorpse, Block block)
+	protected AbstractBlockComponent(CompoundCorpse parentCorpse, Block block)
 	{
 		super(parentCorpse);
 		

@@ -1,4 +1,4 @@
-package dte.amongus.corpses.basic.components.concretes;
+package dte.amongus.corpses.compound.components.concretes;
 
 import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.WHITE;
@@ -8,8 +8,8 @@ import org.bukkit.Location;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.holograms.HologramComponent;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.holograms.HologramComponent;
 import dte.amongus.events.games.BodyReportEvent;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.holograms.EquallableHologram;
@@ -19,7 +19,7 @@ public class DeathHologramComponent extends HologramComponent
 {
 	private final int height;
 	
-	public DeathHologramComponent(BasicCorpse corpse, EquallableHologram hiddenBase, int height) 
+	public DeathHologramComponent(CompoundCorpse corpse, EquallableHologram hiddenBase, int height) 
 	{
 		super(corpse, hiddenBase);
 		
@@ -42,7 +42,7 @@ public class DeathHologramComponent extends HologramComponent
 	{
 		return reporter ->
 		{
-			BasicCorpse corpse = getParentCorpse();
+			CompoundCorpse corpse = getParentCorpse();
 			AUGamePlayer reporterGP = corpse.whoDied().getGame().getPlayer(reporter);
 			
 			Bukkit.getPluginManager().callEvent(new BodyReportEvent(corpse, reporterGP));
