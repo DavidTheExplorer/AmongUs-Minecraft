@@ -60,5 +60,6 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	public void onFinish(Crewmate crewmate) 
 	{
 		removeData(crewmate, "Personal ID");
+		removeData(crewmate, "Entered ID");
 	}
 }
