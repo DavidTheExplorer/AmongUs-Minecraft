@@ -9,12 +9,12 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import dte.amongus.AmongUs;
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.holograms.HologramComponent;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.holograms.HologramComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.holograms.EquallableHologram;
 
-public class TestCorpse extends BasicCorpse
+public class TestCorpse extends CompoundCorpse
 {
 	public TestCorpse(Crewmate whoDied, Location deathLocation) 
 	{

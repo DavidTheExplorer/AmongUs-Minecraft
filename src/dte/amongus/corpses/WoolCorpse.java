@@ -9,13 +9,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.blocks.BlockChangeComponent;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.blocks.BlockChangeComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.blocks.BlockUtils;
 import dte.amongus.utils.java.StreamUtils;
 
-public class WoolCorpse extends BasicCorpse
+public class WoolCorpse extends CompoundCorpse
 {
 	public WoolCorpse(Crewmate whoDied, Location deathLocation, Material woolColor) 
 	{

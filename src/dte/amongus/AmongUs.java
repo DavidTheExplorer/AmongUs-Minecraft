@@ -8,7 +8,7 @@ import org.bukkit.Location;
 import dte.amongus.commands.AmongUSCommand;
 import dte.amongus.cooldown.Cooldown;
 import dte.amongus.cooldown.CooldownService;
-import dte.amongus.corpses.basic.components.holograms.HologramComponent;
+import dte.amongus.corpses.compound.components.holograms.HologramComponent;
 import dte.amongus.games.AUGameService;
 import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;

@@ -7,15 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import dte.amongus.corpses.basic.BasicCorpse;
-import dte.amongus.corpses.basic.components.BasicCorpseComponent;
 import dte.amongus.corpses.composite.exceptions.CompositeCorpseException;
 import dte.amongus.corpses.composite.exceptions.DuplicateComponentsException;
+import dte.amongus.corpses.compound.CompoundCorpse;
+import dte.amongus.corpses.compound.components.CompoundCorpseComponent;
 import dte.amongus.games.players.Crewmate;
 
-public class CompositeCorpse extends BasicCorpse
+public class CompositeCorpse extends CompoundCorpse
 {
-	private final Set<BasicCorpse> corpses = new HashSet<>();
+	private final Set<CompoundCorpse> corpses = new HashSet<>();
 	
 	public CompositeCorpse(Crewmate whoDied)
 	{
@@ -23,14 +23,14 @@ public class CompositeCorpse extends BasicCorpse
 	}
 	
 	@Override
-	public Set<BasicCorpseComponent> getComponents() 
+	public Set<CompoundCorpseComponent> getComponents() 
 	{
 		return this.corpses.stream()
 				.flatMap(corpse -> corpse.getComponents().stream())
 				.collect(toSet());
 	}
 	
-	public void addCorpse(BasicCorpse corpse) throws CompositeCorpseException
+	public void addCorpse(CompoundCorpse corpse) throws CompositeCorpseException
 	{
 		if(this.corpses.contains(corpse)) 
 			throw new CompositeCorpseException(this, "The provided corpse is already contained within the composite corpse!");
@@ -41,14 +41,14 @@ public class CompositeCorpse extends BasicCorpse
 		corpse.getComponents().forEach(this::addComponent);
 	}
 	
-	public Set<BasicCorpse> getCorpses()
+	public Set<CompoundCorpse> getCorpses()
 	{
 		return this.corpses;
 	}
 	
-	private void verifyNoDuplicates(BasicCorpse corpse) throws CompositeCorpseException
+	private void verifyNoDuplicates(CompoundCorpse corpse) throws CompositeCorpseException
 	{
-		List<BasicCorpseComponent> duplicateComponents = corpse.getComponents().stream()
+		List<CompoundCorpseComponent> duplicateComponents = corpse.getComponents().stream()
 				.filter(component -> getComponents().contains(component))
 				.collect(toList());
 		

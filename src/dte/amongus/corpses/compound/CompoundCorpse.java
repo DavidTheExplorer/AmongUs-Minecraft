@@ -1,4 +1,4 @@
-package dte.amongus.corpses.basic;
+package dte.amongus.corpses.compound;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -6,16 +6,16 @@ import java.util.Objects;
 import java.util.Set;
 
 import dte.amongus.corpses.Corpse;
-import dte.amongus.corpses.basic.components.BasicCorpseComponent;
+import dte.amongus.corpses.compound.components.CompoundCorpseComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.java.IterableUtils;
 
-public class BasicCorpse implements Corpse, Iterable<BasicCorpseComponent>
+public class CompoundCorpse implements Corpse, Iterable<CompoundCorpseComponent>
 {
 	private final Crewmate whoDied;
-	private final Set<BasicCorpseComponent> components = new HashSet<>(); //a corpse consists of components(blocks, holograms, etc)
+	private final Set<CompoundCorpseComponent> components = new HashSet<>(); //a compound-corpse consists of components(blocks, holograms, etc)
 
-	public BasicCorpse(Crewmate whoDied)
+	public CompoundCorpse(Crewmate whoDied)
 	{
 		this.whoDied = whoDied;
 	}
@@ -29,30 +29,30 @@ public class BasicCorpse implements Corpse, Iterable<BasicCorpseComponent>
 	@Override
 	public void spawn()
 	{
-		this.components.forEach(BasicCorpseComponent::spawn);
+		this.components.forEach(CompoundCorpseComponent::spawn);
 	}
 
 	@Override
 	public void despawn()
 	{
-		this.components.forEach(BasicCorpseComponent::despawn);
+		this.components.forEach(CompoundCorpseComponent::despawn);
 	}
 
-	public void addComponent(BasicCorpseComponent component) 
+	public void addComponent(CompoundCorpseComponent component) 
 	{
 		this.components.add(component);
 	}
-	public Set<BasicCorpseComponent> getComponents()
+	public Set<CompoundCorpseComponent> getComponents()
 	{
 		return new HashSet<>(this.components);
 	}
-	public <C extends BasicCorpseComponent> Set<C> getComponents(Class<C> componentClass)
+	public <C extends CompoundCorpseComponent> Set<C> getComponents(Class<C> componentClass)
 	{
 		return new HashSet<>(IterableUtils.getElementsOf(componentClass, this.components));
 	}
 	
 	@Override
-	public Iterator<BasicCorpseComponent> iterator() 
+	public Iterator<CompoundCorpseComponent> iterator() 
 	{
 		return this.components.iterator();
 	}
@@ -75,7 +75,7 @@ public class BasicCorpse implements Corpse, Iterable<BasicCorpseComponent>
 		if(getClass() != object.getClass())
 			return false;
 		
-		BasicCorpse other = (BasicCorpse) object;
+		CompoundCorpse other = (CompoundCorpse) object;
 		
 		return Objects.equals(this.whoDied.getPlayer().getUniqueId(), other.whoDied.getPlayer().getUniqueId());
 	}
