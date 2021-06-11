@@ -34,6 +34,7 @@ public class BlockSabotage implements Sabotage
 	{
 		this.blocksTransformers = new HashMap<>(blocksTransformers);
 	}
+	
 	public BlockSabotage(Block[] blocks, BlockTransformer globalTransformer) 
 	{
 		this(Arrays.stream(blocks).collect(toMap(Block::getLocation, block -> globalTransformer)));
@@ -59,6 +60,7 @@ public class BlockSabotage implements Sabotage
 		
 		verifyType(blocks, sabotageName, negate(possibles::contains));
 	}
+	
 	protected static void verifyType(Block[] blocks, String sabotageName, Predicate<Material> materialTester) 
 	{
 		String badMaterialsNames = Arrays.stream(blocks)
@@ -70,6 +72,7 @@ public class BlockSabotage implements Sabotage
 		if(!badMaterialsNames.isEmpty())
 			throw new IllegalArgumentException(String.format("The following materials cannot be registered for a %s: %s", sabotageName, badMaterialsNames));
 	}
+	
 	protected static void verifyData(Block[] blocks, Class<? extends BlockData> dataClass) 
 	{
 		String badMaterialsNames = Arrays.stream(blocks)

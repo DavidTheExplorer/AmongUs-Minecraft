@@ -51,52 +51,63 @@ public class AUGame
 	{
 		return this.id;
 	}
+	
 	public AULobby getLobby() 
 	{
 		return this.lobby;
 	}
+	
 	public GameMap getMap() 
 	{
 		return this.map;
 	}
+	
 	public GameState getState()
 	{
 		return this.state;
 	}
+	
 	public void add(AUGamePlayer gamePlayer) 
 	{
 		verifyInInit("Players can only be added during the game's initialization.");
 
 		this.players.put(gamePlayer.getPlayer(), gamePlayer);
 	}
+	
 	public boolean contains(Player player) 
 	{
 		return this.players.containsKey(player);
 	}
+	
 	public void addTask(ShipTask... tasks) 
 	{
 		verifyInInit("Tasks can only be added during the game's initialization.");
 
 		Arrays.stream(tasks).forEach(this.tasks::add);
 	}
+	
 	public void setState(GameState state)
 	{
 		this.state = state;
 	}
+	
 	public void addPlayer(AUGamePlayer gamePlayer) 
 	{
 		this.players.put(gamePlayer.getPlayer(), gamePlayer);
 	}
+	
 	public AUGamePlayer getPlayer(Player player) 
 	{
 		return this.players.get(player);
 	}
+	
 	public <T extends AUGamePlayer> T getPlayer(Player player, Class<T> playerType)
 	{
 		AUGamePlayer gamePlayer = getPlayer(player);
 		
 		return playerType.isInstance(gamePlayer) ? playerType.cast(gamePlayer) : null;
 	}
+	
 	public Corpse spawnCorpse(Crewmate whoDied, Location deathLocation)
 	{
 		Corpse corpse = this.corpseFactory.generateCorpse(whoDied, deathLocation);
@@ -104,10 +115,12 @@ public class AUGame
 
 		return corpse;
 	}
+	
 	public boolean isWin()
 	{
 		return isTie();
 	}
+	
 	public Set<ShipTask> getTasks()
 	{
 		return new HashSet<>(this.tasks);
@@ -117,6 +130,7 @@ public class AUGame
 	{
 		return  this.players.values();
 	}
+	
 	public <T extends AUGamePlayer> Collection<T> getPlayers(Class<T> playerType)
 	{
 		return getPlayers().stream()
@@ -129,6 +143,7 @@ public class AUGame
 	{
 		return getAlivePlayers(AUGamePlayer.class);
 	}
+	
 	public <T extends AUGamePlayer> List<T> getAlivePlayers(Class<T> playerType)
 	{
 		return getPlayers(playerType).stream()
@@ -140,12 +155,14 @@ public class AUGame
 	{
 		return getDeadPlayers(AUGamePlayer.class);
 	}
+	
 	public <T extends AUGamePlayer> List<T> getDeadPlayers(Class<T> playerType)
 	{
 		return getPlayers(playerType).stream()
 				.filter(AUGamePlayer::isDead)
 				.collect(toList());
 	}
+	
 	/*public List<AUGamePlayer> getPlayers(PlayerRole role)
 	{
 		return getPlayers(role.getPlayerClass()).stream()
@@ -213,6 +230,7 @@ public class AUGame
 		if(this.state != GameState.INIT)
 			throw new UnsupportedOperationException(errorMessage + " during the game's initialization.");
 	}
+	
 	private boolean isTie() 
 	{
 		Map<PlayerRole, List<AUGamePlayer>> rolesPlayersLeft = this.players.values().stream()

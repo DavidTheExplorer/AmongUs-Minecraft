@@ -14,14 +14,17 @@ public class GameMap
 	{
 		this.name = name;
 	}
+	
 	public String getName() 
 	{
 		return this.name;
 	}
+	
 	public void addSpawnLocation(Location spawnLocation) 
 	{
 		this.spawnLocations.add(spawnLocation);
 	}
+	
 	public Set<Location> getSpawnLocations() 
 	{
 		return new HashSet<>(this.spawnLocations);

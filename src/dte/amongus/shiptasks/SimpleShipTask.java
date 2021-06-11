@@ -54,6 +54,7 @@ public abstract class SimpleShipTask implements ShipTask
 		
 		playerData.put(data, value);
 	}
+	
 	protected void removeData(Crewmate crewmate, String data)
 	{
 		Map<String, Object> playerData = this.playersData.get(crewmate);
@@ -61,6 +62,7 @@ public abstract class SimpleShipTask implements ShipTask
 		if(playerData != null)
 			playerData.remove(data);
 	}
+	
 	protected <T> Optional<T> getData(Crewmate crewmate, String data, Class<T> valueClass)
 	{
 		Map<String, Object> playerData = this.playersData.get(crewmate);
@@ -69,6 +71,7 @@ public abstract class SimpleShipTask implements ShipTask
 				.map(playerDataArg -> playerDataArg.get(data))
 				.map(valueClass::cast);
 	}
+	
 	protected <T> T getOrPut(Crewmate crewmate, String data, T defaultIfAbsent) 
 	{
 		return getOrPut(crewmate, data, () -> defaultIfAbsent);

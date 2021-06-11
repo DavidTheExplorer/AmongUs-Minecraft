@@ -17,6 +17,7 @@ public class LobbyJoinEvent extends LobbyEvent
 		
 		this.whoJoined = whoJoined;
 	}
+	
 	public Player whoJoined() 
 	{
 		return this.whoJoined;
@@ -27,6 +28,7 @@ public class LobbyJoinEvent extends LobbyEvent
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;

@@ -15,6 +15,7 @@ public abstract class LobbyEvent extends Event
 	{
 		this.lobby = lobby;
 	}
+	
 	public AULobby getLobby()
 	{
 		return this.lobby;
@@ -25,6 +26,7 @@ public abstract class LobbyEvent extends Event
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;

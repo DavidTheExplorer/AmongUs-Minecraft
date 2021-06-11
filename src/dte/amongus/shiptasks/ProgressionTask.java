@@ -30,6 +30,7 @@ public abstract class ProgressionTask extends SimpleShipTask
 		}
 		return newProgression == 100;
 	}
+	
 	public int getProgression(Crewmate crewmate) 
 	{
 		return (Integer) getOrPut(crewmate, "Progression", 0);

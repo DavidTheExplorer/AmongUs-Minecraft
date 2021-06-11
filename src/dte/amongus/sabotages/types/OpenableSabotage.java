@@ -14,6 +14,7 @@ public class OpenableSabotage extends BlockSabotage
 	{
 		super(openables, REVERSE_OPEN);
 	}
+	
 	public static OpenableSabotage from(Block... openableBlocks) 
 	{
 		verifyData(openableBlocks, Openable.class);

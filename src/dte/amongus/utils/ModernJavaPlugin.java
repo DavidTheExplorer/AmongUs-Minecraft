@@ -12,6 +12,7 @@ public class ModernJavaPlugin extends JavaPlugin
 	{
 		Bukkit.getConsoleSender().sendMessage(String.format("[%s] %s", this.PLUGIN_NAME, message));
 	}
+	
 	public void registerListeners(Listener... listeners) 
 	{
 		for(Listener listener : listeners)

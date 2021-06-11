@@ -20,10 +20,12 @@ public class AUDeathEvent extends GameEvent
 		this.whoDied = whoDied;
 		this.context = context;
 	}
+	
 	public Crewmate whoDied() 
 	{
 		return this.whoDied;
 	}
+	
 	public DeathContext getContext() 
 	{
 		return this.context;
@@ -34,6 +36,7 @@ public class AUDeathEvent extends GameEvent
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;

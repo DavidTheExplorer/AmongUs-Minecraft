@@ -23,10 +23,12 @@ public class ChatColorUtils
 		
 		return result;
 	}
+	
 	public static String colorizeChatColors(String text) 
 	{
 		return ChatColor.translateAlternateColorCodes('&', text);
 	}
+	
 	public static String colorizeHex(String text)
 	{
 		Matcher matcher = HEX_COLOR_PATTERN.matcher(text);
@@ -39,6 +41,7 @@ public class ChatColorUtils
 		}
 		return text;
 	}
+	
 	public static String bold(ChatColor color) 
 	{
 		return color.toString() + BOLD;

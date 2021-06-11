@@ -14,6 +14,7 @@ public class ImpostorKillContext extends DeathContext
 		
 		this.killer = killer;
 	}
+	
 	public Impostor getKiller() 
 	{
 		return this.killer;

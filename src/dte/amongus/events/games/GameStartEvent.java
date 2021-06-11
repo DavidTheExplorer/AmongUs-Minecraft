@@ -18,6 +18,7 @@ public class GameStartEvent extends GameEvent
 	{
 		return HANDLERS;
 	}
+	
 	public static HandlerList getHandlerList()
 	{
 		return HANDLERS;

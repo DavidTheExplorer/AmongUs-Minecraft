@@ -16,14 +16,17 @@ public class GamePlayerUtils
 	{
 		GamePlayerUtils.auPlayerService = auPlayerService;
 	}
+	
 	public static AUPlayer toAUPlayer(AUGamePlayer gamePlayer) 
 	{
 		return auPlayerService.getAUPlayer(gamePlayer);
 	}
+	
 	public static PlayerColor getColor(AUGamePlayer gamePlayer) 
 	{
 		return toAUPlayer(gamePlayer).getVisibilityManager().getCurrentColor();
 	}
+	
 	public static String getColoredName(AUGamePlayer gamePlayer)
 	{
 		return getColor(gamePlayer).getChatColor() + gamePlayer.getPlayer().getName();

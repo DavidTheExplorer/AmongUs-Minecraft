@@ -27,7 +27,7 @@ public class TestCorpse extends BasicCorpse
 		
 		addComponent(HologramComponent.of(this, createHologram(deathBlock.getLocation())));
 	}
-
+	
 	private EquallableHologram createHologram(Location location) 
 	{
 		Hologram hologram = HologramsAPI.createHologram(AmongUs.getInstance(), location);

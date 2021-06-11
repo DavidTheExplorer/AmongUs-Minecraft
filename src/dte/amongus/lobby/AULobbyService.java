@@ -29,10 +29,12 @@ public class AULobbyService
 	{
 		this.lobbyByID.put(lobby.getID(), lobby);
 	}
+	
 	public Optional<AULobby> findRandomLobby() 
 	{
 		return Optional.ofNullable(randomElement(getLobbies()));
 	}
+	
 	public Optional<AULobby> findRandomLobbyThat(Predicate<AULobby> lobbyTester) //TODO: Use this for ignore lists - so people can join games without people they hate which could ruin their game
 	{
 		 Set<AULobby> matchingLobbies = getLobbies().stream()
@@ -41,12 +43,14 @@ public class AULobbyService
 		 
 		 return Optional.ofNullable(randomElement(matchingLobbies));
 	}
+	
 	public Optional<AULobby> findLobbyOf(Player player)
 	{
 		return getLobbies().stream()
 				.filter(lobby -> lobby.contains(player))
 				.findAny();
 	}
+	
 	public Collection<AULobby> getLobbies()
 	{
 		return this.lobbyByID.values();

@@ -15,6 +15,7 @@ public abstract class GameEvent extends Event
 	{
 		this.game = game;
 	}
+	
 	public AUGame getGame() 
 	{
 		return this.game;
@@ -25,6 +26,7 @@ public abstract class GameEvent extends Event
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;

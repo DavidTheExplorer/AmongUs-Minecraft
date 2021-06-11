@@ -17,6 +17,7 @@ public class DuplicateComponentsException extends CompositeCorpseException
 		
 		this.duplicateComponents = duplicateComponents;
 	}
+	
 	public List<BasicCorpseComponent> getDuplicateComponents()
 	{
 		return this.duplicateComponents;

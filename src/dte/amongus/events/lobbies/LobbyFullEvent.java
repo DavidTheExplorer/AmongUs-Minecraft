@@ -17,6 +17,7 @@ public class LobbyFullEvent extends LobbyEvent
 		
 		this.lastJoiner = lastJoiner;
 	}
+	
 	public Player getLastJoiner() 
 	{
 		return this.lastJoiner;
@@ -27,6 +28,7 @@ public class LobbyFullEvent extends LobbyEvent
 	{
         return HANDLERS;
     }
+	
     public static HandlerList getHandlerList()
     {
         return HANDLERS;
