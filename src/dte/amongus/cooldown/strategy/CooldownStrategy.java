@@ -1,6 +1,8 @@
-package dte.amongus.cooldown;
+package dte.amongus.cooldown.strategy;
 
 import org.bukkit.entity.Player;
+
+import dte.amongus.cooldown.Cooldown;
 
 @FunctionalInterface
 public interface CooldownStrategy

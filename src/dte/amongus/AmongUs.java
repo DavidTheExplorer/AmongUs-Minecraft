@@ -7,9 +7,9 @@ import org.bukkit.Location;
 
 import dte.amongus.commands.AmongUSCommand;
 import dte.amongus.cooldown.Cooldown;
-import dte.amongus.cooldown.CooldownService;
+import dte.amongus.cooldown.service.CooldownService;
 import dte.amongus.corpses.compound.components.holograms.HologramComponent;
-import dte.amongus.games.AUGameService;
+import dte.amongus.games.service.AUGameService;
 import dte.amongus.holograms.EquallableHologram;
 import dte.amongus.hooks.HolographicDisplaysHook;
 import dte.amongus.internal.GamePlayerUtils;
@@ -22,8 +22,8 @@ import dte.amongus.listeners.lobbies.LobbyFullListener;
 import dte.amongus.listeners.lobbies.LobbyLeaveListeners;
 import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
 import dte.amongus.listeners.tasks.InventoryTasksListener;
-import dte.amongus.lobby.AULobbyService;
-import dte.amongus.player.AUPlayerService;
+import dte.amongus.lobby.service.AULobbyService;
+import dte.amongus.player.service.AUPlayerService;
 import dte.amongus.utils.ModernJavaPlugin;
 
 public class AmongUs extends ModernJavaPlugin

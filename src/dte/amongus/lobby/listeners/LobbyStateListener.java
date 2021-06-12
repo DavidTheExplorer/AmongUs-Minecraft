@@ -1,4 +1,4 @@
-package dte.amongus.lobby.statelistener;
+package dte.amongus.lobby.listeners;
 
 import org.bukkit.entity.Player;
 

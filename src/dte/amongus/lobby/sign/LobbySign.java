@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import dte.amongus.displayers.DisplaySign;
 import dte.amongus.lobby.AULobby;
-import dte.amongus.lobby.statelistener.LobbyStateListener;
+import dte.amongus.lobby.listeners.LobbyStateListener;
 
 public class LobbySign extends DisplaySign implements LobbyStateListener
 {

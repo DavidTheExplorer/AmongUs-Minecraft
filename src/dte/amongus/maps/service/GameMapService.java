@@ -1,9 +1,11 @@
-package dte.amongus.maps;
+package dte.amongus.maps.service;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import dte.amongus.maps.GameMap;
 
 public class GameMapService
 {

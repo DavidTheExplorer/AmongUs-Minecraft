@@ -2,7 +2,7 @@ package dte.amongus.internal;
 
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.player.AUPlayer;
-import dte.amongus.player.AUPlayerService;
+import dte.amongus.player.service.AUPlayerService;
 import dte.amongus.player.visual.PlayerColor;
 
 public class GamePlayerUtils 

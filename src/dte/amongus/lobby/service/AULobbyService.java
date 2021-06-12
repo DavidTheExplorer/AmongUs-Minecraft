@@ -1,4 +1,4 @@
-package dte.amongus.lobby;
+package dte.amongus.lobby.service;
 
 import static dte.amongus.utils.java.RandomUtils.randomElement;
 import static java.util.stream.Collectors.toSet;
@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import dte.amongus.corpses.factory.CorpseFactory;
 import dte.amongus.games.settings.GameSettings;
+import dte.amongus.lobby.AULobby;
 import dte.amongus.lobby.sign.LobbySign;
 import dte.amongus.maps.GameMap;
 import dte.amongus.utils.java.UUIDProvider;

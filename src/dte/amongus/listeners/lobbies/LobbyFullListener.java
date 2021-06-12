@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import dte.amongus.events.games.GameStartEvent;
 import dte.amongus.events.lobbies.LobbyFullEvent;
 import dte.amongus.games.AUGame;
-import dte.amongus.games.AUGameService;
+import dte.amongus.games.service.AUGameService;
 import dte.amongus.lobby.AULobby;
 
 public class LobbyFullListener implements Listener

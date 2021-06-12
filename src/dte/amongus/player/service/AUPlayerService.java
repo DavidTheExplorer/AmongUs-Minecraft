@@ -1,10 +1,11 @@
-package dte.amongus.player;
+package dte.amongus.player.service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import dte.amongus.games.players.AUGamePlayer;
+import dte.amongus.player.AUPlayer;
 
 public class AUPlayerService
 {

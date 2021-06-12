@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import dte.amongus.games.AUGameService;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.games.service.AUGameService;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 
 public class InventoryTasksListener implements Listener

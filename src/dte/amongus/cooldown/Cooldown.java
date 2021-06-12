@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import dte.amongus.AmongUs;
+import dte.amongus.cooldown.service.CooldownService;
+import dte.amongus.cooldown.strategy.CooldownStrategy;
 
 public class Cooldown
 {
