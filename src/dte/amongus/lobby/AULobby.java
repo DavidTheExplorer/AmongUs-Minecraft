@@ -19,7 +19,7 @@ import com.google.common.collect.Lists;
 import dte.amongus.events.lobbies.LobbyFullEvent;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.settings.GameSettings;
-import dte.amongus.lobby.statelistener.LobbyStateListener;
+import dte.amongus.lobby.listeners.LobbyStateListener;
 import dte.amongus.maps.GameMap;
 import dte.amongus.player.AUPlayer;
 import dte.amongus.player.visual.PlayerColor;
@@ -40,7 +40,7 @@ public class AULobby
 	
 	private AUGame currentGame;
 	
-	AULobby(UUID id, Location spawnLocation, GameMap gameMap, GameSettings settings)
+	public AULobby(UUID id, Location spawnLocation, GameMap gameMap, GameSettings settings)
 	{
 		this.id = id;
 		this.spawnLocation = spawnLocation;

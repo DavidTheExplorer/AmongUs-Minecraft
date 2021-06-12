@@ -1,4 +1,4 @@
-package dte.amongus.games;
+package dte.amongus.games.service;
 
 import static java.util.stream.Collectors.toCollection;
 
@@ -16,6 +16,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import dte.amongus.games.AUGame;
 import dte.amongus.games.AUGame.GameState;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;

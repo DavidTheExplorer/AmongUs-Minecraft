@@ -1,7 +1,9 @@
-package dte.amongus.cooldown;
+package dte.amongus.cooldown.service;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import dte.amongus.cooldown.Cooldown;
 
 public class CooldownService
 {

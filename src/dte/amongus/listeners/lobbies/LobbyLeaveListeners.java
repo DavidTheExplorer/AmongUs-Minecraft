@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import dte.amongus.lobby.AULobbyService;
+import dte.amongus.lobby.service.AULobbyService;
 
 public class LobbyLeaveListeners implements Listener
 {

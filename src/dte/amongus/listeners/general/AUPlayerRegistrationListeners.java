@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import dte.amongus.player.AUPlayerService;
+import dte.amongus.player.service.AUPlayerService;
 
 public class AUPlayerRegistrationListeners implements Listener
 {

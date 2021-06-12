@@ -11,10 +11,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import dte.amongus.deathcontext.ImpostorKillContext;
 import dte.amongus.events.games.ImpostorKillEvent;
 import dte.amongus.games.AUGame;
-import dte.amongus.games.AUGameService;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
+import dte.amongus.games.service.AUGameService;
 
 public class ImpostorKillRetrieverListener implements Listener
 {
