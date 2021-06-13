@@ -63,7 +63,7 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
 		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
-		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Player crewmatePlayer = crewmate.getPlayer();
 		crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.steeringSound, 1, 1);
 	}
 

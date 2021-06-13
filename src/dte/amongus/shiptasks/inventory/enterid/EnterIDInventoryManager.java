@@ -69,7 +69,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	@Override
 	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
-		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Player crewmatePlayer = crewmate.getPlayer();
 		ItemStack item = event.getCurrentItem();
 
 		switch(item.getType()) 

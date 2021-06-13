@@ -97,7 +97,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 		if(!WIRES_MATERIALS.contains(wire.getType()))
 			return;
 		
-		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Player crewmatePlayer = crewmate.getPlayer();
 		
 		if(WORK_COOLDOWN.wasRejected(crewmatePlayer)) 
 			return;

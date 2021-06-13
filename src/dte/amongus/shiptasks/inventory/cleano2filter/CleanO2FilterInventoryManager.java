@@ -69,7 +69,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	{
 		Inventory taskInventory = event.getInventory();
 		ItemStack item = event.getCurrentItem();
-		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Player crewmatePlayer = crewmate.getPlayer();
 		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafData(crewmate);
 
 		if(BlockUtils.isLeaf(item.getType()))
