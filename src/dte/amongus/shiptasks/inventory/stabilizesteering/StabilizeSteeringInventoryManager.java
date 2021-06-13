@@ -31,23 +31,23 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 	@Override
 	public Inventory createInventory(Crewmate opener) 
 	{
-		Inventory inventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
-		InventoryUtils.fillEmptySlots(inventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		Inventory taskInventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
+		InventoryUtils.fillEmptySlots(taskInventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
 		//add the new target to the middle of the inventory
-		inventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "New Target")
+		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "New Target")
 				.withLore(WHITE + "Click here to Retarget!")
 				.createCopy());
 		
 		//add the "aim" stuff
-		InventoryUtils.fillRow(inventory, 1, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		InventoryUtils.fillColumn(inventory, 7, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillRow(taskInventory, 1, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillColumn(taskInventory, 7, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		
-		inventory.setItem(PREVIOUS_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, RED + "Current Target")
+		taskInventory.setItem(PREVIOUS_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, RED + "Current Target")
 				.withLore(WHITE + "Click on another one.")
 				.createCopy());
 		
-		return inventory;
+		return taskInventory;
 	}
 	
 	@Override
@@ -56,12 +56,12 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		if(event.getRawSlot() != NEW_TARGET_INDEX)
 			return;
 		
-		Inventory inventory = event.getInventory();
-		InventoryUtils.allSlotsThat(inventory, i -> i.getType() == Material.WHITE_STAINED_GLASS_PANE).forEach(index -> inventory.setItem(index, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE)));
-		InventoryUtils.fillRow(inventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		InventoryUtils.fillColumn(inventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		inventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
-		inventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		Inventory taskInventory = event.getInventory();
+		InventoryUtils.allSlotsThat(taskInventory, i -> i.getType() == Material.WHITE_STAINED_GLASS_PANE).forEach(index -> taskInventory.setItem(index, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE)));
+		InventoryUtils.fillRow(taskInventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillColumn(taskInventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
+		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
 		Player crewmatePlayer = (Player) event.getWhoClicked();
 		crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.steeringSound, 1, 1);

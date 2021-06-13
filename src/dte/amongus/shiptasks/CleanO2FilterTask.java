@@ -21,7 +21,7 @@ public class CleanO2FilterTask extends SimpleShipTask implements InventoryTask
 		super("Clean O2 Filter", "Clean the O2 Filter from the Leaves!", TaskType.SHORT, game);
 		
 		this.leavesAmount = leavesAmount;
-		this.inventoryManager =  new CleanO2FilterInventoryManager(this, cleaningSound);
+		this.inventoryManager = new CleanO2FilterInventoryManager(this, cleaningSound);
 	}
 	
 	@Override

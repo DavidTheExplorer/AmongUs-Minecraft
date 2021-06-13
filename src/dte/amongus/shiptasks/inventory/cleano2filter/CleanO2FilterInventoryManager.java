@@ -47,27 +47,27 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	@Override
 	public Inventory createInventory(Crewmate opener) 
 	{
-		Inventory inventory = Bukkit.createInventory(null, 9 * 6, createTitle("Clean the Leaves"));
-		InventoryUtils.buildWalls(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
+		Inventory taskInventory = Bukkit.createInventory(null, 9 * 6, createTitle("Clean the Leaves"));
+		InventoryUtils.buildWalls(taskInventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
 		
 		for(int i : new int[]{1, 10, 37, 46})
-			inventory.setItem(i, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+			taskInventory.setItem(i, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 
 		for(int i : new int[]{19, 28})
-			inventory.setItem(i, CHAIN_BUILDER.createCopy());
+			taskInventory.setItem(i, CHAIN_BUILDER.createCopy());
 
 		for(ItemStack leaf : createRandomLeaves())
-			inventory.setItem(InventoryUtils.randomEmptySlot(inventory), leaf);
+			taskInventory.setItem(InventoryUtils.randomEmptySlot(taskInventory), leaf);
 
-		InventoryUtils.fillColumn(inventory, 0, null);
+		InventoryUtils.fillColumn(taskInventory, 0, null);
 
-		return inventory;
+		return taskInventory;
 	}
 
 	@Override
 	public void onInventoryClick(Crewmate crewmate, InventoryClickEvent event) 
 	{
-		Inventory inventory = event.getInventory();
+		Inventory taskInventory = event.getInventory();
 		ItemStack item = event.getCurrentItem();
 		Player crewmatePlayer = (Player) event.getWhoClicked();
 		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafData(crewmate);
@@ -81,7 +81,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 			}
 			GlowEffect.addGlow(item);
 			this.cleanO2FilterTask.setCurrentLeafData(crewmate, event.getRawSlot());
-			setLeavesTo(inventory, leaf -> CleanO2FilterInventoryManager.createInformativeLeaf(leaf.getType()));
+			setLeavesTo(taskInventory, leaf -> createInformativeLeaf(leaf.getType()));
 		}
 		else if(item.getType() == Material.CHAIN) 
 		{
@@ -92,7 +92,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 			}
 			List<Integer> exitPath = calculateExitPath(currentLeafIndex.get(), event.getRawSlot());
 
-			new LeafCleaningRunnable(this.cleanO2FilterTask, inventory, crewmate, exitPath, this.cleaningSound).runTaskTimer(AmongUs.getInstance(), 0, 5);
+			new LeafCleaningRunnable(this.cleanO2FilterTask, taskInventory, crewmate, exitPath, this.cleaningSound).runTaskTimer(AmongUs.getInstance(), 0, 5);
 		}
 	}
 
@@ -123,14 +123,13 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 		return new ItemBuilder(leafType, GREEN + "Leaf" + WHITE + " (Left Click)").createCopy();
 	}
 	
-	static void setLeavesTo(Inventory inventory, UnaryOperator<ItemStack> leafReplacer) 
+	static void setLeavesTo(Inventory taskInventory, UnaryOperator<ItemStack> leafReplacer) 
 	{
-		InventoryUtils.allSlotsThat(inventory, item -> BlockUtils.isLeaf(item.getType()))
-		.forEach(slot ->
+		InventoryUtils.allSlotsThat(taskInventory, item -> BlockUtils.isLeaf(item.getType())).forEach(slot ->
 		{
-			ItemStack newLeaf = leafReplacer.apply(inventory.getItem(slot));
+			ItemStack newLeaf = leafReplacer.apply(taskInventory.getItem(slot));
 
-			inventory.setItem(slot, newLeaf);
+			taskInventory.setItem(slot, newLeaf);
 		});
 	}
 
