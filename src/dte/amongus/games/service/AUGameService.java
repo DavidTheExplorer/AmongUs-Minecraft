@@ -85,7 +85,7 @@ public class AUGameService
 	{
 		return new ShipTask[]
 				{
-						new WiresTask(game), 
+						new WiresTask(game, Sound.BLOCK_ANVIL_STEP, Sound.BLOCK_ANVIL_USE), 
 						new EnterIDTask(game, Sound.ENTITY_ARROW_HIT_PLAYER, Sound.ENTITY_VILLAGER_YES),
 						new StabilizeSteeringTask(game, Sound.BLOCK_ANVIL_USE), 
 						new CleanO2FilterTask(game, 5, Sound.BLOCK_GRASS_BREAK)
