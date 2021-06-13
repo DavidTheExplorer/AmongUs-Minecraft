@@ -2,6 +2,7 @@ package dte.amongus.shiptasks;
 
 import java.util.Optional;
 
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.games.AUGame;
@@ -14,13 +15,15 @@ import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresTask extends SimpleProgressionTask implements InventoryTask
 {
-	private final WiresInventoryManager inventoryManager = new WiresInventoryManager(this);
+	private final WiresInventoryManager inventoryManager;
 
 	public static final int WIRES_AMOUNT = 4;
 	
-	public WiresTask(AUGame game)
+	public WiresTask(AUGame game, Sound connectionSound, Sound connectionFinishedSound)
 	{
 		super("Wires Fix", "Connect all 4 wires.", TaskType.COMMON, game, WIRES_AMOUNT);
+		
+		this.inventoryManager = new WiresInventoryManager(this, connectionSound, connectionFinishedSound);
 	}
 	
 	@Override
