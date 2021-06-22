@@ -3,34 +3,31 @@ package dte.amongus.utils;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.Validate;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;
-import dte.amongus.utils.java.objectholders.Pair;
 
-//Some methods don't include or do partial parameters validation, because they depend on other methods that do the validation.
+//README: Some methods do partial parameters validation, because they validate only what the methods they depend on didn't validate.
 public class InventoryUtils
 {
 	//Container of static methods
 	private InventoryUtils(){}
 	
+	
 	/*
 	 * General
 	 */
-	public static boolean isEmpty(Inventory inventory) 
-	{
-		return itemsStream(inventory).count() == 0;
-	}
-	
+
 	/**
 	 * The opposite method to {@link #toLineAndIndex(int)} - Converts the provided {@code line} and {@code index in that line} to the corresponding inventory slot.
 	 * <p>
@@ -43,7 +40,7 @@ public class InventoryUtils
 	 * 
 	 * @param line The line index(starting by 1).
 	 * @param index The index in the given line(starting by 1).
-	 * @return The corresponding inventory slot.
+	 * @return The corresponding inventory slot to the provided line and index in that line.
 	 * @see #toLineAndIndex(int)
 	 */
 	public static int toSlot(int line, int index)
@@ -55,9 +52,9 @@ public class InventoryUtils
 		
 		return slot;
 	}
-	
+
 	/**
-	 * The opposite method to {@link #toSlot(int, int)} - Breaks the provided {@code inventory slot} into its line and its index in that line.
+	 * The opposite method to {@link #toSlot(int, int)} - Breaks the provided {@code inventory slot} to its line and its index in that line.
 	 * <p>
 	 * Input - Output Examples:
 	 * <ul>
@@ -68,7 +65,7 @@ public class InventoryUtils
 	 * </ul>
 	 * 
 	 * @param slot The slot to break to its line and its index in that line.
-	 * @return The provided slot, broken to its line and its index in that line.
+	 * @return The line and index in that line, of the provided inventory slot.
 	 * @see #toSlot(int, int)
 	 */
 	public static int[] toLineAndIndex(int slot) 
@@ -81,7 +78,7 @@ public class InventoryUtils
 			line = 1;
 			index = (slot+1);
 		}
-		else	
+		else
 		{
 			line = ((slot/9) +1);
 
@@ -93,51 +90,39 @@ public class InventoryUtils
 		}
 		return new int[]{line, index};
 	}
-	
+
+	public static boolean isEmpty(Inventory inventory) 
+	{
+		return itemsStream(inventory).count() == 0;
+	}
+
 
 	/*
-	 * Walls
+	 * Fill certain areas(lines, columns, etc)
 	 */
-	public static void buildWalls(Inventory inventory, ItemStack item)
+	public static void fill(Inventory inventory, ItemStack with)
 	{
-		final int invSize = inventory.getSize();
-
-		//if the inventory is one line, fill it
-		if(invSize == 9)
-		{
-			fillRow(inventory, 0, item);
-			return;
-		}
-		fillColumn(inventory, 0, item); //first column
-		fillColumn(inventory, 8, item); //last column
-
-		//fill the first & last columns *excluding* their corners, because those were already filled by the fillColumn()s.
-		fillRange(inventory, 1, 8, item); 
-		fillRange(inventory, invSize-8, invSize-1, item); 
+		fillRange(inventory, 0, inventory.getSize(), with);
 	}
-	
+	public static void fillRow(Inventory inventory, int row, ItemStack with)
+	{
+		validateRow(inventory, row);
 
-	/*
-	 * Fill
-	 */
-	public static void fill(Inventory inventory, ItemStack item)
-	{
-		fillRange(inventory, 0, inventory.getSize(), item);
-	}
-	public static void fillRow(Inventory inventory, int row, ItemStack with) 
-	{
-		verifyValidRow(inventory, row);
-		
 		int startIndex = (row * 9);
-		int endIndex = (startIndex + 8);
 
-		fillRange(inventory, startIndex, endIndex+1, with);
+		fillRange(inventory, startIndex, (startIndex + 9), with);
 	}
-	public static void fillColumn(Inventory inventory, int column, ItemStack with) 
+	public static void fillColumn(Inventory inventory, int column, ItemStack with)
 	{
-		Validate.inclusiveBetween(0, 8, column, "Illegal Column(Min: 0, Max: 8)");
-
+		validateColumn(column);
+		
 		fillRange(inventory, column, inventory.getSize(), 9, with);
+	}
+	public static void fillEmptySlots(Inventory inventory, ItemStack with)
+	{
+		Validate.notNull(with);
+
+		emptySlotsStream(inventory).forEach(slot -> inventory.setItem(slot, with));
 	}
 	public static void fillRange(Inventory inventory, int startInclusive, int endExclusive, ItemStack with)
 	{
@@ -145,133 +130,156 @@ public class InventoryUtils
 	}
 	public static void fillRange(Inventory inventory, int startInclusive, int endExclusive, int jumpDistance, ItemStack with)
 	{
-		verifyNotNull(inventory, "inventory");
-		
+		Validate.notNull(inventory);
+		Validate.notNull(with);
+
 		for(int i = startInclusive; i < endExclusive; i += jumpDistance)
 			inventory.setItem(i, with);
 	}
-	public static void fillEmptySlots(Inventory inventory, ItemStack with)
+
+
+	/*
+	 * Replace items by "Regex"(Predicate) and other properties
+	 */
+	public static void replace(Inventory inventory, Predicate<ItemStack> itemTester, UnaryOperator<ItemStack> itemReplacer) 
 	{
-		verifyNotNull(with, "item");
-		
-		emptySlotsStream(inventory).forEach(slot -> inventory.setItem(slot, with));
+		allSlotsThat(inventory, itemTester).forEach(i -> 
+		{
+			ItemStack newItem = itemReplacer.apply(inventory.getItem(i));
+
+			inventory.setItem(i, newItem);
+		});
+	}
+	public static void replace(Inventory inventory, Predicate<ItemStack> itemTester, ItemStack newItem)
+	{
+		replace(inventory, itemTester, item -> newItem);
+	}
+	public static void replace(Inventory inventory, Predicate<ItemStack> itemTester, Material newMaterial)
+	{
+		replace(inventory, itemTester, item -> new ItemStack(newMaterial));
+	}
+	public static void replace(Inventory inventory, Material target, Material newMaterial)
+	{
+		replace(inventory, target, new ItemStack(newMaterial));
+	}
+	public static void replace(Inventory inventory, Material target, ItemStack newItem)
+	{
+		replace(inventory, item -> item.getType() == target, newItem);
 	}
 	
 
 	/*
 	 * Slot Searching
 	 */
-	public static int firstSlotThat(Inventory inventory, Predicate<Integer> indexMatcher)
+	public static int firstSlotThat(Inventory inventory, Predicate<ItemStack> itemMatcher)
 	{
-		verifyNotNull(inventory, "inventory");
-		verifyNotNull(indexMatcher, "index matcher");
-
-		for(int i = 0; i < inventory.getSize(); i++)
-		{
-			if(indexMatcher.test(i))
-				return i;
-		}
-		return -1;
-	}
-	public static int findLastSlot(Inventory inventory, Predicate<Integer> indexMatcher) 
-	{
-		verifyNotNull(inventory, "inventory");
-		verifyNotNull(indexMatcher, "index matcher");
-
-		for(int i = inventory.getSize()-1; i >= 0; i--)
-		{
-			if(indexMatcher.test(i)) 
-				return i;
-		}
-		return -1;
-	}
-	public static int firstSlotWhoseItem(Inventory inventory, Predicate<ItemStack> itemMatcher) 
-	{
-		return firstSlotThat(inventory, slot -> 
-		{
-			ItemStack item = inventory.getItem(slot);
-			
-			if(item == null)
-				return false;
-			
-			return item == null ? false : itemMatcher.test(item);
-		});
-	}
-	public static int lastSlotWhoseItem(Inventory inventory, Predicate<ItemStack> itemMatcher) 
-	{
-		verifyNotNull(itemMatcher, "items matcher");
+		Validate.notNull(itemMatcher);
 		
-		return findLastSlot(inventory, slot -> 
-		{
-			ItemStack item = inventory.getItem(slot);
-			
-			return item == null ? false : itemMatcher.test(item);
-		});
+		return allSlotsThat(inventory, itemMatcher)
+				.min()
+				.orElse(-1);
+	}
+	public static int lastSlotThat(Inventory inventory, Predicate<ItemStack> itemMatcher) 
+	{
+		Validate.notNull(itemMatcher);
+		
+		return allSlotsThat(inventory, itemMatcher)
+				.max()
+				.orElse(-1);
 	}
 	public static int randomEmptySlot(Inventory inventory) 
 	{
-		Integer[] emptySlots = ArrayUtils.toObject(emptySlotsStream(inventory).toArray());
-		
+		Integer[] emptySlots = emptySlotsStream(inventory).boxed().toArray(Integer[]::new);
+
 		return emptySlots.length == 0 ? -1 : RandomUtils.randomElement(emptySlots);
 	}
-	
+	public static int randomSlotThat(Inventory inventory, Predicate<ItemStack> itemMatcher) 
+	{
+		Integer[] matchingSlots = allSlotsThat(inventory, itemMatcher).boxed().toArray(Integer[]::new);
 
+		return matchingSlots.length == 0 ? -1 : RandomUtils.randomElement(matchingSlots);
+	}
+	
+	
 	/*
 	 * Items/Slots Streams
 	 */
 	public static IntStream slotsStream(Inventory inventory)
 	{
-		verifyNotNull(inventory, "inventory");
-		
+		Validate.notNull(inventory);
+
 		return IntStream.range(0, inventory.getSize());
-	}
-	public static IntStream emptySlotsStream(Inventory inventory)
-	{
-		verifyNotNull(inventory, "inventory");
-		
-		return slotsStream(inventory)
-			.filter(slot -> inventory.getItem(slot) == null);
-	}
-	public static IntStream allSlotsThat(Inventory inventory, Predicate<ItemStack> slotItemTester) 
-	{
-		verifyNotNull(inventory, "inventory");
-		verifyNotNull(slotItemTester, "slot item tester");
-		
-		return takenSlotsStream(inventory)
-				.filter(itemData -> slotItemTester.test(itemData.getSecond()))
-				.mapToInt(Pair::getFirst);
 	}
 	public static Stream<ItemStack> itemsStream(Inventory inventory)
 	{
-		verifyNotNull(inventory, "inventory");
-		
+		Validate.notNull(inventory);
+
 		return Arrays.stream(inventory.getContents())
 				.filter(Objects::nonNull);
 	}
-	public static Stream<Pair<Integer, ItemStack>> takenSlotsStream(Inventory inventory)
+	public static IntStream takenSlotsStream(Inventory inventory) 
 	{
-		verifyNotNull(inventory, "inventory");
-		
 		return slotsStream(inventory)
-				.filter(slot -> inventory.getItem(slot) != null)
-				.mapToObj(takenSlot -> Pair.of(takenSlot, inventory.getItem(takenSlot)));
+				.filter(slot -> inventory.getItem(slot) != null);
+	}
+	public static IntStream emptySlotsStream(Inventory inventory)
+	{
+		return slotsStream(inventory)
+				.filter(slot -> inventory.getItem(slot) == null);
+	}
+	public static IntStream allSlotsThat(Inventory inventory, Predicate<ItemStack> itemMatcher) 
+	{
+		Validate.notNull(itemMatcher);
+
+		return dataStream(inventory)
+				.filter(itemData -> itemMatcher.test(itemData.getValue()))
+				.mapToInt(Pair::getKey);
+	}
+	public static Stream<Pair<Integer, ItemStack>> dataStream(Inventory inventory)
+	{
+		return takenSlotsStream(inventory)
+				.mapToObj(slot -> Pair.of(slot, inventory.getItem(slot)));
+	}
+
+	
+	/*
+	 * Decoration of certain areas(walls, etc)
+	 */
+	public static void buildWalls(Inventory inventory, ItemStack with)
+	{
+		Validate.notNull(inventory);
+
+		int size = inventory.getSize();
+
+		//if the inventory is one line, fill it
+		if(size == 9)
+		{
+			fillRow(inventory, 0, with);
+			return;
+		}
+		fillColumn(inventory, 0, with); //first column
+		fillColumn(inventory, 8, with); //last column
+
+		//fill the first & last columns *excluding* their corners, because they were already filled
+		fillRange(inventory, 1, 8, with);
+		fillRange(inventory, size-8, size-1, with);
 	}
 	
 
 	/*
 	 * Validation
 	 */
-	private static void verifyNotNull(Object object, String name) 
+	private static void validateRow(Inventory inventory, int row)
 	{
-		Validate.notNull(object, String.format("The provided %s cannot be null.", name));
+		Validate.notNull(inventory);
+
+		int rowsAmount = (inventory.getSize()/9)-1;
+
+		Validate.inclusiveBetween(0, rowsAmount, row, String.format("Row %d is out of range! (Min: 0, Max: %d)", row, rowsAmount));
 	}
-	private static void verifyValidRow(Inventory inventory, int row)
+	private static void validateColumn(int column) 
 	{
-		verifyNotNull(inventory, "inventory");
-
-		final int rowsAmount = (inventory.getSize()/9);
-
-		Validate.inclusiveBetween(0, rowsAmount, row, String.format("Row %d is out of range(Min: 1, Max: %d)", row, rowsAmount));
+		Validate.inclusiveBetween(0, 8, column, "Column %d is out of range! (Min: 0, Max: 8)", column);
 	}
 	
 
