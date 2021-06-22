@@ -107,9 +107,9 @@ public class InventoryUtils
 	public static void fillRow(Inventory inventory, int row, ItemStack with)
 	{
 		validateRow(inventory, row);
-
+		
 		int startIndex = (row * 9);
-
+		
 		fillRange(inventory, startIndex, (startIndex + 9), with);
 	}
 	public static void fillColumn(Inventory inventory, int column, ItemStack with)
@@ -131,7 +131,6 @@ public class InventoryUtils
 	public static void fillRange(Inventory inventory, int startInclusive, int endExclusive, int jumpDistance, ItemStack with)
 	{
 		Validate.notNull(inventory);
-		Validate.notNull(with);
 
 		for(int i = startInclusive; i < endExclusive; i += jumpDistance)
 			inventory.setItem(i, with);

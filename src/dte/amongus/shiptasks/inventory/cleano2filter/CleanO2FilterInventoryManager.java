@@ -70,7 +70,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 		Inventory taskInventory = event.getInventory();
 		ItemStack item = event.getCurrentItem();
 		Player crewmatePlayer = crewmate.getPlayer();
-		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafData(crewmate);
+		Optional<Integer> currentLeafIndex = this.cleanO2FilterTask.getCurrentLeafIndex(crewmate);
 
 		if(BlockUtils.isLeaf(item.getType()))
 		{
@@ -80,7 +80,7 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 				return;
 			}
 			GlowEffect.addGlow(item);
-			this.cleanO2FilterTask.setCurrentLeafData(crewmate, event.getRawSlot());
+			this.cleanO2FilterTask.setCurrentLeafIndex(crewmate, event.getRawSlot());
 			setLeavesTo(taskInventory, leaf -> createInformativeLeaf(leaf.getType()));
 		}
 		else if(item.getType() == Material.CHAIN) 
