@@ -32,14 +32,14 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 	public Inventory createInventory(Crewmate opener) 
 	{
 		Inventory taskInventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
-		InventoryUtils.fillEmptySlots(taskInventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		InventoryUtils.fill(taskInventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
-		//add the new target to the middle of the inventory
+		//add the new target to the inventory
 		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "New Target")
 				.withLore(WHITE + "Click here to Retarget!")
 				.createCopy());
 		
-		//add the "aim" stuff
+		//add the previous(aimed) target
 		InventoryUtils.fillRow(taskInventory, 1, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		InventoryUtils.fillColumn(taskInventory, 7, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		
@@ -57,12 +57,17 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 			return;
 		
 		Inventory taskInventory = event.getInventory();
-		InventoryUtils.allSlotsThat(taskInventory, i -> i.getType() == Material.WHITE_STAINED_GLASS_PANE).forEach(index -> taskInventory.setItem(index, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE)));
+		
+		//remove the previous target, and the aim stuff
+		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		InventoryUtils.replace(taskInventory, Material.WHITE_STAINED_GLASS_PANE, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		
+		//aim on the new target
 		InventoryUtils.fillRow(taskInventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		InventoryUtils.fillColumn(taskInventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
 		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
-		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
+		//play the steering sound
 		Player crewmatePlayer = crewmate.getPlayer();
 		crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.steeringSound, 1, 1);
 	}

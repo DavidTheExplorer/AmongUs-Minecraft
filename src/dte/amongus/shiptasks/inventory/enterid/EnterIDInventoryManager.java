@@ -29,9 +29,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	private final Sound digitEnterSound;
 	private final Sound identificationSucceedSound;
 
-	private static final int 
-	ENTER_INDEX = 15,
-	PAPER_INDEX = 42;
+	private static final int PAPER_INDEX = 42;
 	
 	private static final int[] DIGITS_INDEXES = {38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
 
@@ -54,7 +52,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			inventory.setItem(DIGITS_INDEXES[i], createDigitItem(i));
 		
 		//add the enter button
-		inventory.setItem(ENTER_INDEX, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(GREEN) + "Enter ID").createCopy());
+		inventory.setItem(15, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(GREEN) + "Enter ID").createCopy());
 
 		//add the current id paper
 		inventory.setItem(PAPER_INDEX, createPaperItem("Nothing"));
