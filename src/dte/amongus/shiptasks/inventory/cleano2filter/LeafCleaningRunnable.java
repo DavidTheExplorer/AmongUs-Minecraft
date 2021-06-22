@@ -45,7 +45,7 @@ public class LeafCleaningRunnable extends BukkitRunnable
 		{
 			closeChain();
 			Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), this::removeLeaf, 10);
-			this.cleanO2FilterTask.removeCurrentLeafData(this.cleaner);
+			this.cleanO2FilterTask.removeCurrentLeafIndex(this.cleaner);
 			
 			//return the (Left Click) to the leaves' names
 			CleanO2FilterInventoryManager.setLeavesTo(this.taskInventory, leaf -> CleanO2FilterInventoryManager.createLeaf(leaf.getType()));

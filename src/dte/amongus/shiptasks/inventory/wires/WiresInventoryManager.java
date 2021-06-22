@@ -62,8 +62,8 @@ public class WiresInventoryManager extends TaskInventoryManager
 	@Override
 	public Inventory createInventory(Crewmate crewmate) 
 	{
-		Inventory inventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
-		InventoryUtils.buildWalls(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
+		Inventory taskInventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
+		InventoryUtils.buildWalls(taskInventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
 
 		Set<Material> wires = Sets.newHashSet(WIRES_MATERIALS);
 		Set<Integer> leftSlots = Sets.newHashSet(LEFT_SLOTS);
@@ -78,15 +78,15 @@ public class WiresInventoryManager extends TaskInventoryManager
 
 			//set the wire at the left & right slots
 			ItemStack wire = new ItemBuilder(material, getWireName(material) + " Wire").createCopy();
-			inventory.setItem(leftSlot, wire);
-			inventory.setItem(rightSlot, wire);
+			taskInventory.setItem(leftSlot, wire);
+			taskInventory.setItem(rightSlot, wire);
 
 			//remove the wire's data from the remaining data
 			leftSlots.remove(leftSlot);
 			rightSlots.remove(rightSlot);
 			wires.remove(material);
 		}
-		return inventory;
+		return taskInventory;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 		if(!WIRES_MATERIALS.contains(wire.getType()))
 			return;
 		
-		Player crewmatePlayer = (Player) event.getWhoClicked();
+		Player crewmatePlayer = crewmate.getPlayer();
 		
 		if(WORK_COOLDOWN.wasRejected(crewmatePlayer)) 
 			return;
@@ -172,8 +172,8 @@ public class WiresInventoryManager extends TaskInventoryManager
 		return ChatColor.valueOf(materialColor);
 	}
 	
-	private void startConnectionAnimation(Inventory inventory, Player crewmatePlayer, int start, int end, Material wireMaterial) 
+	private void startConnectionAnimation(Inventory taskInventory, Player crewmatePlayer, int start, int end, Material wireMaterial) 
 	{
-		new WiresConnectionRunnable(inventory, crewmatePlayer, start, end, this.connectionSound, this.connectionFinishedSound, getWireColor(wireMaterial), wireMaterial).runTaskTimer(AmongUs.getInstance(), 0, 10);
+		new WiresConnectionRunnable(taskInventory, crewmatePlayer, start, end, this.connectionSound, this.connectionFinishedSound, getWireColor(wireMaterial), wireMaterial).runTaskTimer(AmongUs.getInstance(), 0, 10);
 	}
 }

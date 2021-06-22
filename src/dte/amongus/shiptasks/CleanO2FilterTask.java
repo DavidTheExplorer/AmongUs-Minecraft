@@ -21,7 +21,7 @@ public class CleanO2FilterTask extends SimpleShipTask implements InventoryTask
 		super("Clean O2 Filter", "Clean the O2 Filter from the Leaves!", TaskType.SHORT, game);
 		
 		this.leavesAmount = leavesAmount;
-		this.inventoryManager =  new CleanO2FilterInventoryManager(this, cleaningSound);
+		this.inventoryManager = new CleanO2FilterInventoryManager(this, cleaningSound);
 	}
 	
 	@Override
@@ -35,17 +35,17 @@ public class CleanO2FilterTask extends SimpleShipTask implements InventoryTask
 		return this.leavesAmount;
 	}
 	
-	public Optional<Integer> getCurrentLeafData(Crewmate crewmate)
+	public Optional<Integer> getCurrentLeafIndex(Crewmate crewmate)
 	{
 		return getData(crewmate, "Current Leaf Index", Integer.class);
 	}
 	
-	public void setCurrentLeafData(Crewmate crewmate, int leafIndex) 
+	public void setCurrentLeafIndex(Crewmate crewmate, int leafIndex) 
 	{
 		setData(crewmate, "Current Leaf Index", leafIndex);
 	}
 	
-	public void removeCurrentLeafData(Crewmate crewmate) 
+	public void removeCurrentLeafIndex(Crewmate crewmate) 
 	{
 		removeData(crewmate, "Current Leaf Index");
 	}
