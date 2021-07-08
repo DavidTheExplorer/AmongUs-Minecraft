@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -28,7 +29,6 @@ import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;
-import dte.amongus.utils.java.objectholders.Pair;
 
 public class WiresInventoryManager extends TaskInventoryManager
 {
@@ -120,7 +120,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 			this.wiresTask.setCurrentWire(crewmate, event.getRawSlot(), wire);
 			return;
 		}
-		int rightSlot = getRightSlot(currentWireData.getFirst());
+		int rightSlot = getRightSlot(currentWireData.getKey());
 		
 		if(event.getRawSlot() == rightSlot)
 		{
@@ -132,7 +132,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 			this.wiresTask.addProgression(crewmate, 25);
 			this.wiresTask.removeCurrentWire(crewmate);
 			
-			startConnectionAnimation(event.getInventory(), crewmatePlayer, currentWireData.getFirst()+1, event.getRawSlot()-1, rightWire.getType());
+			startConnectionAnimation(event.getInventory(), crewmatePlayer, currentWireData.getKey()+1, event.getRawSlot()-1, rightWire.getType());
 		}
 	}
 
