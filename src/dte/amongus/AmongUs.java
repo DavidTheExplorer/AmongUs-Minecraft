@@ -6,8 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import dte.amongus.commands.AmongUSCommand;
-import dte.amongus.cooldown.Cooldown;
-import dte.amongus.cooldown.service.CooldownService;
 import dte.amongus.corpses.compound.components.holograms.HologramComponent;
 import dte.amongus.games.service.AUGameService;
 import dte.amongus.holograms.EquallableHologram;
@@ -94,7 +92,6 @@ public class AmongUs extends ModernJavaPlugin
 		this.gameService = new AUGameService();
 
 		GamePlayerUtils.setup(this.auPlayerService);
-		Cooldown.Builder.setCooldownService(new CooldownService());
 	}
 	
 	private void setupHooks() 
