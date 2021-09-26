@@ -4,16 +4,16 @@ import dte.amongus.corpses.compound.CompoundCorpse;
 
 public abstract class CompoundCorpseComponent 
 {
-	private final CompoundCorpse parentCorpse;
+	protected final CompoundCorpse parent;
 	
-	protected CompoundCorpseComponent(CompoundCorpse parentCorpse) 
+	protected CompoundCorpseComponent(CompoundCorpse parent) 
 	{
-		this.parentCorpse = parentCorpse;
+		this.parent = parent;
 	}
 	
-	public CompoundCorpse getParentCorpse() 
+	public CompoundCorpse getParent() 
 	{
-		return this.parentCorpse;
+		return this.parent;
 	}
 	
 	public abstract void spawn();

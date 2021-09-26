@@ -34,7 +34,7 @@ public class DeathHologramComponent extends HologramComponent
 		Location fixedLocation = this.hologram.getLocation().add(0, this.height, 0);
 		this.hologram.teleport(fixedLocation);
 		
-		this.hologram.appendTextLine(GamePlayerUtils.getColoredName(getParentCorpse().whoDied()) + WHITE + " died here.");
+		this.hologram.appendTextLine(GamePlayerUtils.getColoredName(this.parent.whoDied()) + WHITE + " died here.");
 		this.hologram.appendTextLine(WHITE + ">> " + GOLD + "Click to REPORT" + WHITE + " <<").setTouchHandler(createReportTouchHandler());
 	}
 	
@@ -42,10 +42,9 @@ public class DeathHologramComponent extends HologramComponent
 	{
 		return reporter ->
 		{
-			CompoundCorpse corpse = getParentCorpse();
-			AUGamePlayer reporterGP = corpse.whoDied().getGame().getPlayer(reporter);
+			AUGamePlayer reporterGP = this.parent.whoDied().getGame().getPlayer(reporter);
 			
-			Bukkit.getPluginManager().callEvent(new BodyReportEvent(corpse, reporterGP));
+			Bukkit.getPluginManager().callEvent(new BodyReportEvent(this.parent, reporterGP));
 		};
 	}
 }
