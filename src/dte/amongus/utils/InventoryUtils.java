@@ -166,7 +166,6 @@ public class InventoryUtils
 	public static void fillRange(Inventory inventory, int startInclusive, int endExclusive, int jumpDistance, ItemStack with)
 	{
 		Validate.notNull(inventory);
-		Validate.notNull(with);
 
 		for(int i = startInclusive; i < endExclusive; i += jumpDistance)
 			inventory.setItem(i, with);
