@@ -1,11 +1,12 @@
 package dte.amongus.shiptasks.inventory.wires;
 
 import static dte.amongus.utils.InventoryUtils.createWall;
+import static dte.cooldownsystem.cooldown.future.factory.CooldownFutureFactory.message;
 import static org.bukkit.ChatColor.RED;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,7 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.Sets;
 
 import dte.amongus.AmongUs;
-import dte.amongus.cooldown.Cooldown;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.WiresTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
@@ -29,14 +29,15 @@ import dte.amongus.utils.InventoryUtils;
 import dte.amongus.utils.items.GlowEffect;
 import dte.amongus.utils.items.ItemBuilder;
 import dte.amongus.utils.java.RandomUtils;
+import dte.cooldownsystem.cooldown.Cooldown;
 
 public class WiresInventoryManager extends TaskInventoryManager
 {
 	private final WiresTask wiresTask;
 	private final Sound connectionSound, connectionFinishedSound;
 	
-	private static final Cooldown WORK_COOLDOWN = new Cooldown.Builder("Wires")
-			.rejectWithMessage(RED + "You are still working on the previous wires.")
+	private static final Cooldown WORK_COOLDOWN = new Cooldown.Builder()
+			.rejectsWith(message(RED + "You are still working on the previous wires."))
 			.build();
 	
 	private static final Integer[]
@@ -102,7 +103,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 		
 		Player crewmatePlayer = crewmate.getPlayer();
 		
-		if(WORK_COOLDOWN.wasRejected(crewmatePlayer)) 
+		if(WORK_COOLDOWN.isRejecting(crewmatePlayer)) 
 			return;
 		
 		Pair<Integer, ItemStack> currentWireData = this.wiresTask.getCurrentWire(crewmate).orElse(null);
@@ -127,7 +128,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 		
 		if(event.getRawSlot() == rightSlot)
 		{
-			WORK_COOLDOWN.put(crewmatePlayer, TimeUnit.SECONDS, 3);
+			WORK_COOLDOWN.put(crewmatePlayer, Duration.ofSeconds(3));
 			
 			ItemStack rightWire = event.getInventory().getItem(rightSlot);
 			GlowEffect.addGlow(rightWire);
