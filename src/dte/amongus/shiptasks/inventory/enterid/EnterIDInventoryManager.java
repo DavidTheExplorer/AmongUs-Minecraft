@@ -1,7 +1,7 @@
 package dte.amongus.shiptasks.inventory.enterid;
 
 import static dte.amongus.utils.ChatColorUtils.bold;
-import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static dte.amongus.utils.InventoryUtils.createWall;
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
@@ -52,13 +52,15 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			inventory.setItem(DIGITS_INDEXES[i], createDigitItem(i));
 		
 		//add the enter button
-		inventory.setItem(15, new ItemBuilder(Material.GREEN_TERRACOTTA, bold(GREEN) + "Enter ID").createCopy());
+		inventory.setItem(15, new ItemBuilder(Material.GREEN_TERRACOTTA)
+				.named(bold(GREEN) + "Enter ID")
+				.createCopy());
 
 		//add the current id paper
 		inventory.setItem(PAPER_INDEX, createPaperItem("Nothing"));
 
 		//decorate the remaining slots as walls
-		InventoryUtils.fillEmptySlots(inventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
+		InventoryUtils.fillEmptySlots(inventory, createWall(Material.BLACK_STAINED_GLASS_PANE));
 		
 		return inventory;
 	}
@@ -89,7 +91,7 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			}
 			
 			//update the new digit
-			event.getInventory().setItem(PAPER_INDEX, createPaperItem(this.enterIDTask.getEnteredID(crewmate).get()));
+			event.getInventory().setItem(PAPER_INDEX, createPaperItem(String.valueOf(this.enterIDTask.getEnteredID(crewmate).get())));
 			crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.digitEnterSound, 1, 1);
 			break;
 		case GREEN_TERRACOTTA:
@@ -121,19 +123,17 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 	{
 		int amount = digit == 0 ? 1 : digit;
 
-		return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE, GREEN + String.valueOf(digit))
-				.amountOf(amount)
+		return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+				.named(GREEN + String.valueOf(digit))
+				.amounted(amount)
 				.createCopy();
-	}
-	
-	private static ItemStack createPaperItem(int id) 
-	{
-		return createPaperItem(String.valueOf(id));
 	}
 	
 	private static ItemStack createPaperItem(String id)
 	{
-		return new ItemBuilder(Material.PAPER, AQUA + "Entered ID: " + id).createCopy();
+		return new ItemBuilder(Material.PAPER)
+				.named(AQUA + "Entered ID: " + id)
+				.createCopy();
 	}
 	
 	private static int getDigit(ItemStack digitItem)

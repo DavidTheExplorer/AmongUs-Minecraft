@@ -38,7 +38,7 @@ public class AUGameService
 	public AUGame registerNewGame(AULobby lobby, GameMap map)
 	{
 		//create a game
-		UUID randomID = UUIDProvider.generateUUID(AUGame.class);
+		UUID randomID = UUIDProvider.generateFor(AUGame.class);
 		AUGame game = new AUGame(randomID, lobby, map, lobby.getSettings().getCorpseFactory());
 
 		//setup the game

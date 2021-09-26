@@ -82,7 +82,7 @@ public class AULobbyService
 		public AULobby build(AULobbyService lobbyService)
 		{
 			GameSettings settings = new GameSettings(this.crewmates, this.impostors, this.corpseFactory);
-			UUID lobbyID = UUIDProvider.generateUUID(AULobby.class);
+			UUID lobbyID = UUIDProvider.generateFor(AULobby.class);
 			
 			AULobby lobby = new AULobby(lobbyID, this.spawnLocation, this.gameMap, settings);
 			

@@ -30,8 +30,14 @@ public class WiresConnectionRunnable extends BukkitRunnable
 		this.endIndex = endIndex;
 		this.connectionSound = connectionSound;
 		this.connectionFinishedSound = connectionFinishedSound;
-		this.connectingItem = new ItemBuilder(wireMaterial, wireColor + "Connecting...").createCopy();
-		this.connectedItem = new ItemBuilder(wireMaterial, wireColor + "Connected").createCopy();
+		
+		this.connectingItem = new ItemBuilder(wireMaterial)
+				.named(wireColor + "Connecting...")
+				.createCopy();
+		
+		this.connectedItem = new ItemBuilder(wireMaterial)
+				.named(wireColor + "Connected")
+				.createCopy();
 		
 		this.currentIndex = startIndex;
 		this.isFirstRun = true;
