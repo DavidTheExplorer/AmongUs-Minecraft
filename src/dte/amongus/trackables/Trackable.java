@@ -3,6 +3,7 @@ package dte.amongus.trackables;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
+@FunctionalInterface
 public interface Trackable
 {
 	Location getLocation();

@@ -33,7 +33,7 @@ public class ReportableCorpsesWGFinder implements ReportableCorpseFinder
 				.filter(ReportableCorpsesWGFinder::isCorpseRegion)
 				.findFirst() //the player might be inside multiple corpse regions, so choose an arbitrary one
 				.map(region -> getDeadCrewmate(game, region))
-				.map(deadCrewmate -> deadCrewmate.getDeathContext().get().getCorpse())
+				.flatMap(deadCrewmate -> deadCrewmate.getDeathContext().get().getCorpse())
 				.orElse(null);
 	}
 	

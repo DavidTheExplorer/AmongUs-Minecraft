@@ -21,9 +21,7 @@ public abstract class DisplaySign implements Displayer<String[]>
 	@Override
 	public void update(boolean firstUpdate)
 	{
-		String[] newLines = createUpdate(firstUpdate);
-		
-		SignUtils.setLines(this.sign, true, newLines);
+		SignUtils.setLines(this.sign, true, createUpdate(firstUpdate));
 	}
 	
 	public Sign getSign() 
