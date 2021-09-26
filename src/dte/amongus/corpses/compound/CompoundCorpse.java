@@ -5,27 +5,20 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import dte.amongus.corpses.Corpse;
+import dte.amongus.corpses.AbstractCorpse;
 import dte.amongus.corpses.compound.components.CompoundCorpseComponent;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.utils.java.IterableUtils;
 
-public class CompoundCorpse implements Corpse, Iterable<CompoundCorpseComponent>
+public class CompoundCorpse extends AbstractCorpse implements Iterable<CompoundCorpseComponent>
 {
-	private final Crewmate whoDied;
 	private final Set<CompoundCorpseComponent> components = new HashSet<>(); //a compound-corpse consists of components(blocks, holograms, etc)
 
 	public CompoundCorpse(Crewmate whoDied)
 	{
-		this.whoDied = whoDied;
+		super(whoDied);
 	}
 	
-	@Override
-	public Crewmate whoDied()
-	{
-		return this.whoDied;
-	}
-
 	@Override
 	public void spawn()
 	{
