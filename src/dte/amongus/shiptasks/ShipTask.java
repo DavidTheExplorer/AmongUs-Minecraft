@@ -2,6 +2,7 @@ package dte.amongus.shiptasks;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
+import dte.amongus.shiptasks.type.TaskType;
 
 public interface ShipTask
 {
@@ -12,8 +13,4 @@ public interface ShipTask
 	
 	default void onStart(Crewmate crewmate){}
 	default void onFinish(Crewmate finisher){}
-	enum TaskType 
-	{
-		SHORT, LONG, COMMON, VISUAL;
-	}
 }

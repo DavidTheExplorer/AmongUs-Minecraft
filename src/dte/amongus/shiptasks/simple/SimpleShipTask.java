@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.ShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class SimpleShipTask implements ShipTask
 {

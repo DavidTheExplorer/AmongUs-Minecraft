@@ -3,6 +3,7 @@ package dte.amongus.shiptasks.progression;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
 public abstract class SimpleProgressionTask extends SimpleShipTask implements ProgressionShipTask
 {

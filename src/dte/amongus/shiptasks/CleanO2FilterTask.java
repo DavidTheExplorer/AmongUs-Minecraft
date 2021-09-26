@@ -10,6 +10,7 @@ import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.inventory.cleano2filter.CleanO2FilterInventoryManager;
 import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
 public class CleanO2FilterTask extends SimpleShipTask implements InventoryTask
 {

@@ -10,6 +10,7 @@ import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.inventory.enterid.EnterIDInventoryManager;
 import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.NumberUtils;
 import dte.amongus.utils.java.RandomUtils;
 

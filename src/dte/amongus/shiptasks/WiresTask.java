@@ -12,6 +12,7 @@ import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.inventory.wires.WiresInventoryManager;
 import dte.amongus.shiptasks.progression.SimpleProgressionTask;
+import dte.amongus.shiptasks.type.TaskType;
 
 public class WiresTask extends SimpleProgressionTask implements InventoryTask
 {
