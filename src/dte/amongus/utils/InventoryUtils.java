@@ -1,7 +1,11 @@
 package dte.amongus.utils;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
@@ -15,7 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import dte.amongus.utils.items.ItemBuilder;
-import dte.amongus.utils.java.RandomUtils;
 
 //README: Some methods do partial parameters validation, because they validate only what the methods they depend on didn't validate.
 public class InventoryUtils
@@ -93,7 +96,39 @@ public class InventoryUtils
 
 	public static boolean isEmpty(Inventory inventory) 
 	{
-		return itemsStream(inventory).count() == 0;
+		return itemsStream(inventory, true).count() == 0;
+	}
+	
+	public static int remove(Inventory inventory, ItemStack item) 
+	{
+		Map<Integer, ItemStack> similarItems = dataStream(inventory)
+				.filter(itemData -> itemData.getValue().isSimilar(item))
+				.collect(toMap(Entry::getKey, Entry::getValue));
+		
+		int amountLeft = item.getAmount();
+		
+		for(Map.Entry<Integer, ItemStack> entry : similarItems.entrySet())
+		{
+			int slot = entry.getKey();
+			ItemStack similarItem = entry.getValue();
+			
+			int newAmount = similarItem.getAmount() - amountLeft;
+
+			if(newAmount > 0)
+			{
+				similarItem.setAmount(newAmount);
+				break;
+			}
+			else
+			{
+				inventory.clear(slot);
+				amountLeft = -newAmount;
+
+				if(amountLeft == 0) 
+					break;
+			}
+		}
+		return amountLeft;
 	}
 
 
@@ -107,9 +142,9 @@ public class InventoryUtils
 	public static void fillRow(Inventory inventory, int row, ItemStack with)
 	{
 		validateRow(inventory, row);
-		
+
 		int startIndex = (row * 9);
-		
+
 		fillRange(inventory, startIndex, (startIndex + 9), with);
 	}
 	public static void fillColumn(Inventory inventory, int column, ItemStack with)
@@ -131,6 +166,7 @@ public class InventoryUtils
 	public static void fillRange(Inventory inventory, int startInclusive, int endExclusive, int jumpDistance, ItemStack with)
 	{
 		Validate.notNull(inventory);
+		Validate.notNull(with);
 
 		for(int i = startInclusive; i < endExclusive; i += jumpDistance)
 			inventory.setItem(i, with);
@@ -209,11 +245,11 @@ public class InventoryUtils
 
 		return IntStream.range(0, inventory.getSize());
 	}
-	public static Stream<ItemStack> itemsStream(Inventory inventory)
+	public static Stream<ItemStack> itemsStream(Inventory inventory, boolean includeSpecialSlots)
 	{
 		Validate.notNull(inventory);
 
-		return Arrays.stream(inventory.getContents())
+		return Arrays.stream(includeSpecialSlots ? inventory.getContents() : inventory.getStorageContents())
 				.filter(Objects::nonNull);
 	}
 	public static IntStream takenSlotsStream(Inventory inventory) 
@@ -280,13 +316,15 @@ public class InventoryUtils
 	{
 		Validate.inclusiveBetween(0, 8, column, "Column %d is out of range! (Min: 0, Max: 8)", column);
 	}
-	
+
 
 	/*
 	 * Item Factories
 	 */
-	public static ItemStack createDummyItem(Material material) 
+	public static ItemStack createWall(Material material) 
 	{
-		return new ItemBuilder(material, ChatColor.BLACK + ".").createCopy();
+		return new ItemBuilder(material)
+				.named(ChatColor.BLACK + ".")
+				.createCopy();
 	}
 }

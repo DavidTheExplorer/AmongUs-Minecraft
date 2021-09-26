@@ -1,6 +1,6 @@
 package dte.amongus.shiptasks.inventory.wires;
 
-import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static dte.amongus.utils.InventoryUtils.createWall;
 import static org.bukkit.ChatColor.RED;
 
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class WiresInventoryManager extends TaskInventoryManager
 	public Inventory createInventory(Crewmate crewmate) 
 	{
 		Inventory taskInventory = Bukkit.createInventory(null, 6 * 9, createTitle("Fix The Wires"));
-		InventoryUtils.buildWalls(taskInventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
+		InventoryUtils.buildWalls(taskInventory, createWall(Material.BLACK_STAINED_GLASS_PANE));
 
 		Set<Material> wires = Sets.newHashSet(WIRES_MATERIALS);
 		Set<Integer> leftSlots = Sets.newHashSet(LEFT_SLOTS);
@@ -77,7 +77,10 @@ public class WiresInventoryManager extends TaskInventoryManager
 			Material material = RandomUtils.randomElement(wires);
 
 			//set the wire at the left & right slots
-			ItemStack wire = new ItemBuilder(material, getWireName(material) + " Wire").createCopy();
+			ItemStack wire = new ItemBuilder(material)
+					.named(getWireName(material) + " Wire")
+					.createCopy();
+			
 			taskInventory.setItem(leftSlot, wire);
 			taskInventory.setItem(rightSlot, wire);
 

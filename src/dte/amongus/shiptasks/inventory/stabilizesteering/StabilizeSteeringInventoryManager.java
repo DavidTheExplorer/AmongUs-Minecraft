@@ -1,6 +1,6 @@
 package dte.amongus.shiptasks.inventory.stabilizesteering;
 
-import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static dte.amongus.utils.InventoryUtils.createWall;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.WHITE;
@@ -32,18 +32,20 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 	public Inventory createInventory(Crewmate opener) 
 	{
 		Inventory taskInventory = Bukkit.createInventory(null, 9 * 6, createTitle("Stabilize The Steering"));
-		InventoryUtils.fill(taskInventory, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		InventoryUtils.fill(taskInventory, createWall(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
 		//add the new target to the inventory
-		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "New Target")
+		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL)
+				.named(GREEN + "New Target")
 				.withLore(WHITE + "Click here to Retarget!")
 				.createCopy());
 		
 		//add the previous(aimed) target
-		InventoryUtils.fillRow(taskInventory, 1, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		InventoryUtils.fillColumn(taskInventory, 7, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillRow(taskInventory, 1, createWall(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillColumn(taskInventory, 7, createWall(Material.WHITE_STAINED_GLASS_PANE));
 		
-		taskInventory.setItem(PREVIOUS_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, RED + "Current Target")
+		taskInventory.setItem(PREVIOUS_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL)
+				.named(RED + "Current Target")
 				.withLore(WHITE + "Click on another one.")
 				.createCopy());
 		
@@ -59,13 +61,16 @@ public class StabilizeSteeringInventoryManager extends TaskInventoryManager
 		Inventory taskInventory = event.getInventory();
 		
 		//remove the previous target, and the aim stuff
-		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
-		InventoryUtils.replace(taskInventory, Material.WHITE_STAINED_GLASS_PANE, createDummyItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		taskInventory.setItem(PREVIOUS_TARGET_INDEX, createWall(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+		InventoryUtils.replace(taskInventory, Material.WHITE_STAINED_GLASS_PANE, createWall(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 		
 		//aim on the new target
-		InventoryUtils.fillRow(taskInventory, 3, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		InventoryUtils.fillColumn(taskInventory, 4, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
-		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL, GREEN + "Success!").createCopy());
+		InventoryUtils.fillRow(taskInventory, 3, createWall(Material.WHITE_STAINED_GLASS_PANE));
+		InventoryUtils.fillColumn(taskInventory, 4, createWall(Material.WHITE_STAINED_GLASS_PANE));
+		
+		taskInventory.setItem(NEW_TARGET_INDEX, new ItemBuilder(Material.WHITE_WOOL)
+				.named(GREEN + "Success!")
+				.createCopy());
 		
 		//play the steering sound
 		Player crewmatePlayer = crewmate.getPlayer();

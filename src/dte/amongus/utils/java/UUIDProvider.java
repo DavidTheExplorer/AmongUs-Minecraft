@@ -18,16 +18,16 @@ public class UUIDProvider
 	 * <p>
 	 * Mainly intended to get classes as inputs, e.g:
 	 * <pre>
-	 * UUID gameID = UUIDProvider.generateUUID(Game.class); 
+	 * UUID gameID = UUIDProvider.generateFor(Game.class); 
 	 * Game game = new Game(gameID);
 	 * </pre>
 	 * 
 	 * @param object the object for which a news ID will be created.
 	 * @return the generated ID.
 	 */
-	public static UUID generateUUID(Object object) 
+	public static UUID generateFor(Object object) 
 	{
-		Set<UUID> takenIDs = getTakenUUIDs(object);
+		Set<UUID> takenIDs = objectTakenIDs.computeIfAbsent(object, o -> new HashSet<>());
 		
 		UUID freeID;
 		
@@ -41,13 +41,9 @@ public class UUIDProvider
 		
 		return freeID;
 	}
+	
 	public static void returnUUID(Object object, UUID uuid) 
 	{
-		getTakenUUIDs(object).remove(uuid);
-	}
-	
-	private static Set<UUID> getTakenUUIDs(Object object)
-	{
-		return objectTakenIDs.computeIfAbsent(object, o -> new HashSet<>());
+		MapUtils.ifMapped(objectTakenIDs, object, takenIDs -> takenIDs.remove(uuid));
 	}
 }

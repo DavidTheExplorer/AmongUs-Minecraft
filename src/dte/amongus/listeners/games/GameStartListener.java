@@ -19,8 +19,11 @@ import dte.amongus.utils.items.ItemBuilder;
 public class GameStartListener implements Listener
 {
 	private static final ItemBuilder 
-	IMPOSTOR_ICON_BUILDER = new ItemBuilder(Material.REDSTONE, RED + "You are an Impostor"),
-	CREWMATE_ICON_BUILDER = new ItemBuilder(Material.FEATHER, AQUA + "You are a Crewmate");
+	IMPOSTOR_ICON_BUILDER = new ItemBuilder(Material.REDSTONE)
+	.named(RED + "You are an Impostor"),
+	
+	CREWMATE_ICON_BUILDER = new ItemBuilder(Material.FEATHER)
+	.named(AQUA + "You are a Crewmate");
 
 	@EventHandler
 	public void onGameStart(GameStartEvent event) 

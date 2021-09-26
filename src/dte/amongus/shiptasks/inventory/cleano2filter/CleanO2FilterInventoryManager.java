@@ -1,6 +1,6 @@
 package dte.amongus.shiptasks.inventory.cleano2filter;
 
-import static dte.amongus.utils.InventoryUtils.createDummyItem;
+import static dte.amongus.utils.InventoryUtils.createWall;
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
@@ -35,7 +35,8 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	private final CleanO2FilterTask cleanO2FilterTask;
 	private final Sound cleaningSound;
 
-	private static final ItemBuilder CHAIN_BUILDER = new ItemBuilder(Material.CHAIN, AQUA + "Out!")
+	private static final ItemBuilder CHAIN_BUILDER = new ItemBuilder(Material.CHAIN)
+			.named(AQUA + "Out!")
 			.withLore(WHITE + "Click to throw the selected Leaf.");
 
 	public CleanO2FilterInventoryManager(CleanO2FilterTask cleanO2FilterTask, Sound cleaningSound) 
@@ -48,10 +49,10 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 	public Inventory createInventory(Crewmate opener) 
 	{
 		Inventory taskInventory = Bukkit.createInventory(null, 9 * 6, createTitle("Clean the Leaves"));
-		InventoryUtils.buildWalls(taskInventory, createDummyItem(Material.BLACK_STAINED_GLASS_PANE));
+		InventoryUtils.buildWalls(taskInventory, createWall(Material.BLACK_STAINED_GLASS_PANE));
 		
 		for(int i : new int[]{1, 10, 37, 46})
-			taskInventory.setItem(i, createDummyItem(Material.WHITE_STAINED_GLASS_PANE));
+			taskInventory.setItem(i, createWall(Material.WHITE_STAINED_GLASS_PANE));
 
 		for(int i : new int[]{19, 28})
 			taskInventory.setItem(i, CHAIN_BUILDER.createCopy());
@@ -113,14 +114,17 @@ public class CleanO2FilterInventoryManager extends TaskInventoryManager
 
 	private static ItemStack createInformativeLeaf(Material leafType)
 	{
-		return new ItemBuilder(leafType, GREEN + "Leaf")
+		return new ItemBuilder(leafType)
+				.named(GREEN + "Leaf")
 				.withLore(AQUA + "Click on a Chain to release out!")
 				.createCopy();
 	}
 	
 	static ItemStack createLeaf(Material leafType)
 	{
-		return new ItemBuilder(leafType, GREEN + "Leaf" + WHITE + " (Left Click)").createCopy();
+		return new ItemBuilder(leafType)
+				.named(GREEN + "Leaf" + WHITE + " (Left Click)")
+				.createCopy();
 	}
 	
 	static void setLeavesTo(Inventory taskInventory, UnaryOperator<ItemStack> leafReplacer) 
