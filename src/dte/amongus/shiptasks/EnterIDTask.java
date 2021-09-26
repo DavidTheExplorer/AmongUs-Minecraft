@@ -57,9 +57,9 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	}
 	
 	@Override
-	public void onFinish(Crewmate crewmate) 
+	public void onFinish(Crewmate finisher) 
 	{
-		removeData(crewmate, "Personal ID");
-		removeData(crewmate, "Entered ID");
+		removeData(finisher, "Personal ID");
+		removeData(finisher, "Entered ID");
 	}
 }

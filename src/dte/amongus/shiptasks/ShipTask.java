@@ -10,9 +10,8 @@ public interface ShipTask
 	TaskType getType();
 	AUGame getGame();
 	
-	default void onFinish(Crewmate crewmate){}
 	default void onStart(Crewmate crewmate){}
-	
+	default void onFinish(Crewmate finisher){}
 	enum TaskType 
 	{
 		SHORT, LONG, COMMON, VISUAL;
