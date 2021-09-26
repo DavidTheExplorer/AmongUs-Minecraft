@@ -89,17 +89,13 @@ public class AUGame
 	public void addTask(ShipTask task, Block representative) 
 	{
 		verifyInInit("Tasks can only be added during the game's initialization.");
-
-		Location blockLocation = representative.getLocation();
 		
-		this.tasksLocations.put(blockLocation, task);
+		this.tasksLocations.put(representative.getLocation(), task);
 	}
 
 	public Optional<ShipTask> getTaskAt(Block block)
 	{
-		Location blockLocation = block.getLocation();
-
-		return Optional.ofNullable(this.tasksLocations.get(blockLocation));
+		return Optional.ofNullable(this.tasksLocations.get(block.getLocation()));
 	}
 	
 	public void setState(GameState state)
@@ -154,7 +150,7 @@ public class AUGame
 
 	public Collection<AUGamePlayer> getPlayers()
 	{
-		return  this.players.values();
+		return new HashSet<>(this.players.values());
 	}
 
 	public <T extends AUGamePlayer> Collection<T> getPlayers(Class<T> playerType)

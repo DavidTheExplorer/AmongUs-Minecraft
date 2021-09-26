@@ -91,9 +91,14 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 			}
 			
 			//update the new digit
-			event.getInventory().setItem(PAPER_INDEX, createPaperItem(String.valueOf(this.enterIDTask.getEnteredID(crewmate).get())));
+			event.getInventory().setItem(PAPER_INDEX, this.enterIDTask.getEnteredID(crewmate)
+					.map(String::valueOf)
+					.map(EnterIDInventoryManager::createPaperItem)
+					.get());
+			
 			crewmatePlayer.playSound(crewmatePlayer.getLocation(), this.digitEnterSound, 1, 1);
 			break;
+			
 		case GREEN_TERRACOTTA:
 			Integer enteredID = this.enterIDTask.getEnteredID(crewmate).orElse(null);
 
@@ -121,11 +126,9 @@ public class EnterIDInventoryManager extends TaskInventoryManager
 
 	private static ItemStack createDigitItem(int digit)
 	{
-		int amount = digit == 0 ? 1 : digit;
-
 		return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
 				.named(GREEN + String.valueOf(digit))
-				.amounted(amount)
+				.amounted(digit == 0 ? 1 : digit)
 				.createCopy();
 	}
 	

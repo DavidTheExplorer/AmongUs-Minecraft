@@ -1,5 +1,7 @@
 package dte.amongus.deathcontext;
 
+import java.util.Optional;
+
 import org.bukkit.Location;
 
 import dte.amongus.corpses.Corpse;
@@ -25,8 +27,8 @@ public class DeathContext
 		return this.deathLocation;
 	}
 	
-	public Corpse getCorpse()
+	public Optional<Corpse> getCorpse()
 	{
-		return this.corpse;
+		return Optional.ofNullable(this.corpse);
 	}
 }
