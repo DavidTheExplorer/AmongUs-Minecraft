@@ -10,10 +10,12 @@ public abstract class CompoundCorpseComponent
 	{
 		this.parentCorpse = parentCorpse;
 	}
+	
 	public CompoundCorpse getParentCorpse() 
 	{
 		return this.parentCorpse;
 	}
+	
 	public abstract void spawn();
 	public abstract void despawn();
 }

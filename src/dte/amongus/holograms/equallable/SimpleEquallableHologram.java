@@ -16,6 +16,7 @@ public class SimpleEquallableHologram extends EquallableHologram
 	{
 		super(hologram, hdHook::equals, HashcodeProvider.INSTANCE);
 	}
+	
 	public static void setHolographicsDisplaysHook(HolographicDisplaysHook hdook) 
 	{
 		SimpleEquallableHologram.hdHook = hdook;

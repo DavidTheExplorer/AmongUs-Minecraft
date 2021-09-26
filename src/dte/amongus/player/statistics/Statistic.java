@@ -30,14 +30,17 @@ public class Statistic<VT>
 		this.name = name;
 		this.description = description;
 	}
+	
 	public Type getType() 
 	{
 		return this.type;
 	}
+	
 	public String getName() 
 	{
 		return this.name;
 	}
+	
 	public String getDescription() 
 	{
 		return this.description;
@@ -97,6 +100,7 @@ public class Statistic<VT>
 			this.name = parent.getName();
 			this.description = parent.getDescription();
 		}
+		
 		public static <T> Extender<T> toType(Statistic<T> parent, Type newType)
 		{
 			String typeName = WordUtils.capitalizeFully(newType.name());
@@ -106,21 +110,25 @@ public class Statistic<VT>
 					.changeTypeTo(newType)
 					.addToDescription(old -> String.format("%s as a %s", prepareToExtension(old), typeName));
 		}
+		
 		public Extender<T> changeTypeTo(Type type)
 		{
 			this.type = type;
 			return this;
 		}
+		
 		public Extender<T> changeNameTo(UnaryOperator<String> newNameProvider) 
 		{
 			this.name = newNameProvider.apply(this.name);
 			return this;
 		}
+		
 		public Extender<T> addToDescription(UnaryOperator<String> newDescriptionProvider) 
 		{
 			this.description = newDescriptionProvider.apply(this.description);
 			return this;
 		}
+		
 		public Statistic<T> build() 
 		{
 			return new Statistic<T>(this.type, this.name, this.description);

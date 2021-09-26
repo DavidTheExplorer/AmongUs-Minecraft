@@ -15,16 +15,19 @@ public class AUPlayerService
 	{
 		return this.playerByUUID.get(playerUUID);
 	}
+	
 	public AUPlayer getAUPlayer(AUGamePlayer gamePlayer)
 	{
 		UUID playerUUID = gamePlayer.getPlayer().getUniqueId();
 		
 		return getAUPlayer(playerUUID);
 	}
+	
 	public void load(UUID playerUUID)
 	{
 		this.playerByUUID.put(playerUUID, new AUPlayer(playerUUID));
 	}
+	
 	public void unload(UUID playerUUID)
 	{
 		this.playerByUUID.remove(playerUUID);

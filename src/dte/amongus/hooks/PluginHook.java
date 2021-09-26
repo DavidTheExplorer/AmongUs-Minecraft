@@ -11,6 +11,7 @@ public abstract class PluginHook
 	{
 		this.plugin = Bukkit.getPluginManager().getPlugin(pluginName);
 	}
+	
 	public boolean isPresent()
 	{
 		return this.plugin != null && this.plugin.isEnabled();

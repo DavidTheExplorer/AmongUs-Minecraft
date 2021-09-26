@@ -19,6 +19,7 @@ public class PlayerStatistics
 	{
 		this.generalStats.put(statistic, value);
 	}
+	
 	public <VT> void compute(Statistic<VT> statistic, UnaryOperator<VT> newValueProvider) 
 	{
 		VT currentValue = get(statistic);
@@ -26,12 +27,14 @@ public class PlayerStatistics
 		
 		set(statistic, newValue);
 	}
+	
 	public <VT> VT getOrSet(Statistic<VT> statistic, VT defaultValue)
 	{
 		this.generalStats.putIfAbsent(statistic, defaultValue);
 
 		return get(statistic);
 	}
+	
 	public <N extends Number> void increment(Statistic<N> statistic) 
 	{
 		compute(statistic, number -> (N) NumberUtils.increment(number, 1));
@@ -50,6 +53,7 @@ public class PlayerStatistics
 	{
 		getRoleMap(role).put(statistic, value);
 	}
+	
 	public <VT> void compute(PlayerRole role, Statistic<VT> statistic, UnaryOperator<VT> newValueProvider)
 	{
 		VT currentValue = get(role, statistic);
