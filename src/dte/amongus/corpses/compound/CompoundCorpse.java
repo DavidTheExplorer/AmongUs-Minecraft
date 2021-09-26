@@ -42,10 +42,12 @@ public class CompoundCorpse implements Corpse, Iterable<CompoundCorpseComponent>
 	{
 		this.components.add(component);
 	}
+	
 	public Set<CompoundCorpseComponent> getComponents()
 	{
 		return new HashSet<>(this.components);
 	}
+	
 	public <C extends CompoundCorpseComponent> Set<C> getComponents(Class<C> componentClass)
 	{
 		return new HashSet<>(IterableUtils.getElementsOf(componentClass, this.components));

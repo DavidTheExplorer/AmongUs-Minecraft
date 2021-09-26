@@ -22,12 +22,14 @@ public class HologramComponent extends CompoundCorpseComponent implements Tracka
 		
 		this.hologram = hiddenHologram;
 	}
+	
 	public static HologramComponent of(CompoundCorpse corpse, EquallableHologram hologram) 
 	{
 		WG_HOOK.setVisibility(hologram, false);
 
 		return new HologramComponent(corpse, hologram);
 	}
+	
 	public static void setHolographicDisplaysHook(HolographicDisplaysHook hdHook) 
 	{
 		WG_HOOK = hdHook;

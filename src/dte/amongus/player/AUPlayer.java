@@ -19,14 +19,17 @@ public class AUPlayer
 	{
 		this.playerUUID = playerUUID;
 	}
+	
 	public UUID getUUID() 
 	{
 		return this.playerUUID;
 	}
+	
 	public OfflinePlayer getOfflinePlayer() 
 	{
 		return Bukkit.getOfflinePlayer(this.playerUUID);
 	}
+	
 	public PlayerStatistics getStats()
 	{
 		if(this.stats == null)
@@ -34,6 +37,7 @@ public class AUPlayer
 		
 		return this.stats;
 	}
+	
 	public VisibilityManager getVisibilityManager() 
 	{
 		return this.visibilityManager;

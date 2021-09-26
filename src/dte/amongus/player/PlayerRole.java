@@ -21,18 +21,22 @@ public enum PlayerRole
 		this.name = WordUtils.capitalizeFully(name().toLowerCase());
 		this.playerClass = playerClass;
 	}
+	
 	public String getName()
 	{
 		return this.name;
 	}
+	
 	public Class<? extends AUGamePlayer> getPlayerClass()
 	{
 		return this.playerClass;
 	}
+	
 	public static PlayerRole getRandomRole() 
 	{
 		return ThreadLocalRandom.current().nextBoolean() ? CREWMATE : IMPOSTOR;
 	}
+	
 	public static PlayerRole getLoserRole(PlayerRole winnerRole) 
 	{
 		switch(winnerRole) 

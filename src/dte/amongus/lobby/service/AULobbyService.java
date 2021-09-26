@@ -74,11 +74,13 @@ public class AULobbyService
 			this.crewmates = crewmates;
 			this.impostors = impostors;
 		}
+		
 		public LobbyBuilder joinableBy(Sign sign) 
 		{
 			this.joinSign = sign;
 			return this;
 		}
+		
 		public AULobby build(AULobbyService lobbyService)
 		{
 			GameSettings settings = new GameSettings(this.crewmates, this.impostors, this.corpseFactory);

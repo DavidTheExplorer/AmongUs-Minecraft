@@ -171,6 +171,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 				return true;
 			}
 			break;
+			
 		case 2:
 			if(args[0].equalsIgnoreCase("add"))
 			{
@@ -241,6 +242,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		{
 		case 1:
 			return Arrays.asList("test", "createlobby", "add", "openinv");
+			
 		case 2:
 			if(args[0].equalsIgnoreCase("add"))
 			{

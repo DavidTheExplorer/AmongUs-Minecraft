@@ -12,14 +12,17 @@ public class WorldGuardHook extends PluginHook
 	{
 		super("WorldGuard");
 	}
+	
 	public ProtectedRegion getRegion(String regionName) 
 	{
 		return null;
 	}
+	
 	public boolean isInRegion(Player player, String regionName) 
 	{
 		return false;
 	}
+	
 	public List<ProtectedRegion> getPlayerRegions(Player player)
 	{
 		return null;

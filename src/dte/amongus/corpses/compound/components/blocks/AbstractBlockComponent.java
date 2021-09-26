@@ -17,6 +17,7 @@ public abstract class AbstractBlockComponent extends CompoundCorpseComponent imp
 		
 		this.blockLocation = block.getLocation();
 	}
+	
 	public Block getBlock() 
 	{
 		return this.blockLocation.getBlock();

@@ -15,6 +15,7 @@ public class DeathSignComponent extends BlockChangeComponent
 	{
 		super(corpse, block, toSign(signMaterial, createLinesFor(corpse.whoDied())));
 	}
+	
 	private static String[] createLinesFor(Crewmate whoDied)
 	{
 		String playerName = whoDied.getPlayer().getName();

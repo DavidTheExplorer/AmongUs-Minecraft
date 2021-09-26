@@ -41,14 +41,17 @@ public enum PlayerColor
 	{
 		this.chatcolor = ChatColor.valueOf(name());
 	}
+	
 	PlayerColor(ChatColor chatcolor)
 	{
 		this.chatcolor = chatcolor;
 	}
+	
 	public String getName() 
 	{
 		return this.name;
 	}
+	
 	public ChatColor getChatColor()
 	{
 		return this.chatcolor;

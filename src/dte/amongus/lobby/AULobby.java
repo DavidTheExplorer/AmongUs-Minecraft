@@ -49,38 +49,47 @@ public class AULobby
 		
 		Collections.shuffle(this.availableColors);
 	}
+	
 	public UUID getID() 
 	{
 		return this.id;
 	}
+	
 	public Location getSpawnLocation() 
 	{
 		return this.spawnLocation;
 	}
+	
 	public AUGame getCurrentGame() 
 	{
 		return this.currentGame;
 	}
+	
 	public GameMap getGameMap() 
 	{
 		return this.gameMap;
 	}
+	
 	public GameSettings getSettings() 
 	{
 		return this.settings;
 	}
+	
 	public Collection<AUPlayer> getPlayers()
 	{
 		return this.waitingPlayers.values();
 	}
+	
 	public void setCurrentGame(AUGame game) 
 	{
 		this.currentGame = game;
 	}
+	
 	public boolean isFull()
 	{
 		return this.waitingPlayers.size() == this.settings.getPlayersRequired();
 	}
+	
 	public boolean addPlayer(AUPlayer auPlayer)
 	{
 		if(isFull())
@@ -99,6 +108,7 @@ public class AULobby
 		
 		return true;
 	}
+	
 	public boolean removePlayer(Player player) 
 	{
 		boolean wasInLobby = this.waitingPlayers.remove(player.getUniqueId()) != null;
@@ -108,14 +118,17 @@ public class AULobby
 		
 		return wasInLobby;
 	}
+	
 	public boolean contains(Player player) 
 	{
 		return this.waitingPlayers.containsKey(player.getUniqueId());
 	}
+	
 	public void clear() 
 	{
 		this.waitingPlayers.clear();
 	}
+	
 	public void addStateListener(LobbyStateListener listener) 
 	{
 		this.stateListeners.add(listener);

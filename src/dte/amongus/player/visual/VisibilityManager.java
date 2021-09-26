@@ -12,14 +12,17 @@ public class VisibilityManager
 	{
 		this.wardrobe = new Wardrobe(owner);
 	}
+	
 	public Wardrobe getWardrobe() 
 	{
 		return this.wardrobe;
 	}
+	
 	public PlayerColor getCurrentColor() 
 	{
 		return this.currentColor;
 	}
+	
 	public void setCurrentColor(PlayerColor color) 
 	{
 		this.currentColor = color;

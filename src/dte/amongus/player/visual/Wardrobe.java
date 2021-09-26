@@ -14,14 +14,17 @@ public class Wardrobe
 	{
 		this.owner = owner;
 	}
+	
 	public AUPlayer getOwner()
 	{
 		return this.owner;
 	}
+	
 	public boolean hasUnlocked(PlayerColor color) 
 	{
 		return this.unlockedColors.contains(color);
 	}
+	
 	public Set<PlayerColor> getUnlockedColors()
 	{
 		return new HashSet<>(this.unlockedColors);
