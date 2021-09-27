@@ -104,11 +104,11 @@ public class AUGameService
 		List<AUGamePlayer> players = new ArrayList<>();
 
 		//Crewmates selection
-		for(int i = 1; i <= lobby.getSettings().getCrewmatesRequired(); i++)
+		for(int i = 1; i <= lobby.getGameSettings().getCrewmatesRequired(); i++)
 			players.add(new Crewmate(bukkitPlayers.poll(), game));
 
 		//Impostors Selection
-		for(int i = 1; i <= lobby.getSettings().getImpostorsRequired(); i++)
+		for(int i = 1; i <= lobby.getGameSettings().getImpostorsRequired(); i++)
 			players.add(new Impostor(bukkitPlayers.poll(), game));
 
 		return players;
