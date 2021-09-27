@@ -48,7 +48,7 @@ public class ImpostorKillListener implements Listener
 			Bukkit.getPluginManager().callEvent(new GameWinEvent(game, PlayerRole.IMPOSTOR));
 			return;
 		}
-		game.spawnCorpse(crewmate, event.getContext().getDeathLocation());
+		game.kill(crewmate, impostor);
 	}
 	
 	private void setSpectator(AUGamePlayer gamePlayer, DeathContext deathContext) 

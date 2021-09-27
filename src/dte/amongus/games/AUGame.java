@@ -21,6 +21,8 @@ import org.bukkit.entity.Player;
 
 import dte.amongus.corpses.Corpse;
 import dte.amongus.corpses.factory.CorpseFactory;
+import dte.amongus.deathcontext.DeathContext;
+import dte.amongus.deathcontext.ImpostorKillContext;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
@@ -129,13 +131,25 @@ public class AUGame
 
 		return playerType.isInstance(gamePlayer) ? playerType.cast(gamePlayer) : null;
 	}
-
-	public Corpse spawnCorpse(Crewmate whoDied, Location deathLocation)
+	
+	public DeathContext kill(Crewmate crewmate) 
 	{
-		Corpse corpse = this.corpseFactory.generateCorpse(whoDied, deathLocation);
+		Location deathLocation = crewmate.getPlayer().getLocation();
+		
+		Corpse corpse = this.corpseFactory.generateCorpse(crewmate, deathLocation);
 		corpse.spawn();
-
-		return corpse;
+		
+		return new DeathContext(deathLocation, corpse);
+	}
+	
+	public ImpostorKillContext kill(Crewmate crewmate, Impostor killer) 
+	{
+		Location deathLocation = crewmate.getPlayer().getLocation();
+		
+		Corpse corpse = this.corpseFactory.generateCorpse(crewmate, deathLocation);
+		corpse.spawn();
+		
+		return new ImpostorKillContext(deathLocation, killer);
 	}
 
 	public boolean isWin()
