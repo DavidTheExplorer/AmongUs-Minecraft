@@ -11,16 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.bukkit.Location;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-
-import dte.amongus.corpses.factory.CorpseFactory;
-import dte.amongus.games.settings.GameSettings;
 import dte.amongus.lobby.AULobby;
-import dte.amongus.lobby.sign.LobbySign;
-import dte.amongus.maps.GameMap;
-import dte.amongus.utils.java.UUIDProvider;
 
 public class AULobbyService
 {
@@ -55,48 +47,5 @@ public class AULobbyService
 	public Collection<AULobby> getLobbies()
 	{
 		return this.lobbyByID.values();
-	}
-	
-	public static class LobbyBuilder 
-	{
-		private final Location spawnLocation;
-		private final GameMap gameMap;
-		private final CorpseFactory corpseFactory;
-		private final int crewmates, impostors;
-		
-		private Sign joinSign;
-		
-		public LobbyBuilder(Location spawnLocation, GameMap gameMap, CorpseFactory corpseFactory, int crewmates, int impostors)
-		{
-			this.spawnLocation = spawnLocation;
-			this.gameMap = gameMap;
-			this.corpseFactory = corpseFactory;
-			this.crewmates = crewmates;
-			this.impostors = impostors;
-		}
-		
-		public LobbyBuilder joinableBy(Sign sign) 
-		{
-			this.joinSign = sign;
-			return this;
-		}
-		
-		public AULobby build(AULobbyService lobbyService)
-		{
-			GameSettings settings = new GameSettings(this.crewmates, this.impostors, this.corpseFactory);
-			UUID lobbyID = UUIDProvider.generateFor(AULobby.class);
-			
-			AULobby lobby = new AULobby(lobbyID, this.spawnLocation, this.gameMap, settings);
-			
-			if(this.joinSign != null)
-			{
-				LobbySign sign = new LobbySign(this.joinSign, lobby);
-				sign.update(true);
-				
-				lobby.addStateListener(sign);
-			}
-			lobbyService.registerLobby(lobby);
-			return lobby;
-		}
 	}
 }
