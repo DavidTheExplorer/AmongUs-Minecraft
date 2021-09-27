@@ -24,7 +24,7 @@ public class LobbySign extends DisplaySign implements LobbyStateListener
 		setBaseLinesSupplier(() -> new String[]
 				{
 						String.format(getLobbyColor() + "[AmongUs #%s]", this.lobby.getID().toString().substring(0, 5)), 
-						String.format("%d/%d", this.lobby.getPlayers().size(), this.lobby.getSettings().getPlayersRequired())
+						String.format("%d/%d", this.lobby.getPlayers().size(), this.lobby.getGameSettings().getPlayersRequired())
 				});
 	}
 
