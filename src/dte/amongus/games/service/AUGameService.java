@@ -39,7 +39,7 @@ public class AUGameService
 	{
 		//create a game
 		UUID randomID = UUIDProvider.generateFor(AUGame.class);
-		AUGame game = new AUGame(randomID, lobby, map, lobby.getSettings().getCorpseFactory());
+		AUGame game = new AUGame(randomID, lobby, map, lobby.getGameSettings().getCorpseFactory());
 
 		//setup the game
 		toGamePlayers(lobby, game).forEach(game::addPlayer);
@@ -104,11 +104,11 @@ public class AUGameService
 		List<AUGamePlayer> players = new ArrayList<>();
 
 		//Crewmates selection
-		for(int i = 1; i <= lobby.getSettings().crewmatesAmount(); i++)
+		for(int i = 1; i <= lobby.getSettings().getCrewmatesRequired(); i++)
 			players.add(new Crewmate(bukkitPlayers.poll(), game));
 
 		//Impostors Selection
-		for(int i = 1; i <= lobby.getSettings().impostorsAmount(); i++)
+		for(int i = 1; i <= lobby.getSettings().getImpostorsRequired(); i++)
 			players.add(new Impostor(bukkitPlayers.poll(), game));
 
 		return players;

@@ -20,6 +20,7 @@ import dte.amongus.listeners.lobbies.LobbyFullListener;
 import dte.amongus.listeners.lobbies.LobbyLeaveListeners;
 import dte.amongus.listeners.retrievers.ImpostorKillRetrieverListener;
 import dte.amongus.listeners.tasks.InventoryTasksListener;
+import dte.amongus.lobby.AULobby;
 import dte.amongus.lobby.service.AULobbyService;
 import dte.amongus.player.service.AUPlayerService;
 import dte.amongus.utils.ModernJavaPlugin;
@@ -57,7 +58,7 @@ public class AmongUs extends ModernJavaPlugin
 	
 	private void registerCommands() 
 	{
-		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gameService, this.auPlayerService, this.lobbyService);
+		AmongUSCommand amongUsCommand = new AmongUSCommand(this.gameService, this.auPlayerService);
 		getCommand("amongus").setExecutor(amongUsCommand);
 		getCommand("amongus").setTabCompleter(amongUsCommand);
 	}
@@ -73,7 +74,7 @@ public class AmongUs extends ModernJavaPlugin
 				new ImpostorKillRetrieverListener(this.gameService),
 
 				//Lobby
-				new LobbyLeaveListeners(this.lobbyService),
+				new LobbyLeaveListeners(this.lobbyService, this.auPlayerService),
 
 				//Game
 				new GameStartListener(),
@@ -92,6 +93,7 @@ public class AmongUs extends ModernJavaPlugin
 		this.gameService = new AUGameService();
 
 		GamePlayerUtils.setup(this.auPlayerService);
+		AULobby.Builder.setLobbyService(this.lobbyService);
 	}
 	
 	private void setupHooks() 

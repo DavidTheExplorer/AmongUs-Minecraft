@@ -1,5 +1,7 @@
 package dte.amongus.commands;
 
+import static dte.amongus.player.PlayerRole.CREWMATE;
+import static dte.amongus.player.PlayerRole.IMPOSTOR;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toCollection;
 import static org.bukkit.ChatColor.DARK_RED;
@@ -30,7 +32,6 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.games.service.AUGameService;
 import dte.amongus.lobby.AULobby;
-import dte.amongus.lobby.service.AULobbyService;
 import dte.amongus.maps.TestMap;
 import dte.amongus.player.AUPlayer;
 import dte.amongus.player.service.AUPlayerService;
@@ -48,9 +49,8 @@ import dte.amongus.utils.java.IterableUtils;
 public class AmongUSCommand implements CommandExecutor, TabCompleter
 {
 	private final AUGameService gameService;
-	private final AULobbyService lobbyService;
 	private final AUPlayerService auPlayerService;
-
+	
 	private AULobby tempLobby;
 	
 	private static final Map<String, Class<? extends ShipTask>> TASK_CLASS_BY_NAME = new HashMap<>();
@@ -63,11 +63,10 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		TASK_CLASS_BY_NAME.put("o2", CleanO2FilterTask.class);
 	}
 
-	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService, AULobbyService lobbyService) 
+	public AmongUSCommand(AUGameService gameService, AUPlayerService auPlayerService) 
 	{
 		this.gameService = gameService;
 		this.auPlayerService = auPlayerService;
-		this.lobbyService = lobbyService;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -161,11 +160,18 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 					player.sendMessage(RED + "The Sign you are looking at must be Empty!");
 					return false;
 				}
-				this.tempLobby = new AULobbyService.LobbyBuilder(player.getLocation(), new TestMap(), new SimpleCorpseFactory(), 1, 1)
+				
+				this.tempLobby = new AULobby.Builder()
+						.withSpawnLocation(player.getLocation())
+						.withGameMap(new TestMap())
+						.thatGetsCorpsesFrom(new SimpleCorpseFactory())
+						.thatRequires(CREWMATE, 1)
+						.thatRequires(IMPOSTOR, 1)
 						.joinableBy(sign)
-						.build(this.lobbyService);
+						.build();
+				
 				player.sendMessage(GREEN + "You successfully created a new lobby in your Location.");
-
+				
 				this.tempLobby.addPlayer(this.auPlayerService.getAUPlayer(player.getUniqueId()));
 				player.sendMessage(GREEN + "You were sent to lobby " + toDisplay(this.tempLobby));
 				return true;
