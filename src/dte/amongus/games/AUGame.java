@@ -78,7 +78,7 @@ public class AUGame
 
 	public void add(AUGamePlayer gamePlayer) 
 	{
-		verifyInInit("Players can only be added during the game's initialization.");
+		verifyInInit("Players can only be added");
 
 		this.players.put(gamePlayer.getPlayer(), gamePlayer);
 	}
@@ -90,7 +90,7 @@ public class AUGame
 
 	public void addTask(ShipTask task, Block representative) 
 	{
-		verifyInInit("Tasks can only be added during the game's initialization.");
+		verifyInInit("Tasks can only be added");
 		
 		this.tasksLocations.put(representative.getLocation(), task);
 	}
@@ -232,33 +232,16 @@ public class AUGame
 	@Override
 	public String toString()
 	{
-		//Players
-		Collection<Crewmate> crewmates = getPlayers(Crewmate.class);
-		Collection<Impostor> impostors = getPlayers(Impostor.class);
-
-		String crewmatesNames = crewmates.stream()
-				.map(impostor -> impostor.getPlayer().getName())
-				.collect(joining(", "));
-
-		String impostorsNames = impostors.stream()
-				.map(impostor -> impostor.getPlayer().getName())
-				.collect(joining(", "));
-
-		//Tasks
-		String tasksNames = this.tasksLocations.values().stream()
-				.map(ShipTask::getName)
-				.collect(joining(",", "[", "]"));
-
 		return String.format("AUGame [id=%s, lobby=%s, map=%s, state=%s, tasks=%s, players=[Impostors(%d): %s | Crewmates(%d): %s]]", 
 				this.id.toString().substring(0, 5), 
 				this.lobby,
 				this.map,
 				this.state,
-				tasksNames, 
-				impostors.size(),
-				impostorsNames,
-				crewmates.size(),
-				crewmatesNames);
+				getTasksNames(), 
+				getPlayers(Impostor.class).size(),
+				getPlayersNames(Impostor.class),
+				getPlayers(Crewmate.class).size(),
+				getPlayersNames(Crewmate.class));
 	}
 
 	private void verifyInInit(String errorMessage) 
@@ -278,6 +261,20 @@ public class AUGame
 				.mapToInt(List::size)
 				.distinct()
 				.count() == 1;
+	}
+	
+	private String getPlayersNames(Class<? extends AUGamePlayer> playerClass) 
+	{
+		return getPlayers(playerClass).stream()
+				.map(impostor -> impostor.getPlayer().getName())
+				.collect(joining(", "));
+	}
+	
+	private String getTasksNames() 
+	{
+		return this.tasksLocations.values().stream()
+				.map(ShipTask::getName)
+				.collect(joining(", ", "[", "]"));
 	}
 
 	public enum GameState 
