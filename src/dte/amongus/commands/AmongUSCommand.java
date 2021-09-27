@@ -303,7 +303,9 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 
 		if(matchingTasks.isEmpty())
 		{
-			game.getAlivePlayers(Crewmate.class).stream().map(Crewmate::getPlayer).forEach(player -> player.sendMessage(RED + "The game doesn't have a Wires Task!"));
+			game.getAlivePlayers(Crewmate.class).stream()
+			.map(Crewmate::getPlayer)
+			.forEach(player -> player.sendMessage(RED + "Couldn't find such a Task!"));
 			return;
 		}
 		T task = matchingTasks.get(0);

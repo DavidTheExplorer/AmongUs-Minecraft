@@ -9,11 +9,11 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.inventory.enterid.EnterIDInventoryManager;
-import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 import dte.amongus.utils.java.NumberUtils;
 import dte.amongus.utils.java.RandomUtils;
 
-public class EnterIDTask extends SimpleShipTask implements InventoryTask
+public class EnterIDTask extends AbstractShipTask implements InventoryTask
 {
 	private final EnterIDInventoryManager inventoryManager;
 
@@ -57,9 +57,9 @@ public class EnterIDTask extends SimpleShipTask implements InventoryTask
 	}
 	
 	@Override
-	public void onFinish(Crewmate crewmate) 
+	public void onFinish(Crewmate finisher) 
 	{
-		removeData(crewmate, "Personal ID");
-		removeData(crewmate, "Entered ID");
+		removeData(finisher, "Personal ID");
+		removeData(finisher, "Entered ID");
 	}
 }

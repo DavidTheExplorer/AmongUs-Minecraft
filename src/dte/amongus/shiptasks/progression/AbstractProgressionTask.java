@@ -2,13 +2,14 @@ package dte.amongus.shiptasks.progression;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
-import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.AbstractShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
-public abstract class SimpleProgressionTask extends SimpleShipTask implements ProgressionShipTask
+public abstract class AbstractProgressionTask extends AbstractShipTask implements ProgressionShipTask
 {
 	private final int maxProgression;
 	
-	protected SimpleProgressionTask(String name, String description, TaskType type, AUGame game, int maxProgression) 
+	protected AbstractProgressionTask(String name, String description, TaskType type, AUGame game, int maxProgression) 
 	{
 		super(name, description, type, game);
 		
@@ -35,6 +36,6 @@ public abstract class SimpleProgressionTask extends SimpleShipTask implements Pr
 	@Override
 	public int getProgression(Crewmate crewmate) 
 	{
-		return (Integer) getOrPut(crewmate, "Progression", 0);
+		return getOrPut(crewmate, "Progression", 0);
 	}
 }

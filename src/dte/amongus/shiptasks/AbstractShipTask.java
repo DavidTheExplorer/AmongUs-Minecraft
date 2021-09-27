@@ -1,4 +1,4 @@
-package dte.amongus.shiptasks.simple;
+package dte.amongus.shiptasks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,16 +7,16 @@ import java.util.function.Supplier;
 
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
-import dte.amongus.shiptasks.ShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
-public abstract class SimpleShipTask implements ShipTask
+public abstract class AbstractShipTask implements ShipTask
 {
 	private final String name, description;
 	private final TaskType type;
 	private final AUGame game;
 	private final Map<Crewmate, Map<String, Object>> playersData = new HashMap<>();
 	
-	protected SimpleShipTask(String name, String description, TaskType type, AUGame game) 
+	protected AbstractShipTask(String name, String description, TaskType type, AUGame game) 
 	{
 		this.name = name;
 		this.description = description;

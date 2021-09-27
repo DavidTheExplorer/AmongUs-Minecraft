@@ -6,9 +6,9 @@ import dte.amongus.games.AUGame;
 import dte.amongus.shiptasks.inventory.InventoryTask;
 import dte.amongus.shiptasks.inventory.TaskInventoryManager;
 import dte.amongus.shiptasks.inventory.stabilizesteering.StabilizeSteeringInventoryManager;
-import dte.amongus.shiptasks.simple.SimpleShipTask;
+import dte.amongus.shiptasks.type.TaskType;
 
-public class StabilizeSteeringTask extends SimpleShipTask implements InventoryTask
+public class StabilizeSteeringTask extends AbstractShipTask implements InventoryTask
 {
 	private final StabilizeSteeringInventoryManager inventoryManager;
 	
