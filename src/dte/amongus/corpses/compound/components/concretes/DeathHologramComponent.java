@@ -42,7 +42,7 @@ public class DeathHologramComponent extends HologramComponent
 	{
 		return reporter ->
 		{
-			AUGamePlayer reporterGP = this.parent.whoDied().getGame().getPlayer(reporter);
+			AUGamePlayer reporterGP = this.parent.whoDied().getGame().getPlayer(reporter).get();
 			
 			Bukkit.getPluginManager().callEvent(new BodyReportEvent(this.parent, reporterGP));
 		};

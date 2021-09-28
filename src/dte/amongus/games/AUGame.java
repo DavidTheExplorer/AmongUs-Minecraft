@@ -21,13 +21,13 @@ import org.bukkit.entity.Player;
 
 import dte.amongus.corpses.Corpse;
 import dte.amongus.corpses.factory.CorpseFactory;
-import dte.amongus.deathcontext.DeathContext;
 import dte.amongus.deathcontext.ImpostorKillContext;
 import dte.amongus.games.players.AUGamePlayer;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.player.AUPlayer;
 import dte.amongus.player.PlayerRole;
 import dte.amongus.shiptasks.ShipTask;
 
@@ -37,9 +37,9 @@ public class AUGame
 	private final AULobby lobby;
 	private final GameMap map;
 	private final CorpseFactory corpseFactory;
+	private final Set<AUGamePlayer> players = new HashSet<>();
 	private final Map<Location, ShipTask> tasksLocations = new HashMap<>();
-	private final Map<Crewmate, ShipTask> crewmatesTasks = new HashMap<>();
-	private final Map<Player, AUGamePlayer> players = new HashMap<>();
+	private final Map<Crewmate, ShipTask> crewmatesCurrentTasks = new HashMap<>();
 
 	private GameState state = GameState.INIT;
 
@@ -50,7 +50,10 @@ public class AUGame
 		this.map = map;
 		this.corpseFactory = corpseFactory;
 	}
-
+	
+	/*
+	 * General
+	 */
 	public UUID getID()
 	{
 		return this.id;
@@ -71,75 +74,89 @@ public class AUGame
 		return this.state;
 	}
 	
-	public Optional<ShipTask> getCurrentTask(Crewmate crewmate)
-	{
-		return Optional.ofNullable(this.crewmatesTasks.get(crewmate));
-	}
-
-	public void add(AUGamePlayer gamePlayer) 
-	{
-		verifyInInit("Players can only be added");
-
-		this.players.put(gamePlayer.getPlayer(), gamePlayer);
-	}
-
-	public boolean contains(Player player) 
-	{
-		return this.players.containsKey(player);
-	}
-
-	public void addTask(ShipTask task, Block representative) 
-	{
-		verifyInInit("Tasks can only be added");
-		
-		this.tasksLocations.put(representative.getLocation(), task);
-	}
-
-	public Optional<ShipTask> getTaskAt(Block block)
-	{
-		return Optional.ofNullable(this.tasksLocations.get(block.getLocation()));
-	}
-	
 	public void setState(GameState state)
 	{
 		this.state = state;
 	}
+	
+	public boolean isWin()
+	{
+		return isTie();
+	}
 
+	public Set<ShipTask> getTasks()
+	{
+		return new HashSet<>(this.tasksLocations.values());
+	}
+	
+	public Set<AUGamePlayer> getPlayers()
+	{
+		return new HashSet<>(this.players);
+	}
+	
+	/*
+	 * Players
+	 */
 	public void addPlayer(AUGamePlayer gamePlayer) 
 	{
-		this.players.put(gamePlayer.getPlayer(), gamePlayer);
+		verifyInInit("Players can only be added");
+
+		this.players.add(gamePlayer);
 	}
 	
-	public void setCurrentTask(Crewmate crewmate, ShipTask task) 
+	public boolean contains(AUPlayer auPlayer)
 	{
-		this.crewmatesTasks.put(crewmate, task);
-	}
-	
-	public void setNoTask(Crewmate crewmate)
-	{
-		this.crewmatesTasks.remove(crewmate);
-	}
-
-	public AUGamePlayer getPlayer(Player player) 
-	{
-		return this.players.get(player);
-	}
-
-	public <T extends AUGamePlayer> T getPlayer(Player player, Class<T> playerType)
-	{
-		AUGamePlayer gamePlayer = getPlayer(player);
-
-		return playerType.isInstance(gamePlayer) ? playerType.cast(gamePlayer) : null;
-	}
-	
-	public DeathContext kill(Crewmate crewmate) 
-	{
-		Location deathLocation = crewmate.getPlayer().getLocation();
+		Player player = auPlayer.getOfflinePlayer().getPlayer();
 		
-		Corpse corpse = this.corpseFactory.generateCorpse(crewmate, deathLocation);
-		corpse.spawn();
+		return getPlayer(player).isPresent();
+	}
+	
+	public Optional<AUGamePlayer> getPlayer(Player player) 
+	{
+		UUID playerUUID = player.getUniqueId();
 		
-		return new DeathContext(deathLocation, corpse);
+		return this.players.stream()
+				.filter(gamePlayer -> gamePlayer.getPlayer().getUniqueId().equals(playerUUID))
+				.findFirst();
+	}
+
+	public <P extends AUGamePlayer> Optional<P> getPlayer(Player player, Class<P> playerType)
+	{
+		return getPlayer(player)
+				.filter(playerType::isInstance)
+				.map(playerType::cast);
+	}
+
+	public <P extends AUGamePlayer> Collection<P> getPlayers(Class<P> playerType)
+	{
+		return getPlayers().stream()
+				.filter(playerType::isInstance)
+				.map(playerType::cast)
+				.collect(toList());
+	}
+	
+	public <P extends AUGamePlayer> List<P> getDeadPlayers(Class<P> playerType)
+	{
+		return getPlayers(playerType).stream()
+				.filter(AUGamePlayer::isDead)
+				.collect(toList());
+	}
+	
+	public <P extends AUGamePlayer> List<P> getAlivePlayers(Class<P> playerType)
+	{
+		return getPlayers(playerType).stream()
+				.filter(negate(AUGamePlayer::isDead))
+				.collect(toList());
+	}
+
+	public Collection<AUGamePlayer> getAlivePlayers()
+	{
+		return getAlivePlayers(AUGamePlayer.class);
+	}
+
+	public List<AUGamePlayer> getDeadPlayers()
+	{
+		return getDeadPlayers(AUGamePlayer.class);
 	}
 	
 	public ImpostorKillContext kill(Crewmate crewmate, Impostor killer) 
@@ -151,60 +168,36 @@ public class AUGame
 		
 		return new ImpostorKillContext(deathLocation, killer);
 	}
-
-	public boolean isWin()
+	
+	/*
+	 * Tasks
+	 */
+	public Optional<ShipTask> getTaskAt(Block block)
 	{
-		return isTie();
+		return Optional.ofNullable(this.tasksLocations.get(block.getLocation()));
 	}
-
-	public Set<ShipTask> getTasks()
+	
+	public Optional<ShipTask> getCurrentTask(Crewmate crewmate)
 	{
-		return new HashSet<>(this.tasksLocations.values());
+		return Optional.ofNullable(this.crewmatesCurrentTasks.get(crewmate));
 	}
-
-	public Collection<AUGamePlayer> getPlayers()
+	
+	public void addTask(ShipTask task, Block representative) 
 	{
-		return new HashSet<>(this.players.values());
+		verifyInInit("Tasks can only be added");
+		
+		this.tasksLocations.put(representative.getLocation(), task);
 	}
-
-	public <T extends AUGamePlayer> Collection<T> getPlayers(Class<T> playerType)
+	
+	public void setCurrentTask(Crewmate crewmate, ShipTask task) 
 	{
-		return getPlayers().stream()
-				.filter(playerType::isInstance)
-				.map(playerType::cast)
-				.collect(toList());
+		this.crewmatesCurrentTasks.put(crewmate, task);
 	}
-
-	public Collection<AUGamePlayer> getAlivePlayers()
+	
+	public void setNoTask(Crewmate crewmate)
 	{
-		return getAlivePlayers(AUGamePlayer.class);
+		this.crewmatesCurrentTasks.remove(crewmate);
 	}
-
-	public <T extends AUGamePlayer> List<T> getAlivePlayers(Class<T> playerType)
-	{
-		return getPlayers(playerType).stream()
-				.filter(negate(AUGamePlayer::isDead))
-				.collect(toList());
-	}
-
-	public Collection<AUGamePlayer> getDeadPlayers()
-	{
-		return getDeadPlayers(AUGamePlayer.class);
-	}
-
-	public <T extends AUGamePlayer> List<T> getDeadPlayers(Class<T> playerType)
-	{
-		return getPlayers(playerType).stream()
-				.filter(AUGamePlayer::isDead)
-				.collect(toList());
-	}
-
-	/*public List<AUGamePlayer> getPlayers(PlayerRole role)
-	{
-		return getPlayers(role.getPlayerClass()).stream()
-				.map(AUGamePlayer.class::cast)
-				.collect(toList());
-	}*/
 
 	@Override
 	public int hashCode() 
@@ -252,7 +245,7 @@ public class AUGame
 
 	private boolean isTie() 
 	{
-		Map<PlayerRole, List<AUGamePlayer>> rolesPlayersLeft = this.players.values().stream()
+		Map<PlayerRole, List<AUGamePlayer>> rolesPlayersLeft = this.players.stream()
 				.filter(negate(AUGamePlayer::isDead))
 				.collect(groupingBy(AUGamePlayer::getRole));
 

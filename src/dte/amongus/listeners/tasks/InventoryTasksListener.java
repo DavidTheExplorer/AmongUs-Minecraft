@@ -25,24 +25,21 @@ public class InventoryTasksListener implements Listener
 
 		this.gameService.getPlayerGame(player).ifPresent(playerGame -> 
 		{
-			Crewmate crewmate = playerGame.getPlayer(player, Crewmate.class);
-
-			//verify the inventory clicker is Crewmate
-			if(crewmate == null) 
-				return;
-			
-			playerGame.getCurrentTask(crewmate)
-			.filter(InventoryTask.class::isInstance) //verify the crewmate's current task is an inventory task
-			.map(InventoryTask.class::cast)
-			.filter(inventoryTask -> inventoryTask.getInventoryManager().wasInvolvedAt(event)) //verify the event's inventory is the task's inventory
-			.ifPresent(inventoryTask -> 
+			playerGame.getPlayer(player, Crewmate.class).ifPresent(crewmate -> 
 			{
-				event.setCancelled(true);
+				playerGame.getCurrentTask(crewmate)
+				.filter(InventoryTask.class::isInstance) //verify the crewmate's current task is an inventory task
+				.map(InventoryTask.class::cast)
+				.filter(inventoryTask -> inventoryTask.getInventoryManager().wasInvolvedAt(event)) //verify the event's inventory is the task's inventory
+				.ifPresent(inventoryTask -> 
+				{
+					event.setCancelled(true);
 
-				if(event.getCurrentItem() == null)
-					return;
+					if(event.getCurrentItem() == null)
+						return;
 
-				inventoryTask.getInventoryManager().onInventoryClick(crewmate, event);
+					inventoryTask.getInventoryManager().onInventoryClick(crewmate, event);
+				});
 			});
 		});
 	}
