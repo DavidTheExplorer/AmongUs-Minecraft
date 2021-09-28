@@ -26,17 +26,20 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import dte.amongus.AmongUs;
+import dte.amongus.corpses.GraveCorpse;
 import dte.amongus.corpses.factory.SimpleCorpseFactory;
+import dte.amongus.corpses.reportablefinder.ReportableCorpseFinder;
+import dte.amongus.corpses.reportablefinder.ReportableCorpsesWGFinder;
 import dte.amongus.games.AUGame;
 import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.games.service.AUGameService;
+import dte.amongus.hooks.WorldGuardHook;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.TestMap;
 import dte.amongus.player.AUPlayer;
 import dte.amongus.player.service.AUPlayerService;
-import dte.amongus.sabotages.GatesSabotage;
-import dte.amongus.sabotages.Sabotage;
+import dte.amongus.player.visual.PlayerColor;
 import dte.amongus.shiptasks.CleanO2FilterTask;
 import dte.amongus.shiptasks.EnterIDTask;
 import dte.amongus.shiptasks.ShipTask;
@@ -91,10 +94,21 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		case 1:
 			if(args[0].equalsIgnoreCase("test"))
 			{
-				Sabotage sabotage = GatesSabotage.from(player.getLocation().getBlock());
+				Crewmate crewmate = this.tempLobby.getCurrentGame().getPlayers(Crewmate.class).iterator().next();
+				this.auPlayerService.getAUPlayer(crewmate).getVisibilityManager().setCurrentColor(PlayerColor.GREEN);
+				
+				ReportableCorpseFinder corpseFinder = new ReportableCorpsesWGFinder(new WorldGuardHook());
+				corpseFinder.findFor(crewmate);
+				
+				GraveCorpse corpse = new GraveCorpse(crewmate, crewmate.getPlayer().getLocation());
+				corpse.spawn();
+				
+				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), corpse::despawn, 20 * 7);
+				
+				/*Sabotage sabotage = GatesSabotage.from(player.getLocation().getBlock());
 				
 				sabotage.activate();
-				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), sabotage::disable, 20 * 3);
+				Bukkit.getScheduler().runTaskLater(AmongUs.getInstance(), sabotage::disable, 20 * 3);*/
 
 				/*Hologram h1 = new CommonEquallableHologram(HologramsAPI.createHologram(AmongUs.getInstance(), player.getLocation().add(0, 3, 0)));
 				Hologram h2 = new CommonEquallableHologram(HologramsAPI.createHologram(AmongUs.getInstance(), player.getLocation().add(0, 6, 0)));
@@ -316,7 +330,7 @@ public class AmongUSCommand implements CommandExecutor, TabCompleter
 		}
 		T task = matchingTasks.get(0);
 
-		for(Crewmate crewmate : game.getAlivePlayers(Crewmate.class)) 
+		for(Crewmate crewmate : game.getAlivePlayers(Crewmate.class))
 		{
 			game.setCurrentTask(crewmate, task);
 			task.onStart(crewmate);

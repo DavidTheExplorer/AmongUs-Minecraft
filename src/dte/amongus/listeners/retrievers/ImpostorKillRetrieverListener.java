@@ -38,8 +38,8 @@ public class ImpostorKillRetrieverListener implements Listener
 			return;
 
 		AUGame game = this.gameService.getPlayerGame(damager).get();
-		AUGamePlayer damagerGP = game.getPlayer(damager);
-		AUGamePlayer damagedGP = game.getPlayer(damaged);
+		AUGamePlayer damagerGP = game.getPlayer(damager).get();
+		AUGamePlayer damagedGP = game.getPlayer(damaged).get();
 
 		if(damagerGP instanceof Crewmate)
 		{

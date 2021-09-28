@@ -42,6 +42,6 @@ public class WorldGuardCorpseFinder implements CorpseFinder
 	{
 		String crewmateName = region.getId().substring(0, region.getId().indexOf("-body"));
 		
-		return game.getPlayer(Bukkit.getPlayer(crewmateName), Crewmate.class);
+		return game.getPlayer(Bukkit.getPlayer(crewmateName), Crewmate.class).get();
 	}
 }

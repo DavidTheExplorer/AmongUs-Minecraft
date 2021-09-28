@@ -23,6 +23,8 @@ import dte.amongus.games.players.Crewmate;
 import dte.amongus.games.players.Impostor;
 import dte.amongus.lobby.AULobby;
 import dte.amongus.maps.GameMap;
+import dte.amongus.player.AUPlayer;
+import dte.amongus.player.service.AUPlayerService;
 import dte.amongus.shiptasks.CleanO2FilterTask;
 import dte.amongus.shiptasks.EnterIDTask;
 import dte.amongus.shiptasks.ShipTask;
@@ -34,6 +36,13 @@ import dte.amongus.utils.java.UUIDProvider;
 public class AUGameService
 {
 	private final Set<AUGame> activeGames = new HashSet<>();
+	
+	private final AUPlayerService auPlayerService;
+	
+	public AUGameService(AUPlayerService auPlayerService) 
+	{
+		this.auPlayerService = auPlayerService;
+	}
 
 	public AUGame registerNewGame(AULobby lobby, GameMap map)
 	{
@@ -61,8 +70,10 @@ public class AUGameService
 
 	public Optional<AUGame> getPlayerGame(Player player)
 	{
+		AUPlayer auPlayer = this.auPlayerService.getAUPlayer(player.getUniqueId());
+		
 		return this.activeGames.stream()
-				.filter(game -> game.contains(player))
+				.filter(game -> game.contains(auPlayer))
 				.findFirst();
 	}
 

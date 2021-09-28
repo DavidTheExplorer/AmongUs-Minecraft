@@ -90,7 +90,7 @@ public class AmongUs extends ModernJavaPlugin
 	{
 		this.auPlayerService = new AUPlayerService();
 		this.lobbyService = new AULobbyService();
-		this.gameService = new AUGameService();
+		this.gameService = new AUGameService(this.auPlayerService);
 
 		GamePlayerUtils.setup(this.auPlayerService);
 		AULobby.Builder.setLobbyService(this.lobbyService);
